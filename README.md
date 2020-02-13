@@ -8,17 +8,19 @@ This application is configured for Service Discovery and Configuration with the 
 
 ## Development
 
-Before you can build this project, you must install and configure the following dependencies on your machine:
+In order to run the Gateway properly you´ll have to run the next commands on a terminal in the project folder.
 
-1. [Node.js][]: We use Node to run a development web server and build the project.
-   Depending on your system, you can install Node either from source or as a pre-packaged bundle.
+Kafka server
 
-After installing Node, you should be able to run the following command to install development tools.
-You will only need to run this command when dependencies change in [package.json](package.json).
+    docker-compose -f src/main/docker/kafka.yml up -d
 
-    npm install
+Oauth(keycloak server)
 
-We use npm scripts and [Webpack][] as our build system.
+    docker-compose -f src/main/docker/keycloak.yml up
+
+JRegestry server
+
+    docker-compose -f src/main/docker/jhipster-registry.yml up
 
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
@@ -26,15 +28,9 @@ auto-refreshes when files change on your hard drive.
     ./mvnw
     npm start
 
-Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
-specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
-Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
-
 The `npm run` command will list all of the scripts available to run for this project.
 
 ## OAuth 2.0 / OpenID Connect
-
-Congratulations! You've selected an excellent way to secure your JHipster application. If you're not sure what OAuth and OpenID Connect (OIDC) are, please see [What the Heck is OAuth?](https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth)
 
 To log in to your app, you'll need to have [Keycloak](https://keycloak.org) up and running. The JHipster Team has created a Docker container for you that has the default users and roles. Start Keycloak using the following command.
 
@@ -58,37 +54,6 @@ security:
     resource:
       userInfoUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
 ```
-
-### Okta
-
-If you'd like to use Okta instead of Keycloak, you'll need to change a few things. First, you'll need to create a free developer account at <https://developer.okta.com/signup/>. After doing so, you'll get your own Okta domain, that has a name like `https://dev-123456.oktapreview.com`.
-
-Modify `src/main/resources/application.yml` to use your Okta settings.
-
-```yaml
-security:
-  basic:
-    enabled: false
-  oauth2:
-    client:
-      accessTokenUri: https://{yourOktaDomain}.com/oauth2/default/v1/token
-      userAuthorizationUri: https://{yourOktaDomain}.com/oauth2/default/v1/authorize
-      clientId: { clientId }
-      clientSecret: { clientSecret }
-      scope: openid profile email
-    resource:
-      userInfoUri: https://{yourOktaDomain}.com/oauth2/default/v1/userinfo
-```
-
-Create an OIDC App in Okta to get a `{clientId}` and `{clientSecret}`. To do this, log in to your Okta Developer account and navigate to **Applications** > **Add Application**. Click **Web** and click the **Next** button. Give the app a name you’ll remember, specify `http://localhost:8080` as a Base URI, and `http://localhost:8080/login` as a Login Redirect URI. Click **Done** and copy the client ID and secret into your `application.yml` file.
-
-> **TIP:** If you want to use the [Ionic Module for JHipster](https://www.npmjs.com/package/generator-jhipster-ionic), you'll need to add `http://localhost:8100` as a **Login redirect URI** as well.
-
-Create a `ROLE_ADMIN` and `ROLE_USER` group and add users into them. Create a user (e.g., "admin@jhipster.org" with password "Java is hip in 2017!"). Modify e2e tests to use this account when running integration tests. You'll need to change credentials in `src/test/javascript/e2e/account/account.spec.ts` and `src/test/javascript/e2e/admin/administration.spec.ts`.
-
-Navigate to **API** > **Authorization Servers**, click the **Authorization Servers** tab and edit the default one. Click the **Claims** tab and **Add Claim**. Name it "roles", and include it in the ID Token. Set the value type to "Groups" and set the filter to be a Regex of `.*`.
-
-After making these changes, you should be good to go! If you have any issues, please post them to [Stack Overflow](https://stackoverflow.com/questions/tagged/jhipster). Make sure to tag your question with "jhipster" and "okta".
 
 ### Service workers
 
@@ -219,10 +184,6 @@ To achieve this, first build a docker image of your app by running:
 Then run:
 docker-compose -f src/main/docker/app.yml up -d
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
-
-## Continuous Integration (optional)
-
-To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
 [jhipster homepage and latest documentation]: https://www.jhipster.tech
 [jhipster 6.7.0 archive]: https://www.jhipster.tech/documentation-archive/v6.7.0
