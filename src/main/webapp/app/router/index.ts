@@ -16,6 +16,19 @@ const JhiLogsComponent = () => import('../admin/logs/logs.vue');
 const JhiAuditsComponent = () => import('../admin/audits/audits.vue');
 const JhiMetricsComponent = () => import('../admin/metrics/metrics.vue');
 const JhiGatewayComponent = () => import('../admin/gateway/gateway.vue');
+
+const StudentSelection = () => import('../core/studentselection/studentselection.vue');
+const GuardianDashboard = () => import('../core/guardiandashboard/guardiandashboard.vue');
+const ScheduleGuardian = () => import('../core/scheduleguardian/scheduleguardian.vue');
+const ScheduleAssignments = () => import('../core/scheduleassignments/scheduleassignments.vue');
+const ScheduleCourses = () => import('../core/schedulecourses/schedulecourses.vue');
+const SubjectsGuardian = () => import('../core/subjectsguardian/subjectsguardian.vue');
+const SettingsGuardian = () => import('../core/settingsguardian/settingsguardian.vue');
+const CourseOverview = () => import('../core/courseoverview/courseoverview.vue');
+const OverviewAttendance = () => import('../core/overviewattendance/overviewattendance.vue');
+const OverviewAssignments = () => import('../core/overviewassignments/overviewassignments.vue');
+const OverviewGrades = () => import('../core/overviewgrades/overviewgrades.vue');
+const AssignmentView = () => import('../core/assignmentview/assignmentview.vue');
 /* tslint:disable */
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
@@ -28,7 +41,40 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: StudentSelection
+    },
+    {
+      path: '/guardian',
+      name: 'Guardian',
+      component: GuardianDashboard
+    },
+    {
+      path: '/guardian-schedule',
+      name: 'Schedule',
+      component: ScheduleGuardian, children: [
+        { path: '/guardian-schedule/courses', name: 'Courses', component: ScheduleCourses },
+        { path: '/guardian-schedule/assignments', name: 'Assignments', component: ScheduleAssignments }
+      ]
+    },
+    {
+      path: '/course-overview',
+      name: 'Course Overview',
+      component: CourseOverview, children: [
+        { path: '/course-overview/attendance', name: 'Attendance', component: OverviewAttendance },
+        { path: '/course-overview/assignments', name: 'Assignments', component: OverviewAssignments },
+        { path: '/course-overview/assignments/view', name: 'View', component: AssignmentView },
+        { path: '/course-overview/grades', name: 'Grades', component: OverviewGrades }
+      ]
+    },
+    {
+      path: '/subjects',
+      name: 'Subjects',
+      component: SubjectsGuardian
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: SettingsGuardian
     },
     {
       path: '/forbidden',

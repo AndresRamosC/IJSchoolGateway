@@ -25,6 +25,62 @@ import ConfigurationService from '@/admin/configuration/configuration.service';
 
 import GatewayService from '@/admin/gateway/gateway.service';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faExchangeAlt,
+  faCheck,
+  faBell,
+  faArrowLeft,
+  faCog,
+  faBook,
+  faCalendar,
+  faAddressCard,
+  faCalendarDay,
+  faCheckCircle,
+  faTimesCircle,
+  faEllipsisV,
+  faPaperclip,
+  faGlobe,
+  faSquareRootAlt,
+  faLandmark,
+  faPalette,
+  faChild,
+  faBookOpen,
+  faChevronRight,
+  faChevronDown,
+  faArrowCircleLeft,
+  faArrowCircleRight,
+  faFileAlt,
+  faCloudDownloadAlt
+} from '@fortawesome/free-solid-svg-icons';
+library.add(
+  faExchangeAlt,
+  faCheck,
+  faBell,
+  faArrowLeft,
+  faCog,
+  faBook,
+  faCalendar,
+  faAddressCard,
+  faCalendarDay,
+  faCheckCircle,
+  faTimesCircle,
+  faEllipsisV,
+  faPaperclip,
+  faGlobe,
+  faSquareRootAlt,
+  faLandmark,
+  faPalette,
+  faChild,
+  faBookOpen,
+  faChevronRight,
+  faChevronDown,
+  faArrowCircleLeft,
+  faArrowCircleRight,
+  faFileAlt,
+  faCloudDownloadAlt
+);
+
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
 Vue.config.productionTip = false;

@@ -255,3 +255,65 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+.dropdown-toggle {
+  padding: 0;
+}
+.dropdown-item {
+  font-weight: bold;
+  color: #1071a3;
+}
+.show > .btn-secondary {
+  color: #ffffff !important;
+  background-color: #1071a3 !important;
+  background-image: none;
+  border-color: #1071a3 !important;
+}
+.show > .btn-secondary.dropdown-toggle {
+  color: #ffffff !important;
+  background-color: #1071a3 !important;
+  background-image: none;
+  border-color: #1071a3 !important;
+}
+[id='dropdown-1__BV_toggle_'] {
+  color: #ffffff !important;
+  background-color: #1071a3 !important;
+  background-image: none;
+  border-color: #1071a3 !important;
+  box-shadow: none;
+}
+#dropdown-1__BV_toggle_:focus {
+  color: #ffffff !important;
+  background-color: #1071a3 !important;
+  background-image: none;
+  border-color: #1071a3 !important;
+  box-shadow: none;
+}
+#dropdown-1__BV_toggle_::before {
+  display: none;
+}
+
+.table-success {
+  background-color: #ffffff;
+}
+.table-success > .btn {
+  box-shadow: 0 0 5px 1px rgba(54, 180, 10, 1);
+}
+
+.table-danger {
+  background-color: #ffffff;
+}
+.table-danger > .btn {
+  box-shadow: 0 0 5px 1px rgba(255, 0, 0, 1);
+}
+
+.b-calendar-nav {
+  display: none !important;
+}
+
+.b-form-datepicker > label {
+  display: none !important;
+}
+
+.b-form-datepicker > div {
+  left: -300% !important;
+}

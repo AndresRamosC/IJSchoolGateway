@@ -21,7 +21,7 @@
             <p v-text="$t('home.question')">
                 If you have any question on JHipster:
             </p>
-
+            
             <ul>
                 <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener" v-text="$t('home.link.homepage')">JHipster homepage</a></li>
                 <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener" v-text="$t('home.link.stackoverflow')">JHipster on Stack Overflow</a></li>
