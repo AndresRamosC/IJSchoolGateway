@@ -51,7 +51,8 @@ import {
   faArrowCircleLeft,
   faArrowCircleRight,
   faFileAlt,
-  faCloudDownloadAlt
+  faCloudDownloadAlt,
+  faGraduationCap
 } from '@fortawesome/free-solid-svg-icons';
 library.add(
   faExchangeAlt,
@@ -78,7 +79,8 @@ library.add(
   faArrowCircleLeft,
   faArrowCircleRight,
   faFileAlt,
-  faCloudDownloadAlt
+  faCloudDownloadAlt,
+  faGraduationCap
 );
 
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here

@@ -130,7 +130,7 @@
 
                 <div class="container card p-1 mt-3">
 
-                    <div class="row pt-1 pb-1 p-0 m-0">
+                    <div @click="logout()" class="row pt-1 pb-1 p-0 m-0">
 
                         <div class="col-10 p-0">
                             <p class="font-weight-regular m-0 pl-3 p-0 blue text-left">Log out</p>
@@ -154,17 +154,7 @@
 </div>
 </template>
 
-<script>
-import HeaderBell from '../headerbell/headerbell.vue';
-import BottomNav from '../bottomnav/bottomnav.vue';
-
-export default {
-    name: "settingsguardian",
-    components: {
-        HeaderBell,
-        BottomNav
-    }
-}
+<script lang="ts" src="./seetings.component.ts">
 </script>
 
 <style scoped>

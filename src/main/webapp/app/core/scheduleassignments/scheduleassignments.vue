@@ -147,9 +147,7 @@ export default {
         const now = new Date()
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
       return {
-        value: new Date(today),
-        min: minDate,
-        max: maxDate
+        value: new Date(today)
       }
     },
     methods: {

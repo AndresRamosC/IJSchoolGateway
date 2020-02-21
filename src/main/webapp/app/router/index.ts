@@ -29,6 +29,7 @@ const OverviewAttendance = () => import('../core/overviewattendance/overviewatte
 const OverviewAssignments = () => import('../core/overviewassignments/overviewassignments.vue');
 const OverviewGrades = () => import('../core/overviewgrades/overviewgrades.vue');
 const AssignmentView = () => import('../core/assignmentview/assignmentview.vue');
+const Login = () => import('../core/login/login.vue');
 /* tslint:disable */
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
@@ -40,7 +41,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/student-selection',
+      name: 'Selection',
       component: StudentSelection
     },
     {
