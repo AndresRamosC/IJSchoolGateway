@@ -1,7 +1,8 @@
 version: '2'
 services:
   keycloak:
-    image: jboss/keycloak:8.0.1
+    image:  #jboss/keycloak:8.0.1
+      ijkeycloak/ijrobotics:1.0
     command:
       [
         '-b',
