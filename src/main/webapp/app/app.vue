@@ -18,7 +18,7 @@
 
 <style>
   html, body {
-    font-family: -apple-system, Roboto;
+    font-family: Roboto;
     min-height:100vh;
     height: 100%;
   }

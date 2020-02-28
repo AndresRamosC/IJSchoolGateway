@@ -42,6 +42,9 @@ export default {
         max: maxDate
       }
     },
+    updated () {
+      console.log(this.value);
+    },
     methods: {
       dateDisabled(ymd, date) {
         // Disable weekends (Sunday = `0`, Saturday = `6`)

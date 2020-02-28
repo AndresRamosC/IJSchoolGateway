@@ -22,7 +22,8 @@ import {
   BModal,
   VBModal,
   BCalendar,
-  BFormDatepicker
+  BFormDatepicker,
+  BSpinner
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -51,4 +52,5 @@ export function initBootstrapVue(vue) {
   vue.directive('b-modal', VBModal);
   vue.component('b-calendar', BCalendar);
   vue.component('b-form-datepicker', BFormDatepicker);
+  vue.component('b-spinner', BSpinner);
 }

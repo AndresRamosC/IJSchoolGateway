@@ -17,19 +17,27 @@ const JhiAuditsComponent = () => import('../admin/audits/audits.vue');
 const JhiMetricsComponent = () => import('../admin/metrics/metrics.vue');
 const JhiGatewayComponent = () => import('../admin/gateway/gateway.vue');
 
-const StudentSelection = () => import('../core/studentselection/studentselection.vue');
-const GuardianDashboard = () => import('../core/guardiandashboard/guardiandashboard.vue');
-const ScheduleGuardian = () => import('../core/scheduleguardian/scheduleguardian.vue');
-const ScheduleAssignments = () => import('../core/scheduleassignments/scheduleassignments.vue');
-const ScheduleCourses = () => import('../core/schedulecourses/schedulecourses.vue');
-const SubjectsGuardian = () => import('../core/subjectsguardian/subjectsguardian.vue');
-const SettingsGuardian = () => import('../core/settingsguardian/settingsguardian.vue');
-const CourseOverview = () => import('../core/courseoverview/courseoverview.vue');
-const OverviewAttendance = () => import('../core/overviewattendance/overviewattendance.vue');
-const OverviewAssignments = () => import('../core/overviewassignments/overviewassignments.vue');
-const OverviewGrades = () => import('../core/overviewgrades/overviewgrades.vue');
-const AssignmentView = () => import('../core/assignmentview/assignmentview.vue');
+const StudentSelection = () => import('../core/Guardian/studentselection/studentselection.vue');
+const GuardianDashboard = () => import('../core/Guardian/guardiandashboard/guardiandashboard.vue');
+const ScheduleGuardian = () => import('../core/Guardian/scheduleguardian/scheduleguardian.vue');
+const ScheduleAssignments = () => import('../core/Guardian/scheduleassignments/scheduleassignments.vue');
+const ScheduleCourses = () => import('../core/Guardian/schedulecourses/schedulecourses.vue');
+const SubjectsGuardian = () => import('../core/Guardian/subjectsguardian/subjectsguardian.vue');
+const SettingsGuardian = () => import('../core/Guardian/settingsguardian/settingsguardian.vue');
+const CourseOverview = () => import('../core/Guardian/courseoverview/courseoverview.vue');
+const OverviewAttendance = () => import('../core/Guardian/overviewattendance/overviewattendance.vue');
+const OverviewAssignments = () => import('../core/Guardian/overviewassignments/overviewassignments.vue');
+const OverviewGrades = () => import('../core/Guardian/overviewgrades/overviewgrades.vue');
+const AssignmentView = () => import('../core/Guardian/assignmentview/assignmentview.vue');
+const EarlyLeave = () => import('../core/Guardian/earlyleave/earlyleave.vue');
 const Login = () => import('../core/login/login.vue');
+
+/* teacher */
+const TeacherDashboard = () => import('../core/teacher/dashboard/teacherdashboard.vue');
+const TeacherSchedule = () => import('../core/teacher/schedule/teacherschedule.vue');
+const TeacherSubjects = () => import('../core/teacher/subjects/teachersubjects.vue');
+const TeacherSettings = () => import('../core/teacher/settings/teachersettings.vue');
+
 /* tslint:disable */
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
@@ -52,7 +60,18 @@ export default new Router({
     {
       path: '/guardian',
       name: 'Guardian',
-      component: GuardianDashboard
+      component: GuardianDashboard,
+      props: true
+    },
+    {
+      path: '/teacher',
+      name: 'Teacher',
+      component: TeacherDashboard
+    },
+    {
+      path: '/early-leave',
+      name: 'Leave',
+      component: EarlyLeave
     },
     {
       path: '/guardian-schedule',
@@ -63,11 +82,16 @@ export default new Router({
       ]
     },
     {
+      path: '/teacher-schedule',
+      name: 'Teacher Schedule',
+      component: TeacherSchedule
+    },
+    {
       path: '/course-overview',
       name: 'Course Overview',
       component: CourseOverview, children: [
         { path: '/course-overview/attendance', name: 'Attendance', component: OverviewAttendance },
-        { path: '/course-overview/assignments', name: 'Assignments', component: OverviewAssignments },
+        { path: '/course-overview/assignments', name: 'Marks', component: OverviewAssignments },
         { path: '/course-overview/assignments/view', name: 'View', component: AssignmentView },
         { path: '/course-overview/grades', name: 'Grades', component: OverviewGrades }
       ]
@@ -78,9 +102,19 @@ export default new Router({
       component: SubjectsGuardian
     },
     {
+      path: '/teacher-subjects',
+      name: 'Teacher Subjects',
+      component: TeacherSubjects
+    },
+    {
       path: '/settings',
       name: 'Settings',
       component: SettingsGuardian
+    },
+    {
+      path: '/teacher-settings',
+      name: 'Teacher Settings',
+      component: TeacherSettings
     },
     {
       path: '/forbidden',

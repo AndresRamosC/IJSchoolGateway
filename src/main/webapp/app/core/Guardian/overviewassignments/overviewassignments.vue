@@ -1,0 +1,121 @@
+<template>
+<div>
+    <div class="sticky-top blueBG">
+
+        <header-arrow
+            headerTitle="Course overview"
+        />
+
+        <div class="row m-0">
+            <div class="col-8">
+                <b-dropdown id="dropdown-1" class="p-2" toggle-class="text-decoration-none" :no-caret="true" >
+                    <template v-slot:button-content>
+                        <div class="row">
+                            <p class="m-0 pr-2">Subject name</p>
+                            <font-awesome-icon class="white" style="width: 20px; height: 20px;" icon="chevron-down"/>
+                        </div>
+                    </template>
+                    <b-dropdown-item v-for="(course, index) in courses" :key="index">
+                        {{course.subjectId.courseName}} 
+                    </b-dropdown-item>
+                </b-dropdown>
+            </div>        
+
+            <div class="col-3">
+                <p class="pt-2 white">Group</p>
+            </div>
+        </div>
+
+        <!-- container separator  -->
+        <div style="zIndex: 1" class="col-12 divider"></div>
+
+        <!-- buttons navigation between schedules -->
+        <navigation-buttons/>
+
+    </div>
+
+
+    <div class="container-fluid pt-4 p-2 justify-content-center" id="assignments">
+
+    <assignment-item
+        numberAttch="1"
+        status="Not delivered"
+        dueDate="02/08"
+        description="Here you can read a preview of the assignment, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore......"
+    />
+
+    <assignment-item
+        numberAttch="0"
+        status="Delivered"
+        dueDate="05/08"
+        description="Here you can read a preview of the assignment, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore......"
+    />
+
+    <assignment-item
+        numberAttch="1"
+        status="In time"
+        dueDate="10/08"
+        description="Here you can read a preview of the assignment, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore......"
+    />
+
+    </div>
+
+</div>
+</template>
+
+<script>
+import NavigationButtons from '../overviewNavigationBtns/overviewNavigationButtons.vue';
+import HeaderArrow from '../headerarrow/headerarrow.vue';
+import AssignmentItem from '../assignmentitem/assignmentitem.vue';
+import { mapGetters } from 'vuex';
+
+export default {
+    name: "overviewassignments",
+    components: {
+        HeaderArrow,
+        AssignmentItem,
+        NavigationButtons
+    },
+    computed: {
+        ...mapGetters([
+            'courses'
+        ])
+    }
+}
+</script>
+
+<style scoped>
+    #assignments {
+        min-height:100vh;
+    }
+
+    .blueBG {
+        background-color: #1071A3!important;
+    }
+
+  .divider {
+    background: #FFFFFF;
+    border-radius: 100px 100px 0px 0px;
+    height: 15px;
+  }
+
+    .activeButton {
+        background: #1071A3;
+        border: 1px solid #1071A3;
+        box-sizing: border-box;
+        border-radius: 10px;
+        color: #FFFFFF;
+    }
+
+    .inactiveButton {
+        background: #FFFFFF;
+        border: 1px solid #1071A3;
+        box-sizing: border-box;
+        border-radius: 10px;
+        color: #1071A3;
+    }
+
+    .btncontainer {
+        overflow-x: scroll;
+    }
+</style>

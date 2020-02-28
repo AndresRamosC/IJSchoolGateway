@@ -4,16 +4,20 @@ import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
 import TranslationService from '@/locale/translation.service';
 
-import StudentSelection from '../Guardian/studentselection/studentselection.vue';
-import TeacherDashboard from '../teacher/dashboard/teacherdashboard.vue';
+import HeaderBell from '../header/teacherheader.vue';
+import BottomNav from '../navbar/navbar.vue';
+import { mapGetters } from 'vuex';
 
 @Component({
   components: {
-    StudentSelection,
-    TeacherDashboard
+    HeaderBell,
+    BottomNav
+  },
+  computed: {
+    ...mapGetters(['teacherName', 'teacherPhoto', 'teacherEmail', 'teacherPhone'])
   }
 })
-export default class Login extends Vue {
+export default class SettingsTeacher extends Vue {
   @Inject('loginService')
   private loginService: () => LoginService;
   @Inject('translationService') private translationService: () => TranslationService;
@@ -61,23 +65,7 @@ export default class Login extends Vue {
       });
   }
 
-  public openLogin(): void {
-    this.loginService().login();
-  }
-
   public get authenticated(): boolean {
     return this.$store.getters.authenticated;
-  }
-
-  public hasAnyAuthority(authorities: any): boolean {
-    return this.accountService().hasAnyAuthority(authorities);
-  }
-
-  public get swaggerEnabled(): boolean {
-    return this.$store.getters.activeProfiles.indexOf('swagger') > -1;
-  }
-
-  public get inProduction(): boolean {
-    return this.$store.getters.activeProfiles.indexOf('prod') > -1;
   }
 }

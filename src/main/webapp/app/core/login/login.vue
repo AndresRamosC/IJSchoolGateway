@@ -4,7 +4,7 @@
 <div v-if="!authenticated" class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <h1 class="blue mt-2 font-weight-bold text-center">Welcome to <br/> IJ School App</h1>
+            <h1 class="blue mt-2 font-weight-bold text-center">Welcome to<br/> IJ School App</h1>
         </div>
         <div class="col-12 d-flex justify-content-center">
             <font-awesome-icon class="blue" style="width: 100px; height: 100px;" icon="graduation-cap"/>
@@ -18,7 +18,8 @@
     </div>
 </div>
 
-<student-selection v-if="authenticated"/>
+<student-selection v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')"/>
+<!-- <teacher-dashboard v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')"/> -->
 
 </div>
 </template>
