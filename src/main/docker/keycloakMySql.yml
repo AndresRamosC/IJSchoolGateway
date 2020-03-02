@@ -1,0 +1,41 @@
+version: '2'
+services:
+    mysql:
+        image: mysql
+        environment:
+            - MYSQL_DATABASE=keycloak
+            - MYSQL_USER=keycloak
+            - MYSQL_PASSWORD=password
+            - MYSQL_ROOT_PASSWORD=root_password
+        ports:
+            - 3306:3306
+        volumes:
+            - C:\Keycloak_database:/var/lib/mysql
+    keycloak:
+        image: pisku/ij_school_app_keycloak:1.0
+        command:
+            [
+                '-b',
+                '0.0.0.0',
+                '-Dkeycloak.migration.action=import',
+                '-Dkeycloak.migration.provider=singleFile',
+                '-Dkeycloak.migration.file=/opt/jboss/keycloak/standalone/data/realmWithRoles.json',
+                '-Dkeycloak.migration.strategy=IGNORE_EXISTING',
+                '-Djboss.socket.binding.port-offset=1000',
+                '-Dkeycloak.profile.feature.upload_scripts=enabled',
+            ]
+        environment:
+            - DB_VENDOR=MYSQL
+            - DB_ADDR=mysql
+            - DB_DATABASE=keycloak
+            - DB_USER=keycloak
+            - DB_PASSWORD=password
+            - KEYCLOAK_USER=admin
+            - KEYCLOAK_PASSWORD=admin
+        ports:
+            - 9080:9080
+            - 9443:9443
+            - 10990:10990
+        links:
+            - mysql
+
