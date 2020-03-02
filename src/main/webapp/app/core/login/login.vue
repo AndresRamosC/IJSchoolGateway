@@ -18,8 +18,8 @@
     </div>
 </div>
 
-<student-selection v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')"/>
-<!-- <teacher-dashboard v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')"/> -->
+<!-- <student-selection v-if="authenticated"/> -->
+<teacher-dashboard v-if="authenticated"/>
 
 </div>
 </template>

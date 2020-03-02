@@ -50,6 +50,7 @@ import CourseCard from '../coursecard/coursecard.vue';
 import Navbar from '../navbar/navbar.vue';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import _ from 'lodash';
 
 export default {
     name: "teacherdashboard",
@@ -94,6 +95,7 @@ export default {
             number = index;
           }
         }
+        this.$store.commit('updateSelectedCourse', number)
         return number;
       }
     },

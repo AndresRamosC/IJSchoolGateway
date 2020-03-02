@@ -37,6 +37,7 @@ const TeacherDashboard = () => import('../core/teacher/dashboard/teacherdashboar
 const TeacherSchedule = () => import('../core/teacher/schedule/teacherschedule.vue');
 const TeacherSubjects = () => import('../core/teacher/subjects/teachersubjects.vue');
 const TeacherSettings = () => import('../core/teacher/settings/teachersettings.vue');
+const TeacherAttendance = () => import('../core/teacher/attendance/teacherattendance.vue');
 
 /* tslint:disable */
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
@@ -115,6 +116,11 @@ export default new Router({
       path: '/teacher-settings',
       name: 'Teacher Settings',
       component: TeacherSettings
+    },
+    {
+      path: '/teacher-attendance',
+      name: 'Teacher Attendance',
+      component: TeacherAttendance
     },
     {
       path: '/forbidden',

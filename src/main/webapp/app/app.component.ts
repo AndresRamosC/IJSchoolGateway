@@ -3,7 +3,7 @@ import Component from 'vue-class-component';
 import Ribbon from '@/core/ribbon/ribbon.vue';
 import JhiFooter from '@/core/jhi-footer/jhi-footer.vue';
 import JhiNavbar from '@/core/jhi-navbar/jhi-navbar.vue';
-import BottomNav from './core/bottomnav/bottomnav.vue';
+import BottomNav from './core/Guardian/bottomnav/bottomnav.vue';
 
 @Component({
   components: {

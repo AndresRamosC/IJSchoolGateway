@@ -6,12 +6,14 @@ export const teacherStore: Module<any, any> = {
   state: {
     teacherContext: '',
     actualTeacher: '',
-    teacherTodayCourses: ''
+    teacherTodayCourses: '',
+    selectedCourse: ''
   },
   getters: {
     teacherContext: state => state.teacherContext,
     teacher: state => state.actualTeacher,
     teacherTodayCourses: state => state.teacherTodayCourses,
+    selectedCourse: state => state.selectedCourse,
     teacherContextLoaded: state => !!(state.teacherContext !== ''),
     teacherLoaded: state => !!(state.actualTeacher !== ''),
     teacherCoursesLoaded: state => !!(state.teacherTodayCourses !== ''),
@@ -38,6 +40,9 @@ export const teacherStore: Module<any, any> = {
     },
     updateTeacherTodayCourses(state, newTodayCourses) {
       state.teacherTodayCourses = newTodayCourses;
+    },
+    updateSelectedCourse(state, newCourses) {
+      state.selectedCourse = newCourses;
     }
   },
   actions: {

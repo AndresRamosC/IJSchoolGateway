@@ -32,7 +32,7 @@
             <!-- calendar -->
             <div class="col-2 p-1 d-flex flex-wrap align-content-center">
             <!-- <font-awesome-icon class="blue" style="width: 24px; height: 24px;" icon="calendar-day"/> -->
-                <b-form-datepicker size="sm" v-model="value" :date-disabled-fn="dateDisabled" :hide-header="true" label-help="" locale="en"></b-form-datepicker>
+                <b-form-datepicker id="picker-courses" size="sm" v-model="value" :date-disabled-fn="dateDisabled" :hide-header="true" label-help="" locale="en"></b-form-datepicker>
             </div>
 
         </div>

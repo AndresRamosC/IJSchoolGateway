@@ -293,6 +293,26 @@ ui bootstrap tweaks
   display: none;
 }
 
+[id='dropdown-leave__BV_toggle_'] {
+  color: #1071a3 !important;
+  background-color: #ffffff !important;
+  background-image: none;
+  border-color: #1071a3 !important;
+  box-shadow: none;
+}
+
+#dropdown-leave__BV_toggle_:focus {
+  color: #1071a3 !important;
+  background-color: #ffffff !important;
+  background-image: none;
+  border-color: #1071a3 !important;
+  box-shadow: none;
+}
+
+#dropdown-leave__BV_toggle_::before {
+  display: none;
+}
+
 .table-success {
   background-color: #ffffff;
 }
@@ -311,14 +331,27 @@ ui bootstrap tweaks
   display: none !important;
 }
 
+[id='date-picker-leave__dialog_'] {
+  left: -250% !important;
+}
+
 .b-form-datepicker > label {
   display: none !important;
 }
 
-.b-form-datepicker > div {
+[id='picker-courses__dialog_'],
+[id='picker-assignments__dialog_'] {
   left: -300% !important;
 }
 
 .modal-header {
   display: none !important;
+}
+
+[id='teacher-attendance__dialog_'] {
+  left: -65% !important;
+}
+
+[id='teacher-attendance__b-form-date_'] > button > div > svg {
+  color: white;
 }

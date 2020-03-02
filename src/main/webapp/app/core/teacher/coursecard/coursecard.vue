@@ -44,8 +44,8 @@
                     <template v-slot:button-content class="whiteBG">
                         <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="ellipsis-v"/>
                     </template>
-                    <router-link to="">
-                        <b-dropdown-item href="">Attendance</b-dropdown-item>
+                    <router-link to="/teacher-attendance">
+                        <b-dropdown-item href="/teacher-attendance">Attendance</b-dropdown-item>
                     </router-link>
                     <router-link to="">
                         <b-dropdown-item href="">Assignments</b-dropdown-item>

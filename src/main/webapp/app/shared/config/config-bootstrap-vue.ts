@@ -23,7 +23,9 @@ import {
   VBModal,
   BCalendar,
   BFormDatepicker,
-  BSpinner
+  BSpinner,
+  BFormTextarea,
+  BFormCheckboxGroup
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -53,4 +55,6 @@ export function initBootstrapVue(vue) {
   vue.component('b-calendar', BCalendar);
   vue.component('b-form-datepicker', BFormDatepicker);
   vue.component('b-spinner', BSpinner);
+  vue.component('b-form-textarea', BFormTextarea);
+  vue.component('b-form-checkbox-group', BFormCheckboxGroup);
 }
