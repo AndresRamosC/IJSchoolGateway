@@ -130,7 +130,7 @@ export default {
     data: function () {
       const today = moment().format("YYYY-MM-DD");
       return {
-        value: new Date(today)
+        value: today
       }
     },
     computed: {
@@ -154,7 +154,7 @@ export default {
       },
       actualClass : function () {
         const arr = _.sortBy(this.todayCourses, ['endHour']);
-        var time = moment().format("h");
+        var time = moment().format("H");
         var actual = 'Not in class';
         for (let index = 0; index < arr.length; index++) {
           if ((time >= parseInt(arr[index].startHour.split(':')[0])) && (time < parseInt(arr[index].endHour.split(':')[0]))) {
@@ -165,7 +165,7 @@ export default {
       },
       actualNumberClass : function () {
         const arr = _.sortBy(this.todayCourses, ['endHour']);
-        var time = moment().format("h");
+        var time = moment().format("H");
         var number = 0;
         if(time >= parseInt(arr[arr.length-1].startHour.split(':')[0])){
           return arr.length;

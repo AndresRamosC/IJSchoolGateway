@@ -23,15 +23,20 @@
         <div class="text-center" v-if="!teacherCoursesLoaded">
             <b-spinner variant="primary" label="Text Centered"></b-spinner>
         </div>
-        <div v-if="teacherCoursesLoaded">
+        <div v-if="teacherCoursesLoaded && (noCourse === true)">
+            <div class="row pl-2 m-0">
+                <p class="pl-2 blue">No class currently</p>
+            </div>
+        </div>
+        <div v-if="teacherCoursesLoaded && (noCourse === false)">
             <div class="row p-2 m-0">
                 <course-card
                     :startTime="teacherTodayCourses[actualNumberClass()].startHour"
                     :endTime="teacherTodayCourses[actualNumberClass()].endHour"
-                    :subjectName="teacherTodayCourses[actualNumberClass()].subjectId.courseName"
-                    :subjectColor="teacherTodayCourses[actualNumberClass()].subjectId.colorCode"
+                    :subjectName="teacherTodayCourses[actualNumberClass()].courseName"
+                    :subjectColor="teacherTodayCourses[actualNumberClass()].colorCode"
                     :classroom="teacherTodayCourses[actualNumberClass()].classRoom"
-                    :subjectCode="teacherTodayCourses[actualNumberClass()].subjectId.courseCode"
+                    :subjectCode="teacherTodayCourses[actualNumberClass()].courseCode"
                     :group="teacherTodayCourses[actualNumberClass()].groupCode"
                 />
             </div>
@@ -64,7 +69,8 @@ export default {
         const name = moment().format('dddd');
         return {
           day: today,
-          dayName: name
+          dayName: name,
+          noCourse: false
         }
     },
     async created () {
@@ -87,15 +93,19 @@ export default {
     methods: {
       actualNumberClass : function () {
         const arr = _.sortBy(this.teacherTodayCourses, ['endHour']);
-        var today = new Date();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var number = 0;
+        var time = moment().format("H");
+        var number = -1;
         for (let index = 0; index < arr.length; index++) {
-          if ((parseInt(time.split(':')[0]) >= parseInt(arr[index].startHour.split(':')[0])) && (parseInt(time.split(':')[0]) < parseInt(arr[index].endHour.split(':')[0]))) {
+          if ((time >= parseInt(arr[index].startHour.split(':')[0])) && (time < parseInt(arr[index].endHour.split(':')[0]))) {
             number = index;
           }
         }
-        this.$store.commit('updateSelectedCourse', number)
+        if(number === -1){
+            this.noCourse = true;
+            number = 0;
+        }else {
+            this.$store.commit('updateSelectedCourse', number);
+        }
         return number;
       }
     },

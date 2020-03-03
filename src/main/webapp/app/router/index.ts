@@ -38,6 +38,11 @@ const TeacherSchedule = () => import('../core/teacher/schedule/teacherschedule.v
 const TeacherSubjects = () => import('../core/teacher/subjects/teachersubjects.vue');
 const TeacherSettings = () => import('../core/teacher/settings/teachersettings.vue');
 const TeacherAttendance = () => import('../core/teacher/attendance/teacherattendance.vue');
+const TeacherNewAssignment = () => import('../core/teacher/newassignment/newassignment.vue');
+const TeacherCourseOverview = () => import('../core/teacher/courseoverview/courseoverviewteacher.vue');
+const TeacherOverviewAssignments = () => import('../core/teacher/courseoverview/overviewassignments.vue');
+const TeacherViewAssignments = () => import('../core/teacher/courseoverview/viewassignments.vue');
+const TeacherOveriewStudents = () => import('../core/teacher/courseoverview/overviewstudents.vue');
 
 /* tslint:disable */
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
@@ -98,6 +103,15 @@ export default new Router({
       ]
     },
     {
+      path: '/course-overview-teacher',
+      name: 'Course Overview Teacher',
+      component: TeacherCourseOverview, children: [
+        { path: '/course-overview-teacher/assignments', name: 'Assignments Overview', component: TeacherOverviewAssignments },
+        { path: '/course-overview-teacher/assignments/view', name: 'Assignments Full View', component: TeacherViewAssignments },
+        { path: '/course-overview-teacher/students', name: 'Students Grades', component: TeacherOveriewStudents }
+      ]
+    },
+    {
       path: '/subjects',
       name: 'Subjects',
       component: SubjectsGuardian
@@ -121,6 +135,11 @@ export default new Router({
       path: '/teacher-attendance',
       name: 'Teacher Attendance',
       component: TeacherAttendance
+    },
+    {
+      path: '/teacher-assignment',
+      name: 'Teacher New Assignment',
+      component: TeacherNewAssignment
     },
     {
       path: '/forbidden',

@@ -19,7 +19,7 @@
                 <!-- calendar -->
                 <div class="col-2 p-1 d-flex flex-wrap align-content-center">
                 <!-- <font-awesome-icon class="blue" style="width: 24px; height: 24px;" icon="calendar-day"/> -->
-                    <b-form-datepicker size="sm" v-model="value" :date-disabled-fn="dateDisabled" :hide-header="true" label-help="" locale="en"></b-form-datepicker>
+                    <b-form-datepicker id="teacher-schedule" size="sm" v-model="value" :date-disabled-fn="dateDisabled" :hide-header="true" label-help="" locale="en"></b-form-datepicker>
                 </div>
 
             </div>
@@ -40,10 +40,10 @@
                 <course-card
                     :startTime="course.startHour"
                     :endTime="course.endHour"
-                    :subjectName="course.subjectId.courseName"
-                    :subjectColor="course.subjectId.colorCode"
+                    :subjectName="course.courseName"
+                    :subjectColor="course.colorCode"
                     :classroom="course.classRoom"
-                    :subjectCode="course.subjectId.courseCode"
+                    :subjectCode="course.courseCode"
                     :group="course.groupCode"
                 />
             </div>
@@ -79,7 +79,7 @@ export default {
         const day =  moment().format("LL");
         const name = moment().format('dddd');
       return {
-        value: new Date(today),
+        value: today,
         choosenDate:  day,
         dayName: name
       }

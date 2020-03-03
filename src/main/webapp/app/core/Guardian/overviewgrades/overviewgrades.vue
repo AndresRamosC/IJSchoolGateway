@@ -17,7 +17,7 @@
                         </div>
                     </template>
                     <b-dropdown-item v-for="(course, index) in courses" :key="index">
-                        {{course.subjectId.courseName}} 
+                        {{course.courseName}} 
                     </b-dropdown-item>
                 </b-dropdown>
             </div>        

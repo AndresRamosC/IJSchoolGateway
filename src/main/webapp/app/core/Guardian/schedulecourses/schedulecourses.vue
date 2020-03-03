@@ -43,10 +43,10 @@
         <div class="container-fluid p-1 justify-content-center" v-for="(course, index) in todayCourses" :key="index">
 
             <subject-attendance
-                :subjectColor="course.subjectId.colorCode"
+                :subjectColor="course.colorCode"
                 :startTime="course.startHour"
                 :endTime="course.endHour"
-                :subjectName="course.subjectId.courseName"
+                :subjectName="course.courseName"
                 :attendance="false"
             />
 
@@ -77,7 +77,7 @@ export default {
         const day =  moment().format("LL");
         const name = moment().format('dddd');
       return {
-        value: new Date(today),
+        value: today,
         choosenDate:  day,
         dayName: name
       }

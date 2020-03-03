@@ -2,7 +2,7 @@
 <div class="container-fluid p-0 justify-content-center">
 
     <!-- app header -->
-    <div class="row pt-3 pb-0 m-0 mb-1 d-flex justify-content-center blueBG">
+    <div class="row pt-3 pb-0 m-0 d-flex justify-content-center blueBG">
 
         <!-- notifications icon  -->
         <div class="col-2 pb-2 d-flex flex-wrap align-content-center" @click="$router.go(-1)">

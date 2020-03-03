@@ -148,7 +148,7 @@ export default {
         const today = moment().format("YYYY-MM-DD");
         const month = moment().format('MMMM YYYY');
       return {
-        value: new Date(today),
+        value: today,
         monthName: month
       }
     },

@@ -13,10 +13,10 @@
 
             <div class="row m-0" v-for="(course, index) in courses" :key="index">
                 <subject-card
-                    :subjectIcon="course.subjectId.iconCode"
-                    :subjectColor="course.subjectId.colorCode"
-                    :subjectName="course.subjectId.courseName"
-                    :subjectCode="course.subjectId.courseCode"
+                    :subjectIcon="course.iconCode"
+                    :subjectColor="course.colorCode"
+                    :subjectName="course.courseName"
+                    :subjectCode="course.courseCode"
                     :group="course.groupCode"
                 />
             </div>

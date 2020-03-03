@@ -21,10 +21,11 @@
             <div class="container-fluid p-1 justify-content-center" v-for="(group, index) in amountOfGroups" :key="index">
 
                 <subject-card
-                    :subjectIcon="courseName(amountOfGroups[index].subjectId).subjectId.iconCode"
-                    :subjectColor="courseName(amountOfGroups[index].subjectId).subjectId.colorCode"
-                    :subjectName="courseName(amountOfGroups[index].subjectId).subjectId.courseName"
-                    :subjectCode="courseName(amountOfGroups[index].subjectId).subjectId.courseCode"
+                    :groupId="courseName(amountOfGroups[index].subjectId).classGroupId"
+                    :subjectIcon="courseName(amountOfGroups[index].subjectId).iconCode"
+                    :subjectColor="courseName(amountOfGroups[index].subjectId).colorCode"
+                    :subjectName="courseName(amountOfGroups[index].subjectId).courseName"
+                    :subjectCode="courseName(amountOfGroups[index].subjectId).courseCode"
                     :groupQty="amountOfGroups[index].amount"
                 />
 

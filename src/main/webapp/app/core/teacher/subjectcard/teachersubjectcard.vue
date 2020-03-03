@@ -58,14 +58,18 @@
                 <div class="col-12 divider"></div>
             </div>
             <div class="row m-0" v-for="(group, index) in groups" :key="index">
-                <div class="col-10">
-                    <p class="m-0 p-0 blue">Group:{{group.groupCode}} {{group.startHour}}-{{group.endHour}}</p>
+                <div class="col-12" @click="groupSelected(group)">
+                    <div class="row">
+                        <div class="col-10">
+                            <p class="m-0 p-0 blue">Group:{{classGroupList[group].groupCode}} {{classGroupList[group].startHour}}-{{classGroupList[group].endHour}}</p>
+                        </div>
+                        <div class="col-2">
+                            <font-awesome-icon class="blue" style="width: 24px; height: 24px;" icon="chevron-right"/>
+                        </div>
+                        <!-- container separator  -->
+                        <div class="col-12 divider"></div>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <font-awesome-icon class="blue" style="width: 24px; height: 24px;" icon="chevron-right"/>
-                </div>
-                <!-- container separator  -->
-                <div class="col-12 divider"></div>
             </div>
         </div>
     </b-modal>
@@ -79,12 +83,15 @@ import _ from 'lodash';
 export default {
     name: "teachersubjectcard",
     props: {
+        groupId: Number,
         subjectIcon: String,
         subjectColor: String,
         subjectName: String,
         subjectCode: String,
         group: String,
         groupQty: Number
+    },
+    created() {
     },
     data() {
       return {
@@ -103,15 +110,27 @@ export default {
         moreThanOne: function () {
             const arr = [];
             if(this.groupQty > 1) {
-                console.log('yes');
                 for (let index = 0; index < this.classGroupList.length; index++) {
-                    if (this.classGroupList[index].subjectId.courseName == "Mathematics") {
-                        arr.push(this.classGroupList[index]);
+                    if (this.classGroupList[index].courseName === this.subjectName) {
+                        arr.push(index);
                     }
                 }
                 this.groups = arr;
                 this.$refs['my-modal'].show()
+            } else {
+            var id = 0;
+            for(let index = 0; index < this.classGroupList.length; index++) {
+                if (this.classGroupList[index].classGroupId == this.groupId) {
+                    id = index;
+                }
             }
+                this.$store.commit('updateSelectedGroup', id)
+                this.$router.push('/course-overview-teacher/assignments')
+            }
+        },
+        groupSelected: function (group) {
+            this.$store.commit('updateSelectedGroup', group)
+            this.$router.push('/course-overview-teacher/assignments')
         }
     }
 }

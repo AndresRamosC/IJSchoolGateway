@@ -21,16 +21,12 @@ export const guardianStore: Module<any, any> = {
     guardianPhone: state => state.dashboard.guardianPerson.contacts[0].phoneNumber,
     studentPersons: state => state.dashboard.studentList,
     studentPhoto: state => id =>
-      'data:' +
-      state.dashboard.studentList[id].personDTO.photographContentType +
-      ';base64, ' +
-      state.dashboard.studentList[id].personDTO.photograph,
-    studentName: state => id =>
-      state.dashboard.studentList[id].personDTO.firstName + ' ' + state.dashboard.studentList[id].personDTO.lastName,
-    studentGrade: state => id => state.dashboard.studentList[id].studentDTO.academicYear,
-    courses: state => state.dashboard.studentList[state.actualStudent].studentDTO.classGroups,
-    coursesQty: state => state.dashboard.studentList[state.actualStudent].studentDTO.classGroups.length,
-    actualStudentId: state => state.dashboard.studentList[state.actualStudent].studentDTO.id
+      'data:' + state.dashboard.studentList[id].photographContentType + ';base64, ' + state.dashboard.studentList[id].photograph,
+    studentName: state => id => state.dashboard.studentList[id].firstName + ' ' + state.dashboard.studentList[id].lastName,
+    studentGrade: state => id => state.dashboard.studentList[id].academicYear,
+    courses: state => state.dashboard.studentList[state.actualStudent].classGroupAndSubjectDtoList,
+    coursesQty: state => state.dashboard.studentList[state.actualStudent].classGroupAndSubjectDtoList.length,
+    actualStudentId: state => state.dashboard.studentList[state.actualStudent].studentId
   },
   mutations: {
     updateDashboard(state, dashboard) {

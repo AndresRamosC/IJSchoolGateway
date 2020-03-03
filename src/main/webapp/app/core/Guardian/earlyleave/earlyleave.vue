@@ -171,7 +171,7 @@ export default {
     const day = moment().format('dddd, MMMM DD');
     const time = moment().format('h:mm a');
     return {
-      value: new Date(today),
+      value: today,
       choosenDate: day,
       dueTime: time,
       reasons: ['Full day', 'Will return'],

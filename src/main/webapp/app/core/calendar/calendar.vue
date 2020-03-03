@@ -27,23 +27,22 @@
 
 <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/latest/js/all.js" integrity="sha384-L469/ELG4Bg9sDQbl0hvjMq8pOcqFgkSpwhwnslzvVVGpDjYJ6wJJyYjvG3u8XW7" crossorigin="anonymous"></script>
 <script>
+import moment from 'moment';
+
 export default {
     name: "calendar",
     data() {
-        const now = new Date()
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-        const minDate = new Date(today)
-        minDate.setMonth(minDate.getMonth() - 1)
-        minDate.setDate(1)
-        const maxDate = new Date(today)
+        const today = moment().format("YYYY-MM-DD");
+        const minDate = moment().subtract(1, 'month').format("YYYY-MM-DD")
+        const maxDate = today
       return {
-        value: new Date(today),
+        value: today,
         min: minDate,
         max: maxDate
       }
     },
     updated () {
-      console.log(this.value);
+      // console.log(this.value);
     },
     methods: {
       dateDisabled(ymd, date) {
@@ -59,12 +58,10 @@ export default {
         return day == 10 && month == 1  ? 'table-danger' : 'table-success'
       },
       monthBack() {
-        const now = new Date()
-        this.value = new Date((new Date(this.value).getFullYear()), (new Date(this.value).getMonth() -1), now.getDate())
+        this.value = moment(this.value).subtract(1, 'month').format("YYYY-MM-DD")
       },
       monthNext() {
-        const now = new Date()
-        this.value = new Date((new Date(this.value).getFullYear()), (new Date(this.value).getMonth() +1), now.getDate())
+        this.value = this.value = moment(this.value).add(1, 'month').format("YYYY-MM-DD")
       }
     }
 }

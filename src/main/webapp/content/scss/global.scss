@@ -1,5 +1,5 @@
 @import 'bootstrap-variables';
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+// @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 /* ==============================================================
 Bootstrap tweaks
@@ -352,6 +352,20 @@ ui bootstrap tweaks
   left: -65% !important;
 }
 
+[id='teacher-assignment__dialog_'] {
+  left: -250% !important;
+  top: -150% !important;
+}
+
+[id='teacher-schedule__dialog_'] {
+  left: -300% !important;
+}
+
 [id='teacher-attendance__b-form-date_'] > button > div > svg {
   color: white;
+}
+
+#form-title {
+  -webkit-box-shadow: inset 0 -2px 0 #1071a3 !important;
+  box-shadow: inset 0 -2px 0 #1071a3 !important;
 }

@@ -47,8 +47,8 @@
                     <router-link to="/teacher-attendance">
                         <b-dropdown-item href="/teacher-attendance">Attendance</b-dropdown-item>
                     </router-link>
-                    <router-link to="">
-                        <b-dropdown-item href="">Assignments</b-dropdown-item>
+                    <router-link to="/teacher-assignment">
+                        <b-dropdown-item href="/teacher-assignment">Assignment</b-dropdown-item>
                     </router-link>
                 </b-dropdown>
             </div>
