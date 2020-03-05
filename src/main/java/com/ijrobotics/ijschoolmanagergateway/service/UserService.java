@@ -8,6 +8,8 @@ import com.ijrobotics.ijschoolmanagergateway.repository.UserRepository;
 import com.ijrobotics.ijschoolmanagergateway.security.SecurityUtils;
 import com.ijrobotics.ijschoolmanagergateway.service.dto.UserDTO;
 
+import com.ijrobotics.ijschoolmanagergateway.service.mapper.UserMapper;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -39,10 +41,13 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    private final UserMapper userMapper;
+
+    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, CacheManager cacheManager,UserMapper userMapper) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.userMapper=userMapper;
     }
 
     /**
@@ -54,7 +59,7 @@ public class UserService {
      * @param langKey   language key.
      * @param imageUrl  image URL of user.
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateUser(String firstName, String lastName, String email) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
@@ -63,8 +68,6 @@ public class UserService {
                 if (email != null) {
                     user.setEmail(email.toLowerCase());
                 }
-                user.setLangKey(langKey);
-                user.setImageUrl(imageUrl);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
             });
@@ -113,6 +116,21 @@ public class UserService {
             log.debug("Deleted User: {}", user);
         });
     }
+    @Transactional(readOnly = true)
+    public List<UserDTO> getAllUsers() {
+       return userRepository.findAll().stream()
+            .map(userMapper::userToUserDTO)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+    @Transactional(readOnly = true)
+    public Optional<UserDTO> getAUserByUserName(String userName) {
+        Optional<User> optionalUser=userRepository.findOneByLogin(userName);
+        return optionalUser.map(userMapper::userToUserDTO);
+    }
+    @Transactional(readOnly = true)
+    public Long countUsers() {
+        return userRepository.count();
+    }
 
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
@@ -142,7 +160,7 @@ public class UserService {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
 
-    private User syncUserWithIdP(Map<String, Object> details, User user) {
+    /*private User syncUserWithIdP(Map<String, Object> details, User user) {
         // save authorities in to sync user roles/groups between IdP and JHipster's local database
         Collection<String> dbAuthorities = getAuthorities();
         Collection<String> userAuthorities =
@@ -179,6 +197,24 @@ public class UserService {
             this.clearUserCaches(user);
         }
         return user;
+    }*/
+    public UserDTO save(User user) {
+        log.debug("Request to save User : {}", user);
+        return  userMapper.userToUserDTO(userRepository.save(user));
+    }
+
+    public UserDTO updateUserfromDto(UserDTO user) {
+        log.debug("Request to save User : {}", user);
+        return  userMapper.userToUserDTO(userRepository.save(userMapper.userDTOToUser(user)));
+    }
+
+    public List<UserDTO> addAllUsers(List<User> users) {
+        log.debug("Request to save User : {}", users);
+        List<UserDTO> userDTOList=new ArrayList<>();
+        users.forEach(user -> {
+            userDTOList.add(userMapper.userToUserDTO(userRepository.save(user)));
+        });
+        return  userDTOList;
     }
 
     /**
@@ -206,7 +242,7 @@ public class UserService {
                 return auth;
             })
             .collect(Collectors.toSet()));
-        return new UserDTO(syncUserWithIdP(attributes, user));
+        return  userMapper.userToUserDTO(user);
     }
 
     private static User getUser(Map<String, Object> details) {
