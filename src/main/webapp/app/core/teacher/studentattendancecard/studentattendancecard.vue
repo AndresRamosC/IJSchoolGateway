@@ -3,7 +3,7 @@
     <div class="row" v-if="attendance === null">
       <div class="col-8 p-0">{{name}}</div>
       <div class="col-2">
-            <button class="greenButton" @click="$emit('createAttendance', teacherTodayCourses[selectedCourse].id, true, studentId)">
+            <button class="greenButton" @click="$emit('createAttendance', selectedCourse, true, studentId)">
                 <div class="container p-0">
                     <div class="row m-0 p-0">
                         <div class="col-12 p-0">
@@ -14,7 +14,7 @@
             </button>
       </div>
       <div class="col-2">
-            <button class="redButton">
+            <button class="redButton" @click="$emit('createRetard', selectedCourse, false, studentId)">
                 <div class="container p-0">
                     <div class="row m-0 p-0">
                         <div class="col-12 p-0">

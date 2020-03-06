@@ -317,14 +317,21 @@ ui bootstrap tweaks
   background-color: #ffffff;
 }
 .table-success > .btn {
-  box-shadow: 0 0 5px 1px rgba(54, 180, 10, 1);
+  box-shadow: 0 0 0px 3px rgba(54, 180, 10, 1);
 }
 
 .table-danger {
   background-color: #ffffff;
 }
 .table-danger > .btn {
-  box-shadow: 0 0 5px 1px rgba(255, 0, 0, 1);
+  box-shadow: 0 0 0px 3px rgba(255, 0, 0, 1);
+}
+
+.table-info {
+  background-color: #ffffff;
+}
+.table-info > .btn {
+  box-shadow: 0 0 0px 3px rgb(255, 238, 0);
 }
 
 .b-calendar-nav {
@@ -368,4 +375,11 @@ ui bootstrap tweaks
 #form-title {
   -webkit-box-shadow: inset 0 -2px 0 #1071a3 !important;
   box-shadow: inset 0 -2px 0 #1071a3 !important;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active {
+  color: #000;
+  background-color: #ffffff;
+  background-image: none;
+  border-color: #ffffff;
 }

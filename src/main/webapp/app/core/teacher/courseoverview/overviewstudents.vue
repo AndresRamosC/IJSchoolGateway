@@ -13,7 +13,7 @@
               >
                 <template v-slot:button-content>
                   <div class="row">
-                    <p class="m-0 pr-2">{{courseName(selectedGroup).courseName}}</p>
+                    <p class="m-0 pr-2">{{classGroupList[selectedGroup].courseName}}</p>
                     <font-awesome-icon
                       class="white"
                       style="width: 20px; height: 20px;"
@@ -24,12 +24,13 @@
                 <b-dropdown-item
                   v-for="(group, index) in classGroupList"
                   :key="index"
+                  @click="reloadOverview(index)"
                 >{{group.courseName + '-' + group.groupCode}}</b-dropdown-item>
               </b-dropdown>
             </div>
 
             <div class="col-3">
-              <p class="pt-2 white">{{courseName(selectedGroup).groupCode}}</p>
+              <p class="pt-2 white">{{classGroupList[selectedGroup].groupCode}}</p>
             </div>
           </div>
         </template>
@@ -43,12 +44,12 @@
       <b-spinner variant="primary" label="Text Centered"></b-spinner>
     </div>
     <div class="container pt-4 p-2 justify-content-center" id="overviewstudents" v-if="studentsGroupLoaded">
-        <div v-for="(student, index) in studentsGroup" :key="index">
-            <student-card
-              :name="studentNameGroup(index)"
-              :photo="studentPhotoGroup(index)"
-            />
-        </div>
+          <div v-for="(student, index) in studentsGroup" :key="index">
+              <student-card
+                :name="studentNameGroup(index)"
+                :photo="studentPhotoGroup(index)"
+              />
+          </div>
     </div>
   </div>
 </template>
@@ -66,12 +67,30 @@ export default {
     StudentCard,
     NavigationButtons
   },
+  data() {
+    return {
+      allStudents: []
+    }
+  },
   created() {
-    console.log('created');
-    this.$store.dispatch('getStudentsByCourse', this.selectedGroup);
+    if (this.classGroupList[this.selectedGroup].classGroupId == 9999) {
+
+    }else {
+      this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
+    }
   },
   computed: {
-    ...mapGetters(['selectedGroup', 'courseName', 'classGroupList', 'studentsGroup', 'studentsGroupLoaded', 'studentNameGroup', 'studentPhotoGroup'])
+    ...mapGetters(['selectedGroup', 'courseName', 'classGroupList', 'studentsGroup', 'studentsGroupLoaded', 'studentNameGroup', 'studentPhotoGroup', 'selectedGroup'])
+  },
+  methods: {
+    reloadOverview: function (index) {
+      this.$store.commit('updateSelectedGroup', index);
+      if (this.classGroupList[this.selectedGroup].classGroupId == 9999) {
+
+      }else {
+        this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
+      }
+    }
   }
 };
 </script>

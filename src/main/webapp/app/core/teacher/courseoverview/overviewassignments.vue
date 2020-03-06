@@ -24,6 +24,7 @@
                 <b-dropdown-item
                   v-for="(group, index) in classGroupList"
                   :key="index"
+                  @click="updateAssignments(index)"
                 >{{group.courseName + '-' + group.groupCode}}</b-dropdown-item>
               </b-dropdown>
             </div>
@@ -40,26 +41,16 @@
     </div>
 
     <div class="container-fluid pt-4 p-2 justify-content-center" id="assignments">
-      <assignment-item
-        numberAttch="1"
-        students="30"
-        dueDate="02/08"
-        description="Here you can read a preview of the assignment, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore......"
-      />
 
-      <assignment-item
-        numberAttch="0"
-        students="30"
-        dueDate="05/08"
-        description="Here you can read a preview of the assignment, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore......"
-      />
+       <div v-for="(assignment,index) in assignmentsList" :key="index">
+          <assignment-item
+            :numberAttch="assignment.attachments.length"
+            :students="studentsGroup.length"
+            :dueDate="getDate(assignment.dueDate)"
+            :description="assignment.description"
+          />
+       </div>
 
-      <assignment-item
-        numberAttch="1"
-        students="30"
-        dueDate="10/08"
-        description="Here you can read a preview of the assignment, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore......"
-      />
     </div>
   </div>
 </template>
@@ -69,6 +60,8 @@ import NavigationButtons from '../teacheroverviewbuttons/teacheroverviewbuttons.
 import HeaderArrow from '../headerarrow/headerarrowslot.vue';
 import AssignmentItem from '../teacherassignmentcard/teacherassignmentcard.vue';
 import { mapGetters } from 'vuex';
+import moment from 'moment';
+import axios from 'axios';
 
 export default {
   name: 'overviewassignments',
@@ -77,9 +70,48 @@ export default {
     AssignmentItem,
     NavigationButtons
   },
+  data() {
+      return {
+        allAssignmentsList: '',
+        assignmentsList: []
+      }
+  },
+  async created() {
+      if (this.classGroupList[this.selectedGroup].classGroupId == 9999) {
+
+      }else {
+        this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
+      }
+      this.allAssignmentsList = _.sortBy((await axios.get("./content/data/assignments.json")  
+      .then(response => response.data.assignments)), ['dueDate']);
+        for (let index = 0; index < this.allAssignmentsList.length; index++) {
+          if ( (this.allAssignmentsList[index].classGroupId === this.classGroupList[this.selectedGroup].classGroupId) || (this.classGroupList[this.selectedGroup].classGroupId == 9999) ) {
+            this.assignmentsList.push(this.allAssignmentsList[index]);
+          }
+        }
+    },
   computed: {
-    ...mapGetters(['selectedGroup', 'courseName', 'classGroupList'])
-  }
+    ...mapGetters(['selectedGroup', 'courseName', 'classGroupList', 'actualCourse', 'findCourseByGroupId', 'findSubjectBySubjectId', 'studentsGroup'])
+  },
+  methods: {
+        getDate(date) {
+        return moment(date).format("MM/D");
+      },
+      updateAssignments(course) {
+        this.$store.commit('updateSelectedGroup', course);
+        if (this.classGroupList[this.selectedGroup].classGroupId == 9999) {
+
+        }else {
+          this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
+        }
+        this.assignmentsList = [];
+        for (let index = 0; index < this.allAssignmentsList.length; index++) {
+          if ( (this.allAssignmentsList[index].classGroupId === this.classGroupList[this.selectedGroup].classGroupId) || (this.classGroupList[this.selectedGroup].classGroupId == 9999) ) {
+            this.assignmentsList.push(this.allAssignmentsList[index]);
+          }
+        }
+      }
+    }
 };
 </script>
 

@@ -41,91 +41,22 @@
      
     <div class="row m-0 pt-2">
 
-      <div class="col-12">
-          <h4 class="font-weight-regular text-left blue">Monday 3</h4>
-      </div>
-      <div class="col-12">
-          <p class="font-weight-regular text-left gray">Day off for constitution day</p>
-      </div>
+      <div class="col-12 pt-2" v-for="(date, index) in assignmentsList" :key="index">
 
-      <div class="col-12">
-          <h4 class="font-weight-regular text-left blue">Tuesday 4</h4>
+          <h4 class="font-weight-regular text-left blue">{{getDate(date[0].dueDate)}}</h4>
+
+            <div class="row m-0 pt-2 pb-2" v-for="(assignment, number) in assignmentsList[index]" :key="number">
+                <assignment-card
+                    :subjectColor="findSubjectById(assignment.classGroupId).colorCode"
+                    :assignmentName="assignment.title"
+                    :dueTime="findSubjectById(assignment.classGroupId).startHour"
+                    :subjectName="findSubjectById(assignment.classGroupId).courseName"
+                    :attachmentsQty="assignment.attachments.length"
+                />
+            </div>
+
       </div>
       
-      <div class="col-12 pt-2 pb-2">
-          <assignment-card
-            subjectColor="#05BFFA"
-            assignmentName="Solve the ecuations"
-            dueTime="10:00"
-            subjectName="Math"
-            attachmentsQty="1"
-          />
-      </div>
-
-      <div class="col-12 pt-2 pb-2">
-          <assignment-card
-            subjectColor="#FAC405"
-            assignmentName="Material for canvas"
-            dueTime="13:00"
-            subjectName="Art"
-            attachmentsQty="0"
-          />
-      </div>
-
-      <div class="col-12 pt-2 pb-2">
-          <assignment-card
-            subjectColor="#FF0000"
-            assignmentName="Make resume of page 3"
-            dueTime="20:00"
-            subjectName="English"
-            attachmentsQty="1"
-          />
-      </div>
-
-      <div class="col-12">
-          <h4 class="font-weight-regular text-left blue">Friday 7</h4>
-      </div>
-      
-      <div class="col-12 pt-2 pb-2">
-          <assignment-card
-            subjectColor="#05BFFA"
-            assignmentName="Solve the ecuations"
-            dueTime="10:00"
-            subjectName="Math"
-            attachmentsQty="1"
-          />
-      </div>
-
-      <div class="col-12 pt-2 pb-2">
-          <assignment-card
-            subjectColor="#05BFFA"
-            assignmentName="Bring formualry"
-            dueTime="10:00"
-            subjectName="Math"
-            attachmentsQty="0"
-          />
-      </div>
-
-      <div class="col-12 pt-2 pb-2">
-          <assignment-card
-            subjectColor="#4505FA"
-            assignmentName="Search about chapultepec battle"
-            dueTime="11:00"
-            subjectName="History"
-            attachmentsQty="0"
-          />
-      </div>
-
-      <div class="col-12 pt-2 pb-2">
-          <assignment-card
-            subjectColor="#FA05B5"
-            assignmentName="Bring a ball"
-            dueTime="09:00"
-            subjectName="Physical education"
-            attachmentsQty="0"
-          />
-      </div>
-
     </div>
 
  </div>
@@ -136,7 +67,10 @@
 <script>
 import AssignmentCard from '../assignmentcard/assignmentcard.vue';
 import HeaderBell from '../headerbell/headerbell.vue';
+import { mapGetters } from 'vuex';
 import moment from 'moment';
+import axios from 'axios';
+import _ from  'lodash';
 
 export default {
     name: "scheduleassignments",
@@ -149,8 +83,31 @@ export default {
         const month = moment().format('MMMM YYYY');
       return {
         value: today,
-        monthName: month
+        monthName: month,
+        allAssignmentsList: '',
+        assignmentsList: []
       }
+    },
+    async mounted() {
+      this.allAssignmentsList = _.sortBy((await axios.get("./content/data/assignments.json")  
+      .then(response => response.data.assignments)), ['dueDate']);
+      for (let index = 0; index < this.allAssignmentsList.length; index++) {
+          if (this.allAssignmentsList[index].studentId === this.actualStudentId) {
+              if (moment(this.value).format("MM") === moment(this.allAssignmentsList[index].dueDate).format("MM")) {
+                  this.allAssignmentsList[index].dueDate = moment(this.allAssignmentsList[index].dueDate).format("YYYY-MM-DD");
+                  this.assignmentsList.push(this.allAssignmentsList[index]);
+              }
+          }
+      }
+      this.assignmentsList = _.groupBy(this.assignmentsList, 'dueDate');
+    },
+    computed: {
+        ...mapGetters([
+            'courses',
+            'student',
+            'findSubjectById',
+            'actualStudentId'
+        ])
     },
     methods: {
       dateDisabled(ymd, date) {
@@ -159,12 +116,25 @@ export default {
         const day = date.getDate()
         // Return `true` if the date should be disabled
         return weekday === 0 || weekday === 6
+      },
+      getDate(date) {
+        return moment(date).format("dddd D");
       }
     },
     watch: {
         value: function () {
             let date = moment(this.value).format('YYYY-MM-DD');
             this.monthName = moment(this.value).format('MMMM YYYY');
+            this.assignmentsList = [];
+            for (let index = 0; index < this.allAssignmentsList.length; index++) {
+                if (this.allAssignmentsList[index].studentId === this.actualStudentId) {
+                    if (moment(this.value).format("MM") === moment(this.allAssignmentsList[index].dueDate).format("MM")) {
+                        this.allAssignmentsList[index].dueDate = moment(this.allAssignmentsList[index].dueDate).format("YYYY-MM-DD");
+                        this.assignmentsList.push(this.allAssignmentsList[index]);
+                    }
+                }
+            }
+            this.assignmentsList = _.groupBy(this.assignmentsList, 'dueDate');
         }
     }
 }

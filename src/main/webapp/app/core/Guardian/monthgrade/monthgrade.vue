@@ -7,10 +7,10 @@
             <div class="col-6"><p class="text-left m-0 pl-2 blue">Homeworks</p></div>
             <div class="col-6"><p class="text-right m-0 gray">{{homeworks}}</p></div>
         </div>
-        <div class="row w-100">
+        <!-- <div class="row w-100">
             <div class="col-6"><p class="text-left m-0 pl-2 blue">Test</p></div>
             <div class="col-6"><p class="text-right m-0 gray">{{test}}</p></div>
-        </div>
+        </div> -->
         <div class="row mb-2 w-100">
             <div class="col-6"><p class="font-weight-bold text-left m-0 pl-2 blue">Total</p></div>
             <div class="col-6"><p class="font-weight-bold text-right m-0 blue">{{total}}</p></div>
@@ -25,7 +25,7 @@ export default {
         month: String,
         homeworks: String,
         test: String,
-        total: String
+        total: Number
     }
 }
 </script>

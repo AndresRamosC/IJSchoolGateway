@@ -9,7 +9,7 @@
             <p class="gray m-0"> {{numberAttch}} attachment</p>
         </div>
         <div class="col-4 p-0">
-            <p style="fontSize: 0.8em;" class="blue pl-2 pt-1 m-0"> {{status}}</p>
+            <p style="fontSize: 0.8em;" class="blue pl-2 pt-1 m-0"> {{getStatus}}</p>
         </div>
         <div class="col-1 p-0">
             <font-awesome-icon class="blue" style="width: 16px; height: 16px;" icon="calendar-day"/>
@@ -31,10 +31,15 @@
 export default {
     name: "assignmentitem",
     props: {
-        numberAttch: String,
-        status: String,
+        numberAttch: Number,
+        status: Boolean,
         dueDate: String,
         description: String
+    },
+    computed: {
+        getStatus: function () {
+            return this.status ? "Delivered" : 'Not delivered';
+        }
     }
 }
 </script>

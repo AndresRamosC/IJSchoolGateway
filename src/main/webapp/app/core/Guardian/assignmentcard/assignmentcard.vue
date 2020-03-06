@@ -43,7 +43,7 @@ export default {
         assignmentName: String,
         dueTime: String,
         subjectName: String,
-        attachmentsQty: String
+        attachmentsQty: Number
     },
     computed: {
         style () {

@@ -7,8 +7,8 @@
                 <template v-slot:content>
                     <div class="container">
                         <div class="row m-0">
-                            <div class="col-6 text-left white">{{teacherTodayCourses[selectedCourse].courseName}}</div>
-                            <div class="col-6 text-right white">{{teacherTodayCourses[selectedCourse].groupCode}}</div>
+                            <div class="col-6 text-left white">{{findCourseByGroupId(selectedCourse).courseName}}</div>
+                            <div class="col-6 text-right white">{{findCourseByGroupId(selectedCourse).groupCode}}</div>
                         </div>
                         <div class="row m-0 d-flex justify-content-center">
                             <div class="col-6 p-0">
@@ -58,6 +58,7 @@
                     :name="student.studentName"
                     :attendance="student.onTime"
                     @createAttendance="createAttendance"
+                    @createRetard="createAttendance"
                 />
             </div>
         </div>
@@ -81,7 +82,7 @@ export default {
     },
     async created() {
         let date = moment().format('YYYY-MM-DD');
-        this.$store.dispatch('getStudentsByDay', { id: this.teacherTodayCourses[this.selectedCourse].classGroupId, date: date });
+        this.$store.dispatch('getStudentsByDay', { id: this.selectedCourse, date: date });
     },
     data: function () {
         const today = moment().format("YYYY-MM-DD");
@@ -100,7 +101,8 @@ export default {
             'selectedCourse',
             'teacherTodayCourses',
             'studentsList',
-            'studentsListLoaded'
+            'studentsListLoaded',
+            'findCourseByGroupId'
         ]),
         isNotToday: function() {
             return this.notToday
@@ -120,7 +122,7 @@ export default {
       createAttendance: function (classGroupId, onTime, studentId) {
         this.$store.dispatch('postAttendance', { classGroupId: classGroupId, onTime: onTime, studentId: studentId });
         let date = moment(this.value).format('YYYY-MM-DD');
-        this.$store.dispatch('getStudentsByDay', { id: this.teacherTodayCourses[this.selectedCourse].id, date: date });
+        this.$store.dispatch('getStudentsByDay', { id: this.selectedCourse, date: date });
       }
     },
     watch: {

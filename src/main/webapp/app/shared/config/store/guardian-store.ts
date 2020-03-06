@@ -6,14 +6,19 @@ export const guardianStore: Module<any, any> = {
   state: {
     dashboard: '',
     actualStudent: '',
-    courses: ''
+    courses: '',
+    actualCourse: '',
+    attendanceList: ''
   },
   getters: {
     dashboard: state => state.dashboard,
     student: state => state.actualStudent,
     todayCourses: state => _.sortBy(state.courses, ['startHour']),
+    actualCourse: state => state.actualCourse,
+    attendanceList: state => state.attendanceList,
     isLoaded: state => !!(state.dashboard !== ''),
     coursesLoaded: state => !!(state.courses !== ''),
+    attendanceLoaded: state => !!(state.attendanceList !== ''),
     guardianPhoto: state =>
       'data:' + state.dashboard.guardianPerson.photographContentType + ';base64, ' + state.dashboard.guardianPerson.photograph,
     guardianName: state => state.dashboard.guardianPerson.firstName + ' ' + state.dashboard.guardianPerson.lastName,
@@ -26,7 +31,25 @@ export const guardianStore: Module<any, any> = {
     studentGrade: state => id => state.dashboard.studentList[id].academicYear,
     courses: state => state.dashboard.studentList[state.actualStudent].classGroupAndSubjectDtoList,
     coursesQty: state => state.dashboard.studentList[state.actualStudent].classGroupAndSubjectDtoList.length,
-    actualStudentId: state => state.dashboard.studentList[state.actualStudent].studentId
+    actualStudentId: state => state.dashboard.studentList[state.actualStudent].studentId,
+    findSubjectById: state => id =>
+      _.findLast(state.dashboard.studentList[state.actualStudent].classGroupAndSubjectDtoList, function(subject) {
+        if (subject.classGroupId == id) {
+          return subject;
+        }
+      }),
+    findSubjectBySubjectId: state => id =>
+      _.findLast(state.dashboard.studentList[state.actualStudent].classGroupAndSubjectDtoList, function(subject) {
+        if (subject.subjectId == id) {
+          return subject;
+        }
+      }),
+    findAttendanceByGroupId: state => id =>
+      _.findLast(state.attendanceList, function(attendance) {
+        if (attendance.classGroupId == id) {
+          return attendance;
+        }
+      })
   },
   mutations: {
     updateDashboard(state, dashboard) {
@@ -37,6 +60,12 @@ export const guardianStore: Module<any, any> = {
     },
     changeCourses(state, courses) {
       state.courses = courses;
+    },
+    changeActualCourse(state, course) {
+      state.actualCourse = course;
+    },
+    updateAttendances(state, attendanceList) {
+      state.attendanceList = attendanceList;
     }
   },
   actions: {
@@ -47,6 +76,18 @@ export const guardianStore: Module<any, any> = {
     async getScheduleCourses(context, { id, date }) {
       const courses = (await axios.get(`/services/ijschoolmanageradministrationservice/api/class-groups/${id}/${date}`)).data;
       context.commit('changeCourses', courses);
+    },
+    async getAttendancesByDay(context, { studentId, date }) {
+      const attendanceList = (await axios.get(
+        `/services/ijschoolmanageradministrationservice/api/attendances/student/byDay/${studentId}/${date}`
+      )).data;
+      context.commit('updateAttendances', attendanceList);
+    },
+    async getAttendanceByMonth(context, { studentId, groupId, date }) {
+      const attendanceList = (await axios.get(
+        `/services/ijschoolmanageradministrationservice/api/attendances/student/classGroup/byMonth/${studentId}/${groupId}/${date}`
+      )).data;
+      context.commit('updateAttendances', attendanceList);
     }
   }
 };

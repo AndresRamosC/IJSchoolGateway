@@ -20,7 +20,7 @@
         </div>
 
         <div class="d-flex justify-content-center">
-            <b-calendar v-model="value" :min="min" :max="max" :no-highlight-today="true" :readonly="true" :date-disabled-fn="dateDisabled" :date-info-fn="dateClass" :hide-header="true" label-help="" locale="en"></b-calendar>
+            <b-calendar v-model="value" :min="min" :max="max" no-highlight-today :readonly="true" :date-disabled-fn="dateDisabled" :date-info-fn="dateClass" :hide-header="true" label-help="" locale="en"></b-calendar>
         </div>
     </div>
 </template>
@@ -31,6 +31,7 @@ import moment from 'moment';
 
 export default {
     name: "calendar",
+    props: ['absent'],
     data() {
         const today = moment().format("YYYY-MM-DD");
         const minDate = moment().subtract(1, 'month').format("YYYY-MM-DD")
@@ -38,11 +39,11 @@ export default {
       return {
         value: today,
         min: minDate,
-        max: maxDate
+        max: maxDate,
       }
     },
     updated () {
-      // console.log(this.value);
+      
     },
     methods: {
       dateDisabled(ymd, date) {
@@ -55,7 +56,12 @@ export default {
        dateClass(ymd, date) {
         const day = date.getDate()
         const month = date.getMonth()
-        return day == 10 && month == 1  ? 'table-danger' : 'table-success'
+        for (let index = 0; index < this.absent.length; index++) {
+          if (day == moment(this.absent[index]).format("DD") && month == moment(this.absent[index]).subtract(1, 'month').format("MM")) {
+            return this.absent[index].onTime ? 'table-success' : 'table-info'
+          }
+        }
+        return 'table-danger'
       },
       monthBack() {
         this.value = moment(this.value).subtract(1, 'month').format("YYYY-MM-DD")

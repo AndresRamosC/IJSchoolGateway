@@ -31,8 +31,8 @@
 export default {
     name: "teacherassignmentcard",
     props: {
-        numberAttch: String,
-        students: String,
+        numberAttch: Number,
+        students: Number,
         dueDate: String,
         description: String
     }

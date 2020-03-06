@@ -38,6 +38,12 @@ export const teacherStore: Module<any, any> = {
           return subject.courseName;
         }
       }),
+    findCourseByGroupId: state => id =>
+      _.findLast(state.teacherContext.classGroupDTOList, function(subject) {
+        if (subject.classGroupId == id) {
+          return subject;
+        }
+      }),
     studentNameGroup: state => id => state.studentsGroup[id].firstName + ' ' + state.studentsGroup[id].lastName,
     studentPhotoGroup: state => id =>
       'data:' + state.studentsGroup[id].photographContentType + ';base64, ' + state.studentsGroup[id].photograph
@@ -63,6 +69,9 @@ export const teacherStore: Module<any, any> = {
     },
     updateStudentsGroup(state, newStudentsGroup) {
       state.studentsGroup = newStudentsGroup;
+    },
+    addAllToGroupList(state, allGroup) {
+      state.teacherContext.classGroupDTOList.push(allGroup);
     }
   },
   actions: {
@@ -85,7 +94,7 @@ export const teacherStore: Module<any, any> = {
       context.commit('updateStudentsList', students);
     },
     postAttendance(context, { classGroupId, onTime, studentId }) {
-      axios.post('/services/ijschoolmanageradministrationservice/api/class-groups/Students/Attendance/', {
+      axios.post('/services/ijschoolmanageradministrationservice/api/attendances/', {
         classGroupId: classGroupId,
         onTime: onTime,
         studentId: studentId

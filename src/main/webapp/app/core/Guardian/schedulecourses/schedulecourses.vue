@@ -41,13 +41,14 @@
         <!-- card courses container -->
     <div v-if="coursesLoaded" class="pt-2">
         <div class="container-fluid p-1 justify-content-center" v-for="(course, index) in todayCourses" :key="index">
-
+            
             <subject-attendance
+                :subjectId="course.classGroupId"
                 :subjectColor="course.colorCode"
                 :startTime="course.startHour"
                 :endTime="course.endHour"
                 :subjectName="course.courseName"
-                :attendance="false"
+                :attendance="getAttendanceValue(course.classGroupId)"
             />
 
         </div>
@@ -70,6 +71,7 @@ export default {
     },
     created() {
         let date = moment(this.value).format('YYYY-MM-DD');
+        this.$store.dispatch('getAttendancesByDay', { studentId: this.actualStudentId, date: date } );
         this.$store.dispatch('getScheduleCourses', { id: this.actualStudentId, date: date });
     },
     data() {
@@ -86,7 +88,10 @@ export default {
         ...mapGetters([
             'actualStudentId',
             'coursesLoaded',
-            'todayCourses'
+            'todayCourses',
+            'attendanceList',
+            'attendanceLoaded',
+            'findAttendanceByGroupId'
         ])
     },
     methods: {
@@ -96,6 +101,14 @@ export default {
         const day = date.getDate()
         // Return `true` if the date should be disabled
         return weekday === 0 || weekday === 6
+      },
+      getAttendanceValue(id) {
+        var result = this.findAttendanceByGroupId(id);
+        if (result == null) {
+            return false;
+        } else {
+            return result.onTime;
+        }
       }
     },
     watch: {

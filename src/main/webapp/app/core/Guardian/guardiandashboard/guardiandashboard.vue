@@ -55,7 +55,7 @@
           <!-- current course  -->
           <div class="col-12 p-0 pt-1 pb-1">
             <h5 class="font-weight-regular text-left p-0 m-0 blue">{{actualNumberClass()}} / {{todayCourses.length}} courses</h5>
-            <p class="font-weight-regular text-left p-0 m-0 gray">{{ actualClass()}}</p>
+            <p class="font-weight-regular text-left p-0 m-0 gray">{{ actualClass() }}</p>
           </div>
 
           <!-- last course -->
@@ -154,24 +154,24 @@ export default {
       },
       actualClass : function () {
         const arr = _.sortBy(this.todayCourses, ['endHour']);
-        var time = moment().format("H");
+        var time = moment().format("HH:mm");
         var actual = 'Not in class';
         for (let index = 0; index < arr.length; index++) {
-          if ((time >= parseInt(arr[index].startHour.split(':')[0])) && (time < parseInt(arr[index].endHour.split(':')[0]))) {
-            actual = arr[index].subjectId.courseName;
+          if ((time >= arr[index].startHour) && (time < arr[index].endHour)) {
+            actual = arr[index].courseName;
           }
         }
         return actual;
       },
       actualNumberClass : function () {
         const arr = _.sortBy(this.todayCourses, ['endHour']);
-        var time = moment().format("H");
+        var time = moment().format("HH:mm");
         var number = 0;
-        if(time >= parseInt(arr[arr.length-1].startHour.split(':')[0])){
+        if(time >= arr[arr.length-1].startHour){
           return arr.length;
         }
         for (let index = 0; index < arr.length; index++) {
-          if (time >= parseInt(arr[index].startHour.split(':')[0])) {
+          if (time >= arr[index].startHour) {
             number = index;
           }
         }

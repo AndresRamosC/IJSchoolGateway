@@ -1,21 +1,10 @@
 <template>
 <div>
-<div class="container-fluid p-0 justify-content-center" id="schedule">
-
-    <!-- <div class="sticky-top whiteBG"> -->
-    <!-- app header -->
-    <!-- <header-bell/> -->
-
-
-
-    <!-- </div> -->
-
-    <router-view></router-view>
-
-</div>
+    <div class="container-fluid p-0 justify-content-center" id="schedule">
+        <router-view></router-view>
+    </div>
     <!-- nav -->
     <bottom-nav/>
-
 </div>
 </template>
 

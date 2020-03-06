@@ -11,18 +11,18 @@
                 <b-dropdown id="dropdown-1" class="p-2" toggle-class="text-decoration-none" :no-caret="true" >
                     <template v-slot:button-content>
                         <div class="row">
-                            <p class="m-0 pr-2">Subject name</p>
+                            <p class="m-0 pr-2">{{findSubjectBySubjectId(actualCourse).courseName}}</p>
                             <font-awesome-icon class="white" style="width: 20px; height: 20px;" icon="chevron-down"/>
                         </div>
                     </template>
-                    <b-dropdown-item v-for="(course, index) in courses" :key="index">
+                    <b-dropdown-item v-for="(course, index) in courses" :key="index" @click="updateAssignments(course.subjectId)">
                         {{course.courseName}} 
                     </b-dropdown-item>
                 </b-dropdown>
             </div>        
 
             <div class="col-3">
-                <p class="pt-2 white">Group</p>
+                <p class="pt-2 white">{{findSubjectBySubjectId(actualCourse).groupCode}}</p>
             </div>
         </div>
 
@@ -37,26 +37,14 @@
 
     <div class="container-fluid pt-4 p-2 justify-content-center" id="assignments">
 
-    <assignment-item
-        numberAttch="1"
-        status="Not delivered"
-        dueDate="02/08"
-        description="Here you can read a preview of the assignment, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore......"
-    />
-
-    <assignment-item
-        numberAttch="0"
-        status="Delivered"
-        dueDate="05/08"
-        description="Here you can read a preview of the assignment, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore......"
-    />
-
-    <assignment-item
-        numberAttch="1"
-        status="In time"
-        dueDate="10/08"
-        description="Here you can read a preview of the assignment, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore......"
-    />
+        <div v-for="(assignment,index) in assignmentsList" :key="index">
+            <assignment-item
+                :numberAttch="assignment.attachments.length"
+                :status="assignment.done"
+                :dueDate="getDate(assignment.dueDate)"
+                :description="assignment.description"
+            />
+        </div>
 
     </div>
 
@@ -68,6 +56,8 @@ import NavigationButtons from '../overviewNavigationBtns/overviewNavigationButto
 import HeaderArrow from '../headerarrow/headerarrow.vue';
 import AssignmentItem from '../assignmentitem/assignmentitem.vue';
 import { mapGetters } from 'vuex';
+import moment from 'moment';
+import axios from 'axios';
 
 export default {
     name: "overviewassignments",
@@ -76,10 +66,47 @@ export default {
         AssignmentItem,
         NavigationButtons
     },
+    data() {
+      return {
+        allAssignmentsList: '',
+        assignmentsList: []
+      }
+    },
+    async mounted() {
+      this.allAssignmentsList = _.sortBy((await axios.get("./content/data/assignments.json")  
+      .then(response => response.data.assignments)), ['dueDate']);
+       for (let index = 0; index < this.allAssignmentsList.length; index++) {
+          if (this.allAssignmentsList[index].studentId === this.actualStudentId) {
+              if (this.findSubjectById(this.allAssignmentsList[index].classGroupId).courseName === this.findSubjectBySubjectId(this.actualCourse).courseName) {
+                  this.assignmentsList.push(this.allAssignmentsList[index]);
+              }
+          }
+      }
+    },
     computed: {
         ...mapGetters([
-            'courses'
+            'courses',
+            'actualStudentId',
+            'findSubjectById',
+            'findSubjectBySubjectId',
+            'actualCourse'
         ])
+    },
+    methods: {
+        getDate(date) {
+        return moment(date).format("MM/D");
+      },
+      updateAssignments(course) {
+        this.$store.commit('changeActualCourse', course);
+        this.assignmentsList = [];
+        for (let index = 0; index < this.allAssignmentsList.length; index++) {
+            if (this.allAssignmentsList[index].studentId === this.actualStudentId) {
+                if (this.findSubjectById(this.allAssignmentsList[index].classGroupId).courseName === this.findSubjectBySubjectId(this.actualCourse).courseName) {
+                    this.assignmentsList.push(this.allAssignmentsList[index]);
+                }
+            }
+        }
+      }
     }
 }
 </script>

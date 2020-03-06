@@ -31,6 +31,7 @@
         <div v-if="teacherCoursesLoaded && (noCourse === false)">
             <div class="row p-2 m-0">
                 <course-card
+                    :groupId="teacherTodayCourses[actualNumberClass()].classGroupId"
                     :startTime="teacherTodayCourses[actualNumberClass()].startHour"
                     :endTime="teacherTodayCourses[actualNumberClass()].endHour"
                     :subjectName="teacherTodayCourses[actualNumberClass()].courseName"
@@ -93,10 +94,10 @@ export default {
     methods: {
       actualNumberClass : function () {
         const arr = _.sortBy(this.teacherTodayCourses, ['endHour']);
-        var time = moment().format("H");
+        var time = moment().format("HH:mm");
         var number = -1;
         for (let index = 0; index < arr.length; index++) {
-          if ((time >= parseInt(arr[index].startHour.split(':')[0])) && (time < parseInt(arr[index].endHour.split(':')[0]))) {
+          if ((time >= arr[index].startHour) && (time < arr[index].endHour)) {
             number = index;
           }
         }
@@ -104,7 +105,7 @@ export default {
             this.noCourse = true;
             number = 0;
         }else {
-            this.$store.commit('updateSelectedCourse', number);
+            this.$store.commit('updateSelectedCourse', arr[number].classGroupId);
         }
         return number;
       }
@@ -112,6 +113,7 @@ export default {
     watch: {
         teacherContext: function () {   
             this.$store.commit('updateActualTeacher', this.teacherContext.teacherInfo.id);
+            this.$store.commit('addAllToGroupList', {courseName: "All", groupCode: "All", classGroupId: 9999} );
         },
         teacherLoaded: function () {
             let date = moment().format("YYYY-MM-DD");

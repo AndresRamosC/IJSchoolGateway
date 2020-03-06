@@ -5,8 +5,8 @@
                 <template v-slot:content>
                     <div class="container">
                         <div class="row m-0">
-                            <div class="col-6 text-left white">{{teacherTodayCourses[selectedCourse].subjectId.courseName}}</div>
-                            <div class="col-6 text-right white">{{teacherTodayCourses[selectedCourse].groupCode}}</div>
+                            <div class="col-6 text-left white">{{findCourseByGroupId(selectedCourse).courseName}}</div>
+                            <div class="col-6 text-right white">{{findCourseByGroupId(selectedCourse).groupCode}}</div>
                         </div>
                         <div class="row m-0 d-flex justify-content-center">
                             <div class="col-12 p-0">
@@ -151,7 +151,8 @@ export default {
         'selectedCourse',
         'teacherTodayCourses',
         'studentsList',
-        'studentsListLoaded'])
+        'studentsListLoaded',
+        'findCourseByGroupId'])
   },
   watch: {
         value: function () {

@@ -38,6 +38,7 @@
         <div class="pt-2" v-if="teacherCoursesLoaded">
             <div class="row p-2 m-0" v-for="(course, index) in teacherTodayCourses" :key="index">
                 <course-card
+                    :groupId="course.classGroupId"
                     :startTime="course.startHour"
                     :endTime="course.endHour"
                     :subjectName="course.courseName"

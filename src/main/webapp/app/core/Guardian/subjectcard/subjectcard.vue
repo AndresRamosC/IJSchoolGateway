@@ -40,15 +40,9 @@
                             <template v-slot:button-content class="whiteBG">
                                 <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="ellipsis-v"/>
                             </template>
-                            <router-link to="/course-overview/attendance">
-                                <b-dropdown-item href="/course-overview/attendance">Attendance</b-dropdown-item>
-                            </router-link>
-                            <router-link to="/course-overview/assignments">
-                                <b-dropdown-item href="/course-overview/assignments">Assignments</b-dropdown-item>
-                            </router-link>
-                            <router-link to="/course-overview/grades">
-                                <b-dropdown-item href="/course-overview/grades">Grade</b-dropdown-item>
-                            </router-link>
+                                <b-dropdown-item @click="updateCourseAndGo(subjectId, 'attendance')">Attendance</b-dropdown-item>
+                                <b-dropdown-item @click="updateCourseAndGo(subjectId, 'assignments')">Assignments</b-dropdown-item>
+                                <b-dropdown-item @click="updateCourseAndGo(subjectId, 'grades')">Grade</b-dropdown-item>
                         </b-dropdown>
                     </div>
 
@@ -63,6 +57,7 @@
 export default {
     name: "subjectcard",
     props: {
+        subjectId: Number,
         subjectIcon: String,
         subjectColor: String,
         subjectName: String,
@@ -73,6 +68,12 @@ export default {
         style () {
         return 'width: 2px; background-color: ' +  this.subjectColor;
       }
+    },
+    methods: {
+        updateCourseAndGo: function (course, finalPath) {
+            this.$store.commit('changeActualCourse', course);
+            this.$router.push('/course-overview/' + finalPath);
+        }
     }
 }
 </script>

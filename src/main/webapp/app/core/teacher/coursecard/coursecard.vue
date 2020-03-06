@@ -44,12 +44,8 @@
                     <template v-slot:button-content class="whiteBG">
                         <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="ellipsis-v"/>
                     </template>
-                    <router-link to="/teacher-attendance">
-                        <b-dropdown-item href="/teacher-attendance">Attendance</b-dropdown-item>
-                    </router-link>
-                    <router-link to="/teacher-assignment">
-                        <b-dropdown-item href="/teacher-assignment">Assignment</b-dropdown-item>
-                    </router-link>
+                        <b-dropdown-item @click="updateCourseAndGo(groupId, '/teacher-attendance')">Attendance</b-dropdown-item>
+                        <b-dropdown-item @click="updateCourseAndGo(groupId, '/teacher-assignment')">Assignment</b-dropdown-item>
                 </b-dropdown>
             </div>
 
@@ -63,6 +59,7 @@
 export default {
     name: "coursecard",
     props: {
+        groupId: Number,
         subjectColor: String,
         startTime: String,
         endTime: String,
@@ -78,6 +75,12 @@ export default {
         style () {
         return 'width: 2px; background-color: ' +  this.subjectColor;
       }
+    },
+    methods: {
+        updateCourseAndGo: function (id, finalPath) {
+            this.$store.commit('updateSelectedCourse', id);
+            this.$router.push(finalPath);
+        }
     }
 }
 </script>

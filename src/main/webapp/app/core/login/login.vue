@@ -20,6 +20,7 @@
 
 <student-selection v-if="authenticated && hasAnyAuthority('ROLE_GUARDIAN')"/>
 <teacher-dashboard v-if="authenticated && hasAnyAuthority('ROLE_EMPLOYEE_TEACHER')"/>
+<admin-logout v-if="authenticated"/>
 
 </div>
 </template>
