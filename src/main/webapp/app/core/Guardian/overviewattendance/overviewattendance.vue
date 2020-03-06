@@ -79,6 +79,7 @@ export default {
     },
     methods: {
       updateAttendances(course) {
+        this.$store.commit('changeActualCourse', course);
         let date = moment().format("YYYY-MM-DD")
         this.$store.dispatch('getAttendanceByMonth', { studentId: this.actualStudentId, groupId: course, date: date } );
       }

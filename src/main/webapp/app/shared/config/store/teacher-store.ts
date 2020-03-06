@@ -7,6 +7,7 @@ export const teacherStore: Module<any, any> = {
     teacherContext: '',
     actualTeacher: '',
     teacherTodayCourses: '',
+    teacherDashboardCourses: '',
     selectedCourse: '',
     selectedGroup: '',
     studentsList: '',
@@ -16,6 +17,7 @@ export const teacherStore: Module<any, any> = {
     teacherContext: state => state.teacherContext,
     teacher: state => state.actualTeacher,
     teacherTodayCourses: state => state.teacherTodayCourses,
+    teacherDashboardCourses: state => state.teacherDashboardCourses,
     selectedCourse: state => state.selectedCourse,
     selectedGroup: state => state.selectedGroup,
     studentsList: state => state.studentsList,
@@ -23,6 +25,7 @@ export const teacherStore: Module<any, any> = {
     teacherContextLoaded: state => !!(state.teacherContext !== ''),
     teacherLoaded: state => !!(state.actualTeacher !== ''),
     teacherCoursesLoaded: state => !!(state.teacherTodayCourses !== ''),
+    teacherDashboardCoursesLoaded: state => !!(state.teacherDashboardCourses !== ''),
     studentsListLoaded: state => !!(state.studentsList !== ''),
     studentsGroupLoaded: state => !!(state.studentsGroup !== ''),
     teacherPhoto: state =>
@@ -58,6 +61,9 @@ export const teacherStore: Module<any, any> = {
     updateTeacherTodayCourses(state, newTodayCourses) {
       state.teacherTodayCourses = newTodayCourses;
     },
+    updateTeacherDashboardCourses(state, teacherDashboardCourses) {
+      state.teacherDashboardCourses = teacherDashboardCourses;
+    },
     updateSelectedCourse(state, newCourses) {
       state.selectedCourse = newCourses;
     },
@@ -82,6 +88,10 @@ export const teacherStore: Module<any, any> = {
     async getTeacherCoursesByDay(context, { id, date }) {
       const courses = (await axios.get(`/services/ijschoolmanageradministrationservice/api/class-groups/fromTeacher/${id}/${date}`)).data;
       context.commit('updateTeacherTodayCourses', courses);
+    },
+    async getTeacherDashboard(context, { id, date }) {
+      const courses = (await axios.get(`/services/ijschoolmanageradministrationservice/api/class-groups/fromTeacher/${id}/${date}`)).data;
+      context.commit('updateTeacherDashboardCourses', courses);
     },
     async getStudentsByCourse(context, id) {
       const students = (await axios.get(`/services/ijschoolmanageradministrationservice/api/class-groups/Students/${id}`)).data;

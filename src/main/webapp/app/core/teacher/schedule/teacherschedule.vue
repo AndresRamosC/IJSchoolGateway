@@ -73,7 +73,7 @@ export default {
     },
     created() {
         let date = moment(this.value).format('YYYY-MM-DD');
-        this.$store.dispatch('getScheduleCourses', { id: this.teacher, date: date });
+        this.$store.dispatch('getTeacherCoursesByDay', { id: this.teacher, date: date });
     },
     data() {
         const today = moment().format("YYYY-MM-DD");

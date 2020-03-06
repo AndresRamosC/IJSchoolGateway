@@ -57,7 +57,7 @@ export default {
         const day = date.getDate()
         const month = date.getMonth()
         for (let index = 0; index < this.absent.length; index++) {
-          if (day == moment(this.absent[index]).format("DD") && month == moment(this.absent[index]).subtract(1, 'month').format("MM")) {
+          if (day == moment(this.absent[index].creationDate).format("DD") && month == moment(this.absent[index].creationDate).subtract(1, 'month').format("MM")) {
             return this.absent[index].onTime ? 'table-success' : 'table-info'
           }
         }

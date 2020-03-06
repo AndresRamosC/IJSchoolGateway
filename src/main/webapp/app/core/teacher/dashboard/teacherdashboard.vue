@@ -20,25 +20,25 @@
             </div>
         </div>
 
-        <div class="text-center" v-if="!teacherCoursesLoaded">
+        <div class="text-center" v-if="!teacherDashboardCourses">
             <b-spinner variant="primary" label="Text Centered"></b-spinner>
         </div>
-        <div v-if="teacherCoursesLoaded && (noCourse === true)">
+        <div v-if="teacherDashboardCourses && (noCourse === true)">
             <div class="row pl-2 m-0">
                 <p class="pl-2 blue">No class currently</p>
             </div>
         </div>
-        <div v-if="teacherCoursesLoaded && (noCourse === false)">
+        <div v-if="teacherDashboardCourses && (noCourse === false)">
             <div class="row p-2 m-0">
                 <course-card
-                    :groupId="teacherTodayCourses[actualNumberClass()].classGroupId"
-                    :startTime="teacherTodayCourses[actualNumberClass()].startHour"
-                    :endTime="teacherTodayCourses[actualNumberClass()].endHour"
-                    :subjectName="teacherTodayCourses[actualNumberClass()].courseName"
-                    :subjectColor="teacherTodayCourses[actualNumberClass()].colorCode"
-                    :classroom="teacherTodayCourses[actualNumberClass()].classRoom"
-                    :subjectCode="teacherTodayCourses[actualNumberClass()].courseCode"
-                    :group="teacherTodayCourses[actualNumberClass()].groupCode"
+                    :groupId="teacherDashboardCourses[actualNumberClass()].classGroupId"
+                    :startTime="teacherDashboardCourses[actualNumberClass()].startHour"
+                    :endTime="teacherDashboardCourses[actualNumberClass()].endHour"
+                    :subjectName="teacherDashboardCourses[actualNumberClass()].courseName"
+                    :subjectColor="teacherDashboardCourses[actualNumberClass()].colorCode"
+                    :classroom="teacherDashboardCourses[actualNumberClass()].classRoom"
+                    :subjectCode="teacherDashboardCourses[actualNumberClass()].courseCode"
+                    :group="teacherDashboardCourses[actualNumberClass()].groupCode"
                 />
             </div>
         </div>
@@ -87,13 +87,13 @@ export default {
             'teacherContextLoaded',
             'teacher',
             'teacherLoaded',
-            'teacherTodayCourses',
-            'teacherCoursesLoaded'
+            'teacherDashboardCourses',
+            'teacherDashboardCourses'
         ])
     },
     methods: {
       actualNumberClass : function () {
-        const arr = _.sortBy(this.teacherTodayCourses, ['endHour']);
+        const arr = _.sortBy(this.teacherDashboardCourses, ['endHour']);
         var time = moment().format("HH:mm");
         var number = -1;
         for (let index = 0; index < arr.length; index++) {
@@ -117,7 +117,7 @@ export default {
         },
         teacherLoaded: function () {
             let date = moment().format("YYYY-MM-DD");
-            this.$store.dispatch('getTeacherCoursesByDay', { id: this.teacher, date: date });
+            this.$store.dispatch('getTeacherDashboard', { id: this.teacher, date: date });
         }
     }
 }
