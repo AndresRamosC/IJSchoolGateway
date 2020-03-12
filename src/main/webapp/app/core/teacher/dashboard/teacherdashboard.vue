@@ -113,7 +113,6 @@ export default {
     watch: {
         teacherContext: function () {   
             this.$store.commit('updateActualTeacher', this.teacherContext.teacherInfo.id);
-            this.$store.commit('addAllToGroupList', {courseName: "All", groupCode: "All", classGroupId: 9999} );
         },
         teacherLoaded: function () {
             let date = moment().format("YYYY-MM-DD");

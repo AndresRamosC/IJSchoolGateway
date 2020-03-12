@@ -21,12 +21,13 @@
                     />
                   </div>
                 </template>
-                <b-dropdown-item
-                  v-for="(group, index) in classGroupList"
-                  :key="index"
-                  @click="reloadOverview(index)"
-                >{{group.courseName + '-' + group.groupCode}}</b-dropdown-item>
-              </b-dropdown>
+                  <b-dropdown-item
+                    v-for="(group, index) in classGroupList"
+                    :key="index"
+                    @click="reloadOverview(index)"
+                  >{{group.courseName + '-' + group.groupCode}}
+                  </b-dropdown-item>
+                </b-dropdown>
             </div>
 
             <div class="col-3">
@@ -73,11 +74,7 @@ export default {
     }
   },
   created() {
-    if (this.classGroupList[this.selectedGroup].classGroupId == 9999) {
-
-    }else {
-      this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
-    }
+    this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
   },
   computed: {
     ...mapGetters(['selectedGroup', 'courseName', 'classGroupList', 'studentsGroup', 'studentsGroupLoaded', 'studentNameGroup', 'studentPhotoGroup', 'selectedGroup'])
@@ -85,11 +82,7 @@ export default {
   methods: {
     reloadOverview: function (index) {
       this.$store.commit('updateSelectedGroup', index);
-      if (this.classGroupList[this.selectedGroup].classGroupId == 9999) {
-
-      }else {
-        this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
-      }
+      this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
     }
   }
 };

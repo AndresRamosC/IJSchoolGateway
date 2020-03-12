@@ -61,6 +61,9 @@ export const guardianStore: Module<any, any> = {
     changeCourses(state, courses) {
       state.courses = courses;
     },
+    addAllToCourses(state, courses) {
+      state.courses.push(courses);
+    },
     changeActualCourse(state, course) {
       state.actualCourse = course;
     },

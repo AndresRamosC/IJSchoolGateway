@@ -43,7 +43,7 @@ export default {
     methods: {
         updateAndGo() {
             this.$store.commit('updateSelectedAssignment', this.assignmentIndex);
-            this.$router.push('/course-overview/assignments/view')
+            this.$router.push('/student-course-overview/assignments/view')
         }
     }
 }

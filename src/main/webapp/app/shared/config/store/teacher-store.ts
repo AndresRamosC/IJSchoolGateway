@@ -11,7 +11,9 @@ export const teacherStore: Module<any, any> = {
     selectedCourse: '',
     selectedGroup: '',
     studentsList: '',
-    studentsGroup: ''
+    studentsGroup: '',
+    teacherAssignmentsList: '',
+    allAssignments: []
   },
   getters: {
     teacherContext: state => state.teacherContext,
@@ -22,6 +24,9 @@ export const teacherStore: Module<any, any> = {
     selectedGroup: state => state.selectedGroup,
     studentsList: state => state.studentsList,
     studentsGroup: state => state.studentsGroup,
+    teacherAssignmentsList: state => state.teacherAssignmentsList,
+    allAssignments: state => state.allAssignments,
+    teacherAssignmentsListLoaded: state => !!(state.teacherAssignmentsList !== ''),
     teacherContextLoaded: state => !!(state.teacherContext !== ''),
     teacherLoaded: state => !!(state.actualTeacher !== ''),
     teacherCoursesLoaded: state => !!(state.teacherTodayCourses !== ''),
@@ -76,8 +81,15 @@ export const teacherStore: Module<any, any> = {
     updateStudentsGroup(state, newStudentsGroup) {
       state.studentsGroup = newStudentsGroup;
     },
-    addAllToGroupList(state, allGroup) {
-      state.teacherContext.classGroupDTOList.push(allGroup);
+    updateTeacherAssignmentsList(state, assignmentsList) {
+      state.teacherAssignmentsList = assignmentsList;
+    },
+    updateAllAssignmentsList(state, assignmentsList) {
+      for (let index = 0; index < assignmentsList.length; index++) {
+        if (assignmentsList.length != 0) {
+          state.allAssignments.push(assignmentsList[index]);
+        }
+      }
     }
   },
   actions: {
@@ -108,6 +120,17 @@ export const teacherStore: Module<any, any> = {
         classGroupId: classGroupId,
         onTime: onTime,
         studentId: studentId
+      });
+    },
+    async getTeacherAssignmentsByGroup(context, groupId) {
+      const assignmentsList = (await axios.get(`/services/ijschoolmanageradministrationservice/api/assignments/classGroup/${groupId}`))
+        .data;
+      context.commit('updateTeacherAssignmentsList', assignmentsList);
+    },
+    returnTeacherAssignmentsByGroup(context, groupId) {
+      axios.get(`/services/ijschoolmanageradministrationservice/api/assignments/classGroup/${groupId}`).then(function(response) {
+        // handle success
+        context.commit('updateAllAssignmentsList', response.data);
       });
     }
   }

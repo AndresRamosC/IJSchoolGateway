@@ -13,7 +13,8 @@
               >
                 <template v-slot:button-content>
                   <div class="row">
-                    <p class="m-0 pr-2">{{classGroupList[selectedGroup].courseName}}</p>
+                    <p class="m-0 pr-2" v-if="!allLoaded">{{classGroupList[selectedGroup].courseName}}</p>
+                    <p class="m-0 pr-2" v-if="allLoaded">All</p>
                     <font-awesome-icon
                       class="white"
                       style="width: 20px; height: 20px;"
@@ -25,12 +26,19 @@
                   v-for="(group, index) in classGroupList"
                   :key="index"
                   @click="updateAssignments(index)"
-                >{{group.courseName + '-' + group.groupCode}}</b-dropdown-item>
+                >{{group.courseName + '-' + group.groupCode}}
+                </b-dropdown-item>
+                <b-dropdown-divider></b-dropdown-divider>
+                <b-dropdown-item
+                  @click="loadAllAssignments">
+                  All
+                </b-dropdown-item>
               </b-dropdown>
             </div>
 
             <div class="col-3">
-              <p class="pt-2 white">{{classGroupList[selectedGroup].groupCode}}</p>
+              <p class="pt-2 white" v-if="!allLoaded">{{classGroupList[selectedGroup].groupCode}}</p>
+              <p class="pt-2 white" v-if="allLoaded">All</p>
             </div>
           </div>
         </template>
@@ -40,11 +48,12 @@
       <navigation-buttons />
     </div>
 
-    <div class="container-fluid pt-4 p-2 justify-content-center" id="assignments">
+    <div class="container-fluid pt-4 p-2 justify-content-center" id="assignments" v-if="!allLoaded">
 
-       <div v-for="(assignment,index) in assignmentsList" :key="index">
+       <div v-for="(assignment,index) in teacherAssignmentsList" :key="index">
           <assignment-item
-            :numberAttch="assignment.attachments.length"
+            :selectedAssignment="index"
+            :numberAttch="assignment.attachmentsDTOList.length"
             :students="studentsGroup.length"
             :dueDate="getDate(assignment.dueDate)"
             :description="assignment.description"
@@ -52,6 +61,20 @@
        </div>
 
     </div>
+    <div class="container-fluid pt-4 p-2 justify-content-center" id="assignments" v-if="allLoaded">
+
+       <div v-for="(assignment,index) in allAssignments" :key="index">
+            <assignment-item
+              :selectedAssignment="index"
+              :numberAttch="assignment.attachmentsDTOList.length"
+              :students="studentsGroup.length"
+              :dueDate="getDate(assignment.dueDate)"
+              :description="assignment.description"
+            />
+       </div>
+
+    </div>
+
   </div>
 </template>
 
@@ -72,44 +95,29 @@ export default {
   },
   data() {
       return {
-        allAssignmentsList: '',
-        assignmentsList: []
+        allLoaded: false
       }
   },
   async created() {
-      if (this.classGroupList[this.selectedGroup].classGroupId == 9999) {
-
-      }else {
-        this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
-      }
-      this.allAssignmentsList = _.sortBy((await axios.get("./content/data/assignments.json")  
-      .then(response => response.data.assignments)), ['dueDate']);
-        for (let index = 0; index < this.allAssignmentsList.length; index++) {
-          if ( (this.allAssignmentsList[index].classGroupId === this.classGroupList[this.selectedGroup].classGroupId) || (this.classGroupList[this.selectedGroup].classGroupId == 9999) ) {
-            this.assignmentsList.push(this.allAssignmentsList[index]);
-          }
-        }
-    },
+    this.$store.dispatch('getTeacherAssignmentsByGroup', this.classGroupList[this.selectedGroup].classGroupId);
+  },
   computed: {
-    ...mapGetters(['selectedGroup', 'courseName', 'classGroupList', 'actualCourse', 'findCourseByGroupId', 'findSubjectBySubjectId', 'studentsGroup'])
+    ...mapGetters(['selectedGroup', 'courseName', 'classGroupList', 'actualCourse', 'findCourseByGroupId', 'findSubjectBySubjectId', 'studentsGroup', 'teacherAssignmentsList', 'allAssignments'])
   },
   methods: {
         getDate(date) {
         return moment(date).format("MM/D");
       },
       updateAssignments(course) {
+        this.allLoaded = false;
         this.$store.commit('updateSelectedGroup', course);
-        if (this.classGroupList[this.selectedGroup].classGroupId == 9999) {
-
-        }else {
-          this.$store.dispatch('getStudentsByCourse', this.classGroupList[this.selectedGroup].classGroupId);
+        this.$store.dispatch('getTeacherAssignmentsByGroup', this.classGroupList[this.selectedGroup].classGroupId);
+      },
+      loadAllAssignments() {
+        for (let index = 0; index < this.classGroupList.length; index++) {
+          this.$store.dispatch('returnTeacherAssignmentsByGroup', this.classGroupList[index].classGroupId)
         }
-        this.assignmentsList = [];
-        for (let index = 0; index < this.allAssignmentsList.length; index++) {
-          if ( (this.allAssignmentsList[index].classGroupId === this.classGroupList[this.selectedGroup].classGroupId) || (this.classGroupList[this.selectedGroup].classGroupId == 9999) ) {
-            this.assignmentsList.push(this.allAssignmentsList[index]);
-          }
-        }
+        this.allLoaded = true;
       }
     }
 };

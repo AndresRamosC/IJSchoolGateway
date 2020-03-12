@@ -18,6 +18,11 @@
                     <b-dropdown-item v-for="(course, index) in courses" :key="index" @click="updateAssignments(course.subjectId)">
                         {{course.courseName}} 
                     </b-dropdown-item>
+                    <b-dropdown-divider></b-dropdown-divider>
+                    <b-dropdown-item
+                    @click="loadAllAssignments">
+                        All
+                    </b-dropdown-item>
                 </b-dropdown>
             </div>        
 
@@ -37,12 +42,13 @@
 
     <div class="container-fluid pt-4 p-2 justify-content-center" id="assignments">
 
-        <div v-for="(assignment,index) in assignmentsList" :key="index">
+        <div v-for="(assignment,index) in allAssignmentsList" :key="index">
             <assignment-item
-                :numberAttch="assignment.attachments.length"
+                :assignmentIndex="index"
+                :numberAttch="assignment.assignmentAndAttachmentsDto.attachmentsDTOList.length"
                 :status="assignment.done"
-                :dueDate="getDate(assignment.dueDate)"
-                :description="assignment.description"
+                :dueDate="getDate(assignment.assignmentAndAttachmentsDto.dueDate)"
+                :description="assignment.assignmentAndAttachmentsDto.description"
             />
         </div>
 
@@ -73,15 +79,11 @@ export default {
       }
     },
     async mounted() {
-      this.allAssignmentsList = _.sortBy((await axios.get("./content/data/assignments.json")  
-      .then(response => response.data.assignments)), ['dueDate']);
-       for (let index = 0; index < this.allAssignmentsList.length; index++) {
-          if (this.allAssignmentsList[index].studentId === this.actualStudentId) {
-              if (this.findSubjectById(this.allAssignmentsList[index].classGroupId).courseName === this.findSubjectBySubjectId(this.actualCourse).courseName) {
-                  this.assignmentsList.push(this.allAssignmentsList[index]);
-              }
-          }
-      }
+        if (!this.allLoaded) {
+            this.$store.dispatch('getStudentAssignmentsByCourse', { studentId: this.actualStudentId, groupId: this.actualCourse} );
+        }else {
+            this.allAssignmentsList = this.studentAssignmentsList;
+        }
     },
     computed: {
         ...mapGetters([
@@ -89,24 +91,36 @@ export default {
             'actualStudentId',
             'findSubjectById',
             'findSubjectBySubjectId',
-            'actualCourse'
+            'actualCourse',
+            'studentAssignmentsList',
+            'allLoaded'
         ])
     },
     methods: {
         getDate(date) {
-        return moment(date).format("MM/D");
-      },
-      updateAssignments(course) {
-        this.$store.commit('changeActualCourse', course);
-        this.assignmentsList = [];
-        for (let index = 0; index < this.allAssignmentsList.length; index++) {
-            if (this.allAssignmentsList[index].studentId === this.actualStudentId) {
-                if (this.findSubjectById(this.allAssignmentsList[index].classGroupId).courseName === this.findSubjectBySubjectId(this.actualCourse).courseName) {
-                    this.assignmentsList.push(this.allAssignmentsList[index]);
-                }
+            return moment(date).format("MM/D");
+        },
+        updateAssignments(course) {
+            this.$store.commit('updateAllLoaded', false);
+            this.$store.commit('changeActualCourse', course);
+            this.assignmentsList = [];
+            this.$store.dispatch('getStudentAssignmentsByCourse', { studentId: this.actualStudentId, groupId: this.actualCourse} );
+        },
+        loadAllAssignments() {
+            this.$store.commit('updatestudentAssignments', []);
+            for (let index = 0; index < this.courses.length; index++) {
+                this.$store.dispatch('returnStudentAssignmentsByCourse', { studentId: this.actualStudentId, groupId: this.courses[index].classGroupId} );
+            }
+            this.$store.commit('updateAllLoaded', true);
+        }
+    },
+    watch: {
+        studentAssignmentsList: function () {
+            this.allAssignmentsList = _.sortBy(this.studentAssignmentsList, ['dueDate']);
+            for (let index = 0; index < this.allAssignmentsList.length; index++) {
+                this.allAssignmentsList[index].dueDate = moment(this.allAssignmentsList[index].dueDate).format("YYYY-MM-DD");
             }
         }
-      }
     }
 }
 </script>

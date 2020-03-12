@@ -40,6 +40,7 @@ export default {
         value: today,
         min: minDate,
         max: maxDate,
+        abscence: 0
       }
     },
     updated () {

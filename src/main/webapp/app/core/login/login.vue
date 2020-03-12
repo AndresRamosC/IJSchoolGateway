@@ -19,8 +19,9 @@
 </div>
 
 <student-selection v-if="authenticated && hasAnyAuthority('ROLE_GUARDIAN')"/>
+<student-dashboard v-if="authenticated && hasAnyAuthority('ROLE_STUDENT')"/>
 <teacher-dashboard v-if="authenticated && hasAnyAuthority('ROLE_EMPLOYEE_TEACHER')"/>
-<admin-logout v-if="authenticated"/>
+<admin-logout v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')"/>
 
 </div>
 </template>

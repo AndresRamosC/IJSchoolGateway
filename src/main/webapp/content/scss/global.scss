@@ -383,3 +383,17 @@ ui bootstrap tweaks
   background-image: none;
   border-color: #ffffff;
 }
+
+// ul.dropdown-menu.show {
+//   transform: translate3d(-116px, -60%, 0px)!important;
+//   z-index: 9999!important;
+// }
+
+[id='dropdown-dropleft'] > ul {
+  transform: translate3d(-116px, -60%, 0px) !important;
+  z-index: 9999 !important;
+}
+
+.btn.dropdown-toggle::before {
+  display: none;
+}

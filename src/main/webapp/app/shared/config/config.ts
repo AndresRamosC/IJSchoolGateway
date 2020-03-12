@@ -49,6 +49,7 @@ import { alertStore } from '@/shared/config/store/alert-store';
 import { translationStore } from '@/shared/config/store/translation-store';
 import { guardianStore } from '@/shared/config/store/guardian-store.ts';
 import { teacherStore } from '@/shared/config/store/teacher-store.ts';
+import { studentStore } from '@/shared/config/store/student-store.ts';
 
 const dateTimeFormats = {
   es: {
@@ -168,7 +169,8 @@ export function initVueXStore(vue) {
       alertStore,
       translationStore,
       guardianStore,
-      teacherStore
+      teacherStore,
+      studentStore
     }
   });
 }

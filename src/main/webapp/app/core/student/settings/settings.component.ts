@@ -4,20 +4,20 @@ import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
 import TranslationService from '@/locale/translation.service';
 
-import StudentSelection from '../Guardian/studentselection/studentselection.vue';
-import TeacherDashboard from '../teacher/dashboard/teacherdashboard.vue';
-import StudentDashboard from '../student/dashboard/studentdashboard.vue';
-import AdminLogout from '../adminLogout/adminlogout.vue';
+import HeaderBell from '../appheaders/photobell.vue';
+import BottomNav from '../bottomnav/bottomnav.vue';
+import { mapGetters } from 'vuex';
 
 @Component({
   components: {
-    StudentSelection,
-    TeacherDashboard,
-    StudentDashboard,
-    AdminLogout
+    HeaderBell,
+    BottomNav
+  },
+  computed: {
+    ...mapGetters(['getStudentPhoto', 'getStudentName', 'getStudentPhone', 'getStudentEmail'])
   }
 })
-export default class Login extends Vue {
+export default class SettingsStudent extends Vue {
   @Inject('loginService')
   private loginService: () => LoginService;
   @Inject('translationService') private translationService: () => TranslationService;
@@ -26,6 +26,12 @@ export default class Login extends Vue {
   public version = VERSION ? 'v' + VERSION : '';
   private currentLanguage = this.$store.getters.currentLanguage;
   private languages: any = this.$store.getters.languages;
+
+  data() {
+    return {
+      showLangModal: false
+    };
+  }
 
   created() {
     this.translationService().refreshTranslation(this.currentLanguage);
@@ -65,23 +71,7 @@ export default class Login extends Vue {
       });
   }
 
-  public openLogin(): void {
-    this.loginService().login();
-  }
-
   public get authenticated(): boolean {
     return this.$store.getters.authenticated;
-  }
-
-  public hasAnyAuthority(authorities: any): boolean {
-    return this.accountService().hasAnyAuthority(authorities);
-  }
-
-  public get swaggerEnabled(): boolean {
-    return this.$store.getters.activeProfiles.indexOf('swagger') > -1;
-  }
-
-  public get inProduction(): boolean {
-    return this.$store.getters.activeProfiles.indexOf('prod') > -1;
   }
 }

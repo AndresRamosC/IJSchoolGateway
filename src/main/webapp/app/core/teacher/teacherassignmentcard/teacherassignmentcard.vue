@@ -1,6 +1,5 @@
 <template>
-<div class="container p-0 mt-2 mb-2 box">
-<router-link class="p-0 m-0 " to="/course-overview-teacher/assignments/view">
+<div class="container p-0 mt-2 mb-2 box" @click="updateAndGo">
     <div class="row m-0">
         <div class="col-1 p-0">
             <font-awesome-icon class="blue" style="width: 16px; height: 16px;" icon="paperclip"/>
@@ -23,7 +22,6 @@
             <p class="gray m-0"> {{description}}</p>
         </div>
     </div>
-</router-link>
 </div>
 </template>
 
@@ -31,10 +29,17 @@
 export default {
     name: "teacherassignmentcard",
     props: {
+        selectedAssignment: Number,
         numberAttch: Number,
         students: Number,
         dueDate: String,
         description: String
+    },
+    methods: {
+        updateAndGo: function () {
+            this.$store.commit('updateSelectedAssignment', this.selectedAssignment)
+            this.$router.push('/course-overview-teacher/assignments/view');
+        }
     }
 }
 </script>

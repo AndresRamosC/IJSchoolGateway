@@ -25,7 +25,8 @@ import {
   BFormDatepicker,
   BSpinner,
   BFormTextarea,
-  BFormCheckboxGroup
+  BFormCheckboxGroup,
+  BDropdownDivider
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -57,4 +58,5 @@ export function initBootstrapVue(vue) {
   vue.component('b-spinner', BSpinner);
   vue.component('b-form-textarea', BFormTextarea);
   vue.component('b-form-checkbox-group', BFormCheckboxGroup);
+  vue.component('b-dropdown-divider', BDropdownDivider);
 }

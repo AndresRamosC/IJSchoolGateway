@@ -44,6 +44,19 @@ const TeacherOverviewAssignments = () => import('../core/teacher/courseoverview/
 const TeacherViewAssignments = () => import('../core/teacher/courseoverview/viewassignments.vue');
 const TeacherOveriewStudents = () => import('../core/teacher/courseoverview/overviewstudents.vue');
 
+/* student */
+const StudentDashboard = () => import('../core/student/dashboard/studentdashboard.vue');
+const StudentSchedule = () => import('../core/student/schedule/schedulestudent.vue');
+const StudentScheduleCourses = () => import('../core/student/schedule/schedulecourses.vue');
+const StudentScheduleAssignments = () => import('../core/student/schedule/scheduleassignments.vue');
+const StudentSubject = () => import('../core/student/subjects/subjectsstudent.vue');
+const StudentSettings = () => import('../core/student/settings/studentsettings.vue');
+const StudentCourseOverview = () => import('../core/student/courseoverview/courseoverviewstudent.vue');
+const StudentOverviewAttendance = () => import('../core/student/courseoverview/overviewattendancestudent.vue');
+const StudentOverviewAssignments = () => import('../core/student/courseoverview/overviewassignments.vue');
+const StudentViewAssignments = () => import('../core/student/courseoverview/viewassignment.vue');
+const StudentOverviewGrades = () => import('../core/student/courseoverview/overviewgrades.vue');
+
 /* tslint:disable */
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
@@ -140,6 +153,43 @@ export default new Router({
       path: '/teacher-assignment',
       name: 'Teacher New Assignment',
       component: TeacherNewAssignment
+    },
+    {
+      path: '/student-dashboard',
+      name: 'Student Dashboard',
+      component: StudentDashboard
+    },
+    {
+      path: '/student-subjects',
+      name: 'Student Subjects',
+      component: StudentSubject
+    },
+    {
+      path: '/student-settings',
+      name: 'Student Settings',
+      component: StudentSettings
+    },
+    {
+      path: '/student-schedule',
+      name: 'Student Schedule',
+      component: StudentSchedule, children: [
+        { path: '/student-schedule/courses', name: 'Student Courses', component: StudentScheduleCourses },
+        { path: '/student-schedule/assignments', name: 'Student Month Assignments', component: StudentScheduleAssignments }
+      ]
+    },
+    {
+      path: '/student-course-overview',
+      name: 'Student Course Overview',
+      component: StudentCourseOverview, children: [
+        { path: '/student-course-overview/attendance', name: 'Student Course Overview Attendance', component: StudentOverviewAttendance },
+        { path: '/student-course-overview/assignments', name: 'Student Course Overview Assignments', component: StudentOverviewAssignments },
+        { path: '/student-course-overview/grades', name: 'Student Course Overview Grades', component: StudentOverviewGrades }
+      ]
+    },
+    {
+      path: '/student-course-overview/assignments/view',
+      name: 'Student Assignment View',
+     component: StudentViewAssignments
     },
     {
       path: '/forbidden',

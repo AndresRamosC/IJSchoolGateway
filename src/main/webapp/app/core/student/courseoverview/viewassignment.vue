@@ -2,22 +2,19 @@
 <div>
     <div class="sticky-top blueBG">
 
-        <header-arrow
-            headerTitle="Assignment"
-        />
+        <header-arrow headerTitle="Assignment">
+            <template v-slot:content>
+            <div class="row m-0 blueBG">
+                <div class="col-8">
+                    <p class="m-0 pr-2 white">{{findStudentSubjectById(getStudentSelectedCourse).courseName}}</p>
+                </div>        
 
-        <div class="row w-100 m-0 mb-2 blueBG">
-            <div class="col-8">
-                <p class="m-0 pr-2 white">{{findSubjectById(actualCourse).courseName}}</p>
-            </div>        
-
-            <div class="col-4">
-                <p class="p-0 m-0 white">{{findSubjectById(actualCourse).groupCode}}</p>
+                <div class="col-4">
+                    <p class="pt-2 white">{{findStudentSubjectById(getStudentSelectedCourse).groupCode}}</p>
+                </div>
             </div>
-        </div>
-
-        <!-- container separator  -->
-        <div style="zIndex: 1" class="col-12 divider"></div>
+            </template>
+        </header-arrow>
 
     </div>
 
@@ -29,12 +26,12 @@
                 <h4 class="font-weight-bold m-0 blue">{{studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.title}}</h4>
             </div>
             <div class="col-4">
-                <p class="blue p-0 m-0">{{getStatus(studentAssignmentsList[selectedAssignment].done)}}</p>
+                <p class="blue p-0 m-0 text-center">{{getStatus(studentAssignmentsList[selectedAssignment].done)}}</p>
             </div>
         </div>
         
         <div class="row m-0 w-100">
-            <div class="col-4">
+            <div class="col-4 pl-1 p-0">
                 <p class="font-weight-bold p-0 m-0 blue">Due date</p>
             </div>
             <div class="col-8 p-0">
@@ -77,7 +74,7 @@
 </template>
 
 <script>
-import HeaderArrow from '../headerarrow/headerarrow.vue';
+import HeaderArrow from '../appheaders/arrowheader.vue';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 
@@ -94,7 +91,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'actualCourse', 'findSubjectById', 'studentAssignmentsList', 'selectedAssignment'
+            'findStudentSubjectById', 'getStudentSelectedCourse', 'studentAssignmentsList', 'selectedAssignment'
         ])
     },
     methods: {

@@ -18,6 +18,11 @@
                     <b-dropdown-item v-for="(course, index) in courses" :key="index" @click="updateAttendances(course.classGroupId)">
                         {{course.courseName}} 
                     </b-dropdown-item>
+                    <b-dropdown-divider></b-dropdown-divider>
+                    <b-dropdown-item
+                    @click="loadAllAssignments">
+                        All
+                    </b-dropdown-item>
                 </b-dropdown>
             </div>        
 
@@ -40,9 +45,35 @@
     <div class="text-center" v-if="!attendanceLoaded">
       <b-spinner variant="primary" label="Text Centered"></b-spinner>
     </div>
-    <calendar v-if="attendanceLoaded"
+    <calendar v-if="attendanceLoaded && !allLoaded"
         :absent="attendanceList"
     />
+    <div class="container" v-if="allLoaded">
+        <h4 class="text-center blue">Assitance record</h4>
+        <div class="card">
+            <b-progress :max="100" height="2rem">
+                <b-progress-bar variant="success" :value="50">50</b-progress-bar>
+                <b-progress-bar style="backgroundColor: yellow; color: black;" :value="20">20</b-progress-bar>
+                <b-progress-bar style="backgroundColor: red; color: white;" :value="30">30</b-progress-bar>
+            </b-progress>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-6 p-0">
+                <div class="row m-1 p-0 pt-2 pb-2 card">
+                    <div class="col-12 text-center font-weight-bold" style="color: #28a745;">% Assitance</div>
+                    <div class="col-12 text-center ">50%</div>
+                </div>
+            </div>
+
+            <div class="col-6 p-0">
+                <div class="row m-1 p-0 pt-2 pb-2 card">
+                    <div class="col-12 text-center font-weight-bold blue">Absences left</div>
+                    <div class="col-12 text-center ">2</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     </div>
 
@@ -74,7 +105,8 @@ export default {
             'actualCourse',
             'attendanceList',
             'attendanceLoaded',
-            'actualStudentId'
+            'actualStudentId',
+            'allLoaded'
         ])
     },
     methods: {
@@ -82,12 +114,10 @@ export default {
         this.$store.commit('changeActualCourse', course);
         let date = moment().format("YYYY-MM-DD")
         this.$store.dispatch('getAttendanceByMonth', { studentId: this.actualStudentId, groupId: course, date: date } );
+      },
+      loadAllAssignments() {
+        this.$store.commit('updateAllLoaded', true);
       }
-    },
-    watch :{
-        attendanceLoaded: function () {
-            console.log(this.attendanceList);
-        }
     }
 }
 </script>

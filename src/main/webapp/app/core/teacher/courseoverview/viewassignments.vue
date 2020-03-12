@@ -6,11 +6,11 @@
         <template v-slot:content>
             <div class="row w-100 m-0 mb-2 blueBG">
                 <div class="col-8">
-                    <p class="m-0 pr-2 white">Subject name</p>
+                    <p class="m-0 pr-2 white">{{findCourseByGroupId(classGroupList[selectedGroup].classGroupId).courseName}}</p>
                 </div>        
 
                 <div class="col-4">
-                    <p class="p-0 m-0 white">Group</p>
+                    <p class="p-0 m-0 white">{{findCourseByGroupId(classGroupList[selectedGroup].classGroupId).groupCode}}</p>
                 </div>
             </div>
         </template>
@@ -22,11 +22,8 @@
     <div class="container-fluid p-2 justify-content-center">
         
         <div class="row m-0 mb-2 pl-2 w-100">
-            <div class="col-8 p-0">
-                <h4 class="font-weight-bold m-0 blue">Assignment title</h4>
-            </div>
-            <div class="col-4">
-                <p class="blue p-0 m-0">In time</p>
+            <div class="col-12 p-0">
+                <h4 class="font-weight-bold m-0 blue">{{teacherAssignmentsList[selectedAssignment].title}}</h4>
             </div>
         </div>
         
@@ -35,15 +32,13 @@
                 <p class="font-weight-bold p-0 m-0 blue">Due date</p>
             </div>
             <div class="col-8 p-0">
-                <p class="gray m-0">Monday, february 9 at 13:00</p>
+                <p class="gray m-0">{{getDueDate(teacherAssignmentsList[selectedAssignment].dueDate)}}</p>
             </div>
         </div>
 
         <div class="row w-100 m-0 mt-2">
             <div class="col-12">
-                <p class="gray m-0">Here you can read a the full description of the assignment.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                </p>
+                <p class="gray m-0">{{teacherAssignmentsList[selectedAssignment].description}}</p>
             </div>
         </div>
 
@@ -53,16 +48,16 @@
                     <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="paperclip"/>
                 </div>
                 <div class="col-9 p-0">
-                    <p>1 attachment</p>
+                    <p>{{teacherAssignmentsList[selectedAssignment].attachmentsDTOList.length}} attachment</p>
                 </div>
             </div>
 
-            <div class="row m-0">
-                <div class="col-2 p-0 pl-2">
+            <div class="row m-0" v-for="(attach, index) in teacherAssignmentsList[selectedAssignment].attachmentsDTOList" :key="index">
+                <!-- <div class="col-2 p-0 pl-2">
                     <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="file-alt"/>
-                </div>
-                <div class="col-8 p-0">
-                    <p class="m-0 gray">Name off the attach.docx</p>
+                </div> -->
+                <div class="col-10 p-0 pl-2">
+                    <p class="m-0 gray text-break">{{attach.title}}.{{attach.mimeType}}</p>
                 </div>
                 <div class="col-2 p-0">
                     <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="cloud-download-alt"/>
@@ -77,6 +72,8 @@
 
 <script>
 import HeaderArrow from '../headerarrow/headerarrowslot.vue';
+import { mapGetters } from 'vuex';
+import moment from 'moment';
 
 export default {
     name: "viewassignments",
@@ -88,6 +85,16 @@ export default {
         status: String,
         dueDate: String,
         description: String
+    },
+    computed: {
+        ...mapGetters([
+            'teacherAssignmentsList', 'selectedAssignment', 'selectedGroup', 'findCourseByGroupId', 'classGroupList'
+        ])
+    },
+    methods: {
+        getDueDate: function (dueDate) {
+            return moment(dueDate).format('dddd, MMMM d [at] h:mm');
+        }
     }
 }
 </script>

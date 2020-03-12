@@ -1,25 +1,6 @@
 <template>
 <div>
     <div class="sticky-top whiteBG">
-        <header-bell
-            headerTitle="Schedule"
-        />
-        <!-- buttons navigation between schedules -->
-        <div class="row m-0 pl-2 pr-2 ">
-            <!-- courses button -->
-            <div class="col">
-                <router-link to="/guardian-schedule/courses">
-                    <button class="inactiveButton p-1 active w-100" role="button" aria-pressed="true">Courses</button>
-                </router-link>
-            </div>
-            <!-- assignments button  -->
-            <div class="col">
-                <router-link to="/guardian-schedule/assignments">
-                    <button class="activeButton p-1 w-100" role="button" aria-pressed="false">Assignments</button>
-                </router-link>
-            </div>
-        </div>
-        
         <!-- day section -->
         <div class="row m-0 pl-3 pr-2 pt-2 daySectionBox">
 
@@ -37,36 +18,37 @@
         </div>
     </div>
 
- <div class="container-fluid p-2 justify-content-center">
-     
-    <div class="row m-0 pt-2">
-
-      <div class="col-12 pt-2" v-for="(date, index) in assignmentsList" :key="index">
-
-          <h4 class="font-weight-regular text-left blue">{{getDate(date[0].assignmentAndAttachmentsDto.dueDate)}}</h4>
-
-            <div class="row m-0 pt-2 pb-2" v-for="(assignment, number) in date" :key="number">
-                <assignment-card
-                    :subjectColor="findSubjectById(assignment.assignmentAndAttachmentsDto.classGroupId).colorCode"
-                    :assignmentName="assignment.assignmentAndAttachmentsDto.title"
-                    :dueTime="findSubjectById(assignment.assignmentAndAttachmentsDto.classGroupId).startHour"
-                    :subjectName="findSubjectById(assignment.assignmentAndAttachmentsDto.classGroupId).courseName"
-                    :attachmentsQty="assignment.assignmentAndAttachmentsDto.attachmentsDTOList.length"
-                />
-            </div>
-
-      </div>
-      
+    <div class="text-center" v-if="!studentAssignmentsLoaded">
+      <b-spinner variant="primary" label="Text Centered"></b-spinner>
     </div>
+    <div class="container-fluid p-2 justify-content-center" v-if="studentAssignmentsLoaded">
+        <div class="row m-0 pt-2">
+        <div class="col-12 pt-2" v-for="(date, index) in assignmentsList" :key="index">
 
- </div>
+            <h4 class="font-weight-regular text-left blue">{{getDate(date[0].assignmentAndAttachmentsDto.dueDate)}}</h4>
+
+                <div class="row m-0 pt-2 pb-2" v-for="(assignment, number) in date" :key="number">
+                    <assignment-card
+                        :subjectColor="findStudentSubjectByGroup(assignment.classGroupId).colorCode"
+                        :assignmentName="assignment.title"
+                        :dueTime="findStudentSubjectByGroup(assignment.classGroupId).startHour"
+                        :subjectName="findStudentSubjectByGroup(assignment.classGroupId).courseName"
+                        :attachmentsQty="assignment.attachmentsDTOList.length"
+                    />
+                </div>
+
+        </div>
+        </div>
+    </div>
+    <div v-if="studentAssignmentsList.length == 0">
+        <h4 class="font-weight-regular text-center blue">No assignments this month</h4>
+    </div>
 
 </div> 
 </template>
 
 <script>
-import AssignmentCard from '../assignmentcard/assignmentcard.vue';
-import HeaderBell from '../headerbell/headerbell.vue';
+import AssignmentCard from '../../Guardian/assignmentcard/assignmentcard.vue';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import axios from 'axios';
@@ -75,8 +57,7 @@ import _ from  'lodash';
 export default {
     name: "scheduleassignments",
     components: {
-        AssignmentCard,
-        HeaderBell
+        AssignmentCard
     },
     data() {
         const today = moment().format("YYYY-MM-DD");
@@ -90,15 +71,17 @@ export default {
     },
     created() {
         let date = moment().format("YYYY-MM");
-        this.$store.dispatch('getStudentAssignmentsByMonth', { studentId: this.actualStudentId, date: date} );
+        this.$store.dispatch('getStudentAssignmentsByMonth', { studentId: this.studentData.studentPerson.studentId, date: date} );
     },
     computed: {
         ...mapGetters([
             'courses',
             'student',
-            'findSubjectById',
+            'findStudentSubjectByGroup',
             'actualStudentId',
-            'studentAssignmentsList'
+            'studentData',
+            'studentAssignmentsList',
+            'studentAssignmentsLoaded'
         ])
     },
     methods: {
@@ -115,7 +98,7 @@ export default {
     },
     watch: {
         studentAssignmentsList: function () {
-            this.allAssignmentsList = _.sortBy(this.studentAssignmentsList, ['dueDate']);
+        this.allAssignmentsList = _.sortBy(this.studentAssignmentsList, ['dueDate']);
             for (let index = 0; index < this.allAssignmentsList.length; index++) {
                 this.allAssignmentsList[index].assignmentAndAttachmentsDto.dueDate = moment(this.allAssignmentsList[index].assignmentAndAttachmentsDto.dueDate).format("YYYY-MM-DD");
             }
@@ -124,7 +107,7 @@ export default {
         value: function () {
             this.assignmentsList = [];
             let date = moment(this.value).format('YYYY-MM-DD');
-            this.$store.dispatch('getStudentAssignmentsByMonth', { studentId: this.actualStudentId, date: date} );
+            this.$store.dispatch('getStudentAssignmentsByMonth', { studentId: this.studentData.studentPerson.studentId, date: date} );
             this.monthName = moment(this.value).format('MMMM YYYY');
         }
     }
