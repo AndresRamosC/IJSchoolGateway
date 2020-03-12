@@ -87,6 +87,14 @@
         </div>
       </div>
 
+      <div class="row m-0 mt-4 d-flex justify-content-start">
+        <b-form-file 
+          v-model="files"
+          class="mt-3"
+          plain multiple
+          ></b-form-file>
+      </div>
+
       <div class="row m-0 mt-4 d-flex justify-content-end">
         <div class="col-9 d-flex justify-content-center">
           <button class="activeButton p-1 pl-4 pr-4" role="button" aria-pressed="false" @click="fire()">Create assignment</button>
@@ -130,7 +138,8 @@ export default {
       day: choosenDate,
       dayName: name,
       dueDate: due,
-      dueTime: time
+      dueTime: time,
+      files: []
     };
   },
   methods: {
@@ -142,7 +151,9 @@ export default {
       return weekday === 0 || weekday === 6;
     },
     fire: function() {
-      this.$refs['modal-students'].show();
+      // this.$refs['modal-students'].show();
+      this.$store.dispatch('createAssignmentWithFiles', 
+      { "title" :  "tarea de prueba", "description" :  "descripcion de prueba", "dueDate" : moment().format('YYYY-MM-DD[T]HH:mm:ss-06:00'), "classGroupId" : 1, "files": this.files })
     }
   },
   computed: {
@@ -155,9 +166,9 @@ export default {
         'findCourseByGroupId'])
   },
   watch: {
-        value: function () {
-            this.dueDate = moment(this.value).format('dddd, MMMM DD');
-        }
+    value: function () {
+      this.dueDate = moment(this.value).format('dddd, MMMM DD');
+    }
   }
 };
 </script>

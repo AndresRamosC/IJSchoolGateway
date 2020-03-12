@@ -26,7 +26,8 @@ import {
   BSpinner,
   BFormTextarea,
   BFormCheckboxGroup,
-  BDropdownDivider
+  BDropdownDivider,
+  BFormFile
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -59,4 +60,5 @@ export function initBootstrapVue(vue) {
   vue.component('b-form-textarea', BFormTextarea);
   vue.component('b-form-checkbox-group', BFormCheckboxGroup);
   vue.component('b-dropdown-divider', BDropdownDivider);
+  vue.component('b-form-file', BFormFile);
 }

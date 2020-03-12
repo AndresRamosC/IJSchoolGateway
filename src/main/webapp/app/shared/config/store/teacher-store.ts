@@ -132,6 +132,20 @@ export const teacherStore: Module<any, any> = {
         // handle success
         context.commit('updateAllAssignmentsList', response.data);
       });
+    },
+    createAssignmentWithFiles(context, { creationDate, title, description, dueDate, classGroupId, files }) {
+      const Assignment = { title: title, description: description, dueDate: dueDate, classGroupId: classGroupId };
+
+      const data = new FormData();
+
+      data.append('assignmentDTO', new Blob([JSON.stringify(Assignment)], { type: 'application/json' }));
+      for (let i = 0; i < files.length; i++) {
+        data.append('files', files[i]);
+      }
+
+      axios.post('/services/ijschoolmanageradministrationservice/api/v2/assignments', data).then(function(response) {
+        console.log(response);
+      });
     }
   }
 };
