@@ -11,7 +11,7 @@
 
         <!-- section title -->
         <div class="col-8 pb-2 p-0 d-flex flex-wrap align-content-start">
-          <h1 style="fontSize: 1.5em;" class="font-weight-bold white">{{headerTitle}}</h1>
+          <h1 style="fontSize: 1.5em;" class="font-weight-bold white"  v-text="$t('student.titles.' + headerTitle.toLowerCase())">{{headerTitle}}</h1>
         </div>
 
         <!-- circle photo -->

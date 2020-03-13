@@ -8,7 +8,7 @@
         :absent="studentAttendanceList"
     />
     <div class="container" v-if="allLoaded">
-        <h4 class="text-center blue">Assitance record</h4>
+        <h4 class="text-center blue" v-text="$t('student.attendance.assitance record')">Assitance record</h4>
         <div class="card">
             <b-progress :max="max" height="2rem">
                 <b-progress-bar variant="success" :value="getAssitances">{{ getAssitances }}</b-progress-bar>
@@ -20,14 +20,14 @@
         <div class="row mt-4">
             <div class="col-6 p-0">
                 <div class="row m-1 p-0 pt-2 pb-2 card">
-                    <div class="col-12 text-center font-weight-bold" style="color: #28a745;">% Assitance</div>
+                    <div class="col-12 text-center font-weight-bold" style="color: #28a745;" v-text="$t('student.attendance.assitance percentage')">Assitance %</div>
                     <div class="col-12 text-center ">50%</div>
                 </div>
             </div>
 
             <div class="col-6 p-0">
                 <div class="row m-1 p-0 pt-2 pb-2 card">
-                    <div class="col-12 text-center font-weight-bold blue">Absences left</div>
+                    <div class="col-12 text-center font-weight-bold blue" v-text="$t('student.attendance.absences left')">Absences left</div>
                     <div class="col-12 text-center ">2</div>
                 </div>
             </div>

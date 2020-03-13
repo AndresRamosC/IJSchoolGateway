@@ -26,13 +26,13 @@
                 <h4 class="font-weight-bold m-0 blue">{{studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.title}}</h4>
             </div>
             <div class="col-4">
-                <p class="blue p-0 m-0 text-center">{{getStatus(studentAssignmentsList[selectedAssignment].done)}}</p>
+                <p class="blue p-0 m-0 text-center" v-text="$t('student.assignments.status.' + getStatus(studentAssignmentsList[selectedAssignment].done).toLowerCase())">{{getStatus(studentAssignmentsList[selectedAssignment].done)}}</p>
             </div>
         </div>
         
         <div class="row m-0 w-100">
             <div class="col-4 pl-1 p-0">
-                <p class="font-weight-bold p-0 m-0 blue">Due date</p>
+                <p class="font-weight-bold p-0 m-0 blue" v-text="$t('student.assignments.due date')">Due date</p>
             </div>
             <div class="col-8 p-0">
                 <p class="gray m-0">{{getDueDate(studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.dueDate)}}</p>
@@ -51,18 +51,19 @@
                     <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="paperclip"/>
                 </div>
                 <div class="col-9 p-0">
-                    <p>{{studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.attachmentsDTOList.length}} attachment</p>
+                    <p v-if="studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.attachmentsDTOList.length == 1" v-text="studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.attachmentsDTOList.length + ' ' + $t('student.assignments.attachment')"> attachment</p>
+                    <p v-if="studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.attachmentsDTOList.length > 1" v-text="studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.attachmentsDTOList.lengt + ' ' + $t('student.assignments.attachments')">attachments</p>
                 </div>
             </div>
 
             <div class="row m-0" v-for="(attach, index) in studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.attachmentsDTOList" :key="index">
-                <!-- <div class="col-2 p-0 pl-2">
+                <div class="col-2 p-0 pl-2">
                     <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="file-alt"/>
-                </div> -->
-                <div class="col-10 p-0 pl-2">
-                    <p class="m-0 gray text-break">{{attach.title}}.{{attach.mimeType}}</p>
                 </div>
-                <div class="col-2 p-0">
+                <div class="col-8 p-0 pl-2">
+                    <p class="m-0 gray text-break">{{attach.title}}</p>
+                </div>
+                <div class="col-2 p-0" @click="downloadDocument(attach)">
                     <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="cloud-download-alt"/>
                 </div>
             </div>
@@ -75,6 +76,7 @@
 
 <script>
 import HeaderArrow from '../appheaders/arrowheader.vue';
+import {saveAs}  from 'file-saver';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 
@@ -82,6 +84,11 @@ export default {
     name: "overviewassignments",
     components: {
         HeaderArrow
+    },
+    data() {
+        return {
+            download: ''
+        }
     },
     props: {
         title: String,
@@ -91,7 +98,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'findStudentSubjectById', 'getStudentSelectedCourse', 'studentAssignmentsList', 'selectedAssignment'
+            'findStudentSubjectById', 'getStudentSelectedCourse', 'studentAssignmentsList', 'selectedAssignment', 'blobData'
         ])
     },
     methods: {
@@ -100,6 +107,15 @@ export default {
         },
         getDueDate: function (dueDate) {
             return moment(dueDate).format('dddd, MMMM d [at] h:mm');
+        },
+        downloadDocument(doc) {
+            this.download = doc;
+            this.$store.dispatch('downloadAssignmentAttachments', doc.id);
+        },
+    },
+    watch: {
+        blobData: function () {
+            saveAs(this.blobData, this.download.title);
         }
     }
 }

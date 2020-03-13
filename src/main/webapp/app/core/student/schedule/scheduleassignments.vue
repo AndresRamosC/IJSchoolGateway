@@ -28,12 +28,13 @@
             <h4 class="font-weight-regular text-left blue">{{getDate(date[0].assignmentAndAttachmentsDto.dueDate)}}</h4>
 
                 <div class="row m-0 pt-2 pb-2" v-for="(assignment, number) in date" :key="number">
+                    
                     <assignment-card
-                        :subjectColor="findStudentSubjectByGroup(assignment.classGroupId).colorCode"
-                        :assignmentName="assignment.title"
-                        :dueTime="findStudentSubjectByGroup(assignment.classGroupId).startHour"
-                        :subjectName="findStudentSubjectByGroup(assignment.classGroupId).courseName"
-                        :attachmentsQty="assignment.attachmentsDTOList.length"
+                        :subjectColor="findStudentSubjectByGroup(assignment.assignmentAndAttachmentsDto.classGroupId).colorCode"
+                        :assignmentName="assignment.assignmentAndAttachmentsDto.title"
+                        :dueTime="findStudentSubjectByGroup(assignment.assignmentAndAttachmentsDto.classGroupId).startHour"
+                        :subjectName="findStudentSubjectByGroup(assignment.assignmentAndAttachmentsDto.classGroupId).courseName"
+                        :attachmentsQty="assignment.assignmentAndAttachmentsDto.attachmentsDTOList.length"
                     />
                 </div>
 
@@ -41,7 +42,7 @@
         </div>
     </div>
     <div v-if="studentAssignmentsList.length == 0">
-        <h4 class="font-weight-regular text-center blue">No assignments this month</h4>
+        <h4 class="font-weight-regular text-center blue" v-text="$t('student.schedule.no assignments')">No assignments this month</h4>
     </div>
 
 </div> 

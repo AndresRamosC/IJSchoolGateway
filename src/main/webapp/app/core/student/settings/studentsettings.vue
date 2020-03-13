@@ -45,7 +45,7 @@
                     <div class="row pt-2 p-0 m-0">
 
                         <div class="col-10 p-0">
-                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left">Notifications and sound</p>
+                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left" v-text="$t('student.settings.notifications')">Notifications and sound</p>
                         </div>
 
                         <div class="col-2 p-0 d-flex justify-content-center">
@@ -63,7 +63,7 @@
                     <div class="row pt-2 p-0 m-0">
 
                         <div class="col-10 p-0">
-                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left">Appearance</p>
+                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left" v-text="$t('student.settings.appearance')">Appearance</p>
                         </div>
 
                         <div class="col-2 p-0 d-flex justify-content-center">
@@ -81,7 +81,7 @@
                     <div class="row pt-2 p-0 m-0" @click="showLangModal = !showLangModal">
 
                         <div class="col-10 p-0">
-                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left">Language</p>
+                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left" v-text="$t('student.settings.language')">Language</p>
                         </div>
 
                         <div class="col-2 p-0 d-flex justify-content-center">
@@ -100,7 +100,7 @@
 
                             <div class="row m-0 d-flex justify-content-center">
                                 <div class="col-12">
-                                    <p class="font-weight-bold m-0 pb-2 text-center blue">Select language</p>
+                                    <p class="font-weight-bold m-0 pb-2 text-center blue" v-text="$t('student.settings.select language')">Select language</p>
                                 </div>
                                 <!-- container separator  -->
                                 <div class="col-12 divider"></div>
@@ -109,7 +109,7 @@
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-10">
-                                            <p class="m-0 p-0 blue">{{value.name}}</p>
+                                            <p class="m-0 p-0 blue">{{key}} - {{value.name}}</p>
                                         </div>
                                         <div class="col-2">
                                             <font-awesome-icon class="blue" style="width: 24px; height: 24px;" icon="chevron-right"/>
@@ -125,7 +125,7 @@
                     <div class="row pt-2 p-0 m-0">
 
                         <div class="col-10 p-0">
-                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left">Privacy</p>
+                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left" v-text="$t('student.settings.privacy')">Privacy</p>
                         </div>
 
                         <div class="col-2 p-0 d-flex justify-content-center">
@@ -141,7 +141,7 @@
                     <div @click="logout()" class="row pt-1 pb-1 p-0 m-0">
 
                         <div class="col-10 p-0">
-                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left">Log out</p>
+                            <p class="font-weight-regular m-0 pl-3 p-0 blue text-left" v-text="$t('student.settings.log out')">Log out</p>
                         </div>
 
                         <div class="col-2 p-0 d-flex justify-content-center">

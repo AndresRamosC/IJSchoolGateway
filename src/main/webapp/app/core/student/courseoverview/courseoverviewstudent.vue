@@ -9,7 +9,7 @@
                     <template v-slot:button-content>
                         <div class="row">
                             <p class="m-0 pr-2" v-if="!allLoaded">{{findStudentSubjectById(getStudentSelectedCourse).courseName}}</p>
-                            <p class="m-0 pr-2" v-if="allLoaded">All</p>
+                            <p class="m-0 pr-2" v-if="allLoaded" v-text="$t('student.courses.all')">All</p>
                             <font-awesome-icon class="white" style="width: 20px; height: 20px;" icon="chevron-down"/>
                         </div>
                     </template>
@@ -19,14 +19,14 @@
                     <b-dropdown-divider></b-dropdown-divider>
                     <b-dropdown-item
                     @click="loadAllAssignments">
-                        All
+                        <p class="m-0" v-text="$t('student.courses.all')"></p>
                     </b-dropdown-item>
                 </b-dropdown>
             </div>        
 
             <div class="col-3">
                 <p class="pt-2 white" v-if="!allLoaded">{{findStudentSubjectById(getStudentSelectedCourse).groupCode}}</p>
-                <p class="pt-2 white" v-if="allLoaded">All</p>
+                <p class="pt-2 white" v-if="allLoaded" v-text="$t('student.courses.all')">All</p>
             </div>
         </div>
         </template>
@@ -36,19 +36,19 @@
             <!-- attendance button -->
             <div class="pl-2 pr-1">
               <router-link to="/student-course-overview/attendance" replace>
-                <button :class="attendance" role="button" aria-pressed="true">Attendance</button>
+                <button :class="attendance" role="button" aria-pressed="true" v-text="$t('student.courses.attendance')">Attendance</button>
               </router-link>
             </div>
             <!-- assignments button  -->
             <div class="pl-2 pr-1">
               <router-link to="/student-course-overview/assignments" replace>
-                <button :class="assignments" role="button" aria-pressed="false">Assignments</button>
+                <button :class="assignments" role="button" aria-pressed="false" v-text="$t('student.courses.assignments')">Assignments</button>
               </router-link>
             </div>
             <!-- grades button  -->
             <div class="pl-2 pr-1">
               <router-link to="/student-course-overview/grades" replace>
-                <button :class="grades" role="button" aria-pressed="false">Grades</button>
+                <button :class="grades" role="button" aria-pressed="false" v-text="$t('student.courses.grades')">Grades</button>
               </router-link>
             </div>
           </div>

@@ -247,5 +247,8 @@ export default new Router({
       meta: { authorities: [Authority.ADMIN] }
     }
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
-  ]
+  ],
+  scrollBehavior() {
+      document.getElementById('app').scrollIntoView();
+  }
 });

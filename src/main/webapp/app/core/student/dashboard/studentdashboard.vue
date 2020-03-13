@@ -17,7 +17,7 @@
 
         <div class="row pb-2 m-0">
             <div class="col-12">
-                <p class="font-weight-bold text-start blue">Current course</p>
+                <p class="font-weight-bold text-start blue" v-text="$t('student.dashboard.current course')">Current course</p>
             </div>
         </div>
 
@@ -26,7 +26,7 @@
         </div>
         <div v-if="studentTodayCoursesLoaded && (noCourse === true)">
             <div class="row pl-2 m-0">
-                <p class="pl-2 blue">No class currently</p>
+                <p class="pl-2 blue" v-text="$t('student.dashboard.no class')">No class currently</p>
             </div>
         </div>
         <div v-if="studentTodayCoursesLoaded && (noCourse === false)">
@@ -53,14 +53,14 @@
 
                 <!-- entrance time  -->
                 <div class="col-6 p-0 pt-1 pb-1 pl-2">
-                    <h5 class="font-weight-regular text-left p-0 m-0 blue">Entrance:</h5>
-                    <p class="font-weight-regular text-left p-0 m-0 gray">08:10 - late</p>
+                    <h5 class="font-weight-regular text-left p-0 m-0 blue" v-text="$t('student.dashboard.entrance')">Entrance:</h5>
+                    <p class="font-weight-regular text-left p-0 m-0 gray" v-text="$t('student.dashboard.entry hour')">08:10 - late</p>
                 </div>
 
                 <!-- exit time -->
                 <div class="col-6 p-0 pt-1 pb-1 pl-2">
-                    <h5 class="font-weight-regular text-left p-0 m-0 blue">Exit:</h5>
-                    <p class="font-weight-regular text-left p-0 m-0 gray">still at school</p>
+                    <h5 class="font-weight-regular text-left p-0 m-0 blue" v-text="$t('student.dashboard.exit')">Exit:</h5>
+                    <p class="font-weight-regular text-left p-0 m-0 gray" v-text="$t('student.dashboard.at school')">still at school</p>
                 </div>
 
             </div>

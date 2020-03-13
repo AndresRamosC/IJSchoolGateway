@@ -9,7 +9,7 @@
         </div>
 
         <div class="container-fluid p-2 justify-content-center">
-            <h5 class="font-weight-bold blue text-left">All courses</h5>
+            <h5 class="font-weight-bold blue text-left" v-text="$t('student.subjects.all courses')">All courses</h5>
 
             <div class="row m-0" v-for="(course, index) in getStudentSubjects" :key="index">
                 <subject-card

@@ -9,13 +9,13 @@
                         <!-- courses button -->
                         <div class="col">
                             <router-link to="/student-schedule/courses">
-                                <button :class="attendance" role="button" aria-pressed="true">Courses</button>
+                                <button :class="attendance" role="button" aria-pressed="true" v-text="$t('student.courses.courses')">Courses</button>
                             </router-link>
                         </div>
                         <!-- assignments button  -->
                         <div class="col">
                             <router-link to="/student-schedule/assignments">
-                                <button :class="assignments" role="button" aria-pressed="false">Assignments</button>
+                                <button :class="assignments" role="button" aria-pressed="false" v-text="$t('student.courses.assignments')">Assignments</button>
                             </router-link>
                         </div>
                     </div>

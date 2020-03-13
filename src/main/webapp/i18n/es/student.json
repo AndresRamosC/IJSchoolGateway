@@ -1,0 +1,62 @@
+{
+  "student": {
+    "titles": {
+      "dashboard": "Tablero",
+      "schedule": "Horario",
+      "course overview": "Resumen del curso",
+      "subjects": "Materias",
+      "settings": "Ajustes",
+      "assignment": "Tarea"
+    },
+    "assignments": {
+      "status": {
+        "delivered": "Entregada",
+        "not delivered": "No entregada"
+      },
+      "attachment": "adjunto",
+      "attachments": "adjuntos",
+      "due date": "Fecha de entrega"
+    },
+    "courses": {
+      "group": "Grupo",
+      "attendance": "Asistencia",
+      "assignments": "Tareas",
+      "grades": "Calificaciones",
+      "all": "Todas",
+      "courses": "Materias"
+    },
+    "attendance": {
+      "assitance record": "Historial de asistencia",
+      "assitance percentage": "% de Asistencia",
+      "absences left": "Faltas restantes"
+    },
+    "grades": {
+      "total": "Promedio total",
+      "total message": "Incluyendo todos los meses",
+      "average month": "Promedio por mes"
+    },
+    "dashboard": {
+      "current course": "Clase actual",
+      "no class": "Sin clase actualmente",
+      "entrance": "Entrada",
+      "exit": "Salida",
+      "entry hour": "08:10 - retardo",
+      "at school": "Aún en la escuela"
+    },
+    "schedule": {
+      "no assignments": "No hay tareas para este mes",
+      "courses": "Clases"
+    },
+    "subjects": {
+      "all courses": "Todas las materias"
+    },
+    "settings": {
+      "notifications": "Sonido y notificaciones",
+      "appearance": "Apariencia",
+      "language": "Idioma",
+      "select language": "Seleccionar idioma",
+      "privacy": "Privacidad",
+      "log out": "Cerrar sesión"
+    }
+  }
+}

@@ -5,10 +5,10 @@
             <div class="col-8">
                 <div class="row">
                     <div class="col-12">
-                        <p class="font-weight-bold m-0 blue">Total score</p>
+                        <p class="font-weight-bold m-0 blue" v-text="$t('student.grades.total')">Total score</p>
                     </div>
                     <div class="col-12">
-                        <p style="fontSize: 0.8em;" class="font-weight-regular m-0 gray">Average including all months</p>
+                        <p style="fontSize: 0.8em;" class="font-weight-regular m-0 gray" v-text="$t('student.grades.total message')">Average including all months</p>
                     </div>
                 </div>
             </div>
@@ -20,21 +20,19 @@
         <div class="row m-0 mt-2">
             <div class="col-12">
                 <div>
-                    <h3 class="text-center blue">Average per month</h3>
+                    <h3 class="text-center blue" v-text="$t('student.grades.average month')">Average per month</h3>
                 </div>
             </div>
         </div>
         
         <div class="col-12 pt-2" v-for="(date, index) in assignmentsList" :key="index">
 
-            <!-- <div v-for="(assignment, number) in assignmentsList[index]" :key="number"> -->
                 <month-grade
                     :month="getDate(date[0].dueDate)"
                     :homeworks="calculateHomeworks(assignmentsList[index])"
                     test="90"
                     :total="getTotalMonth(assignmentsList[index])"
                 />
-            <!-- </div> -->
 
         </div>
 

@@ -2,8 +2,6 @@
 <div>
 
     <div class="container-fluid p-2 justify-content-center">
-        
-        <div class="row m-0 pt-2">
 
                 <div class="row m-0 pt-2 pb-2" v-for="(assignment, index) in studentAssignmentsList" :key="index">
                     <assignment-card
@@ -14,8 +12,6 @@
                         :description="assignment.assignmentAndAttachmentsDto.description"
                     />
                 </div>
-        
-        </div>
 
     </div>
 

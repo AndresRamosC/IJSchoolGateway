@@ -13,7 +13,9 @@ export const teacherStore: Module<any, any> = {
     studentsList: '',
     studentsGroup: '',
     teacherAssignmentsList: '',
-    allAssignments: []
+    allAssignments: [],
+    blobData: '',
+    newAssignmentId: 0
   },
   getters: {
     teacherContext: state => state.teacherContext,
@@ -24,8 +26,11 @@ export const teacherStore: Module<any, any> = {
     selectedGroup: state => state.selectedGroup,
     studentsList: state => state.studentsList,
     studentsGroup: state => state.studentsGroup,
+    blobData: state => state.blobData,
+    newAssignmentId: state => state.newAssignmentId,
     teacherAssignmentsList: state => state.teacherAssignmentsList,
     allAssignments: state => state.allAssignments,
+    blobDataLoaded: state => !!(state.blobData !== '' && state.blobData !== Promise),
     teacherAssignmentsListLoaded: state => !!(state.teacherAssignmentsList !== ''),
     teacherContextLoaded: state => !!(state.teacherContext !== ''),
     teacherLoaded: state => !!(state.actualTeacher !== ''),
@@ -84,6 +89,12 @@ export const teacherStore: Module<any, any> = {
     updateTeacherAssignmentsList(state, assignmentsList) {
       state.teacherAssignmentsList = assignmentsList;
     },
+    updateBlobData(state, blobData) {
+      state.blobData = blobData;
+    },
+    updateNewAssignmentId(state, id) {
+      state.newAssignmentId = id;
+    },
     updateAllAssignmentsList(state, assignmentsList) {
       for (let index = 0; index < assignmentsList.length; index++) {
         if (assignmentsList.length != 0) {
@@ -133,7 +144,7 @@ export const teacherStore: Module<any, any> = {
         context.commit('updateAllAssignmentsList', response.data);
       });
     },
-    createAssignmentWithFiles(context, { creationDate, title, description, dueDate, classGroupId, files }) {
+    async createAssignmentWithFiles(context, { title, description, dueDate, classGroupId, files }) {
       const Assignment = { title: title, description: description, dueDate: dueDate, classGroupId: classGroupId };
 
       const data = new FormData();
@@ -143,9 +154,21 @@ export const teacherStore: Module<any, any> = {
         data.append('files', files[i]);
       }
 
-      axios.post('/services/ijschoolmanageradministrationservice/api/v2/assignments', data).then(function(response) {
-        console.log(response);
-      });
+      const assignmentId = (await axios.post('/services/ijschoolmanageradministrationservice/api/v2/assignments', data)).data;
+      context.commit('updateNewAssignmentId', assignmentId.id);
+    },
+    async downloadAssignmentAttachments(context, id) {
+      await axios
+        .get(`/services/ijschoolmanageradministrationservice/api/attachments/${id}/$content`, { responseType: 'blob' })
+        .then(response => {
+          context.commit('updateBlobData', response.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    assignAssignmentToAllGroup(context, { assignmentId, classGroupId }) {
+      axios.post(`/services/ijschoolmanageradministrationservice/api/assignAssignmentToGroup/${assignmentId}/${classGroupId}`);
     }
   }
 };

@@ -59,13 +59,13 @@
             </div>
 
             <div class="row m-0" v-for="(attach, index) in studentAssignmentsList[selectedAssignment].assignmentAndAttachmentsDto.attachmentsDTOList" :key="index">
-                <!-- <div class="col-2 p-0 pl-2">
+                <div class="col-2 p-0 pl-2">
                     <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="file-alt"/>
-                </div> -->
-                <div class="col-10 p-0 pl-2">
-                    <p class="m-0 gray text-break">{{attach.title}}.{{attach.mimeType}}</p>
                 </div>
-                <div class="col-2 p-0">
+                <div class="col-8 p-0 pl-2">
+                    <p class="m-0 gray text-break">{{attach.title}}</p>
+                </div>
+                <div class="col-2 p-0" @click="downloadDocument(attach)">
                     <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="cloud-download-alt"/>
                 </div>
             </div>
@@ -78,6 +78,7 @@
 
 <script>
 import HeaderArrow from '../headerarrow/headerarrow.vue';
+import {saveAs}  from 'file-saver';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 
@@ -85,6 +86,11 @@ export default {
     name: "overviewassignments",
     components: {
         HeaderArrow
+    },
+    data() {
+        return {
+            download: ''
+        }
     },
     props: {
         title: String,
@@ -94,7 +100,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'actualCourse', 'findSubjectById', 'studentAssignmentsList', 'selectedAssignment'
+            'actualCourse', 'findSubjectById', 'studentAssignmentsList', 'selectedAssignment', 'blobData'
         ])
     },
     methods: {
@@ -103,6 +109,15 @@ export default {
         },
         getDueDate: function (dueDate) {
             return moment(dueDate).format('dddd, MMMM d [at] h:mm');
+        },
+        downloadDocument(doc) {
+            this.download = doc;
+            this.$store.dispatch('downloadAssignmentAttachments', doc.id);
+        }
+    },
+    watch: {
+        blobData: function () {
+            saveAs(this.blobData, this.download.title);
         }
     }
 }

@@ -5,10 +5,11 @@
             <font-awesome-icon class="blue" style="width: 16px; height: 16px;" icon="paperclip"/>
         </div>
         <div class="col-4 p-0">
-            <p class="gray m-0"> {{numberAttch}} attachment</p>
+            <p v-if="numberAttch == 1" class="gray m-0" v-text="numberAttch + ' ' + $t('student.assignments.attachment')"> {{numberAttch}} attachment</p>
+            <p v-if="numberAttch > 1" class="gray m-0" v-text="numberAttch + ' ' + $t('student.assignments.attachments')"> {{numberAttch}} attachments</p>
         </div>
         <div class="col-4 p-0">
-            <p style="fontSize: 0.8em;" class="blue pl-2 pt-1 m-0"> {{getStatus}}</p>
+            <p style="fontSize: 0.8em;" class="blue pl-2 pt-1 m-0" v-text="$t('student.assignments.status.' + getStatus.toLowerCase())"> {{getStatus}}</p>
         </div>
         <div class="col-1 p-0">
             <font-awesome-icon class="blue" style="width: 16px; height: 16px;" icon="calendar-day"/>
@@ -17,7 +18,7 @@
             <p class="gray m-0"> {{dueDate}}</p>
         </div>
     </div>
-    <div class="row m-0">
+    <div class="row m-0 w-100">
         <div class="col-12 p-2">
             <p class="gray m-0"> {{description}}</p>
         </div>

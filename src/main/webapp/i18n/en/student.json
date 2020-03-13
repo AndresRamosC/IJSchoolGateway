@@ -1,0 +1,62 @@
+{
+  "student": {
+    "titles": {
+      "dashboard": "Dashboard",
+      "schedule": "Schedule",
+      "course overview": "Course overview",
+      "subjects": "Subjects",
+      "settings": "Settings",
+      "assignment": "Assignment"
+    },
+    "assignments": {
+      "status": {
+        "delivered": "Delivered",
+        "not delivered": "Not delivered"
+      },
+      "attachment": "Attachment",
+      "attachments": "Attachments",
+      "due date": "Due date"
+    },
+    "courses": {
+      "group": "Group",
+      "attendance": "Attendance",
+      "assignments": "Assignments",
+      "grades": "Grades",
+      "all": "All",
+      "courses": "Courses"
+    },
+    "attendance": {
+      "assitance record": "Assitance record",
+      "assitance percentage": "Assitance %",
+      "absences left": "Absences left"
+    },
+    "grades": {
+      "total": "Total score",
+      "total message": "Average including all months",
+      "average month": "Average per month"
+    },
+    "dashboard": {
+      "current course": "Current course",
+      "no class": "No class currently",
+      "entrance": "Entrance",
+      "exit": "Exit",
+      "entry hour": "08:10 - late",
+      "at school": "Still at school"
+    },
+    "schedule": {
+      "no assignments": "No assignments this month",
+      "courses": "Courses"
+    },
+    "subjects": {
+      "all courses": "All courses"
+    },
+    "settings": {
+      "notifications": "Notifications and sound",
+      "appearance": "Appearance",
+      "language": "Language",
+      "select language": "Select language",
+      "privacy": "Privacy",
+      "log out": "Log out"
+    }
+  }
+}

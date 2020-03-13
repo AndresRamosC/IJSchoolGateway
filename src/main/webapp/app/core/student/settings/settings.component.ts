@@ -45,6 +45,7 @@ export default class SettingsStudent extends Vue {
   }
 
   public changeLanguage(newLanguage: string): void {
+    console.log(newLanguage);
     this.translationService().refreshTranslation(newLanguage);
   }
 

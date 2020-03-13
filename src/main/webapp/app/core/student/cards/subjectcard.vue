@@ -28,7 +28,7 @@
 
                             <!-- course group -->
                             <div class="col-8 p-0">
-                                <p class="font-weight-regular gray m-0 text-left">Group: {{group}} </p>
+                                <p class="font-weight-regular gray m-0 text-left" v-text="$t('student.courses.group') + ': ' + group">Group: {{group}} </p>
                             </div>
 
                         </div>
@@ -40,9 +40,15 @@
                             <template v-slot:button-content class="whiteBG">
                                 <font-awesome-icon class="blue" style="width: 25px; height: 25px;" icon="ellipsis-v"/>
                             </template>
-                                <b-dropdown-item @click="updateCourseAndGo(subjectId, 'attendance')">Attendance</b-dropdown-item>
-                                <b-dropdown-item @click="updateCourseAndGo(subjectId, 'assignments')">Assignments</b-dropdown-item>
-                                <b-dropdown-item @click="updateCourseAndGo(subjectId, 'grades')">Grade</b-dropdown-item>
+                                <b-dropdown-item @click="updateCourseAndGo(subjectId, 'attendance')">
+                                    <p v-text="$t('student.courses.attendance')" class="p-1 m-0 font-weight-bold blue"></p>
+                                </b-dropdown-item>
+                                <b-dropdown-item @click="updateCourseAndGo(subjectId, 'assignments')">
+                                    <p v-text="$t('student.courses.assignments')" class="p-1 m-0 font-weight-bold blue"></p>
+                                </b-dropdown-item>
+                                <b-dropdown-item @click="updateCourseAndGo(subjectId, 'grades')">
+                                    <p v-text="$t('student.courses.grades')" class="p-1 m-0 font-weight-bold blue"></p>
+                                </b-dropdown-item>
                         </b-dropdown>
                     </div>
 

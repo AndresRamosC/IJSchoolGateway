@@ -12,7 +12,7 @@
                         <font-awesome-icon :class="dashboard" style="width: 35px; height: 30px;" icon="address-card"/>
                     </div>
                     <div class="col-12 p-0">
-                        <p class="blue text-center m-0">Dashboard</p>
+                        <p class="blue text-center m-0" v-text="$t('student.titles.dashboard')">Dashboard</p>
                     </div>
                 </router-link>
             </div>
@@ -24,7 +24,7 @@
                         <font-awesome-icon :class="schedule" style="width: 35px; height: 30px;" icon="calendar"/>
                     </div>
                     <div class="col-12 p-0">
-                        <p class="blue text-center m-0">Schedule</p>
+                        <p class="blue text-center m-0" v-text="$t('student.titles.schedule')">Schedule</p>
                     </div>
                 </router-link>
             </div>
@@ -36,7 +36,7 @@
                         <font-awesome-icon :class="subject" style="width: 35px; height: 30px;" icon="book"/>
                     </div>
                     <div class="col-12 p-0">
-                        <p class="blue text-center m-0">Subjects</p>
+                        <p class="blue text-center m-0" v-text="$t('student.titles.subjects')">Subjects</p>
                     </div>
                 </router-link>
             </div>
@@ -48,7 +48,7 @@
                         <font-awesome-icon :class="settings" style="width: 35px; height: 30px;" icon="cog"/>
                     </div>
                     <div class="col-12 p-0">
-                        <p class="blue text-center m-0">Settings</p>
+                        <p class="blue text-center m-0" v-text="$t('student.titles.settings')">Settings</p>
                     </div>
                 </router-link>
             </div>

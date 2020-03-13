@@ -106,7 +106,6 @@
         </b-collapse>
     </b-navbar>
 </template>
-
 <script lang="ts" src="./jhi-navbar.component.ts">
 </script>
 
