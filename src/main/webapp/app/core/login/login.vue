@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="h-100">
 
 <div v-if="!authenticated" class="container-fluid">
     <div class="row">
@@ -21,7 +21,7 @@
 <student-selection v-if="authenticated && hasAnyAuthority('ROLE_GUARDIAN')"/>
 <student-dashboard v-if="authenticated && hasAnyAuthority('ROLE_STUDENT')"/>
 <teacher-dashboard v-if="authenticated && hasAnyAuthority('ROLE_EMPLOYEE_TEACHER')"/>
-<admin-logout v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')"/>
+<administration-guardian v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')"/>
 
 </div>
 </template>

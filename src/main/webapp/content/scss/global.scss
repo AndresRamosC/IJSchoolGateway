@@ -398,6 +398,13 @@ ui bootstrap tweaks
   display: none;
 }
 
+[id='search-input'] {
+  padding: 0em !important;
+  height: 100%;
+  border: 1px solid #1071a3;
+  border-radius: 5px;
+}
+
 // input[type="file"] {
 //   border: 0;
 //   clip: rect(0, 0, 0, 0);

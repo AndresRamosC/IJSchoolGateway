@@ -8,13 +8,15 @@ import StudentSelection from '../Guardian/studentselection/studentselection.vue'
 import TeacherDashboard from '../teacher/dashboard/teacherdashboard.vue';
 import StudentDashboard from '../student/dashboard/studentdashboard.vue';
 import AdminLogout from '../adminLogout/adminlogout.vue';
+import AdministrationGuardian from '../Administration/dashboardGuardian/administrationGuardian.vue';
 
 @Component({
   components: {
     StudentSelection,
     TeacherDashboard,
     StudentDashboard,
-    AdminLogout
+    AdminLogout,
+    AdministrationGuardian
   }
 })
 export default class Login extends Vue {
