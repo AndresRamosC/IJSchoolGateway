@@ -57,6 +57,13 @@ const StudentOverviewAssignments = () => import('../core/student/courseoverview/
 const StudentViewAssignments = () => import('../core/student/courseoverview/viewassignment.vue');
 const StudentOverviewGrades = () => import('../core/student/courseoverview/overviewgrades.vue');
 
+/* admin */
+const AdministrationGuardian = () => import('../core/Administration/dashboards/administrationGuardian.vue');
+const AdministrationTeacher = () => import('../core/Administration/dashboards/administrationTeacher.vue');
+const AdministrationStudent = () => import('../core/Administration/dashboards/administrationstudent.vue');
+const AdministrationGroups = () => import('../core/Administration/dashboards/administrationGroups.vue');
+const AdministrationSubjects = () => import('../core/Administration/dashboards/administrationSubjects.vue');
+
 /* tslint:disable */
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
@@ -189,7 +196,32 @@ export default new Router({
     {
       path: '/student-course-overview/assignments/view',
       name: 'Student Assignment View',
-     component: StudentViewAssignments
+      component: StudentViewAssignments
+    },
+    {
+      path: '/administration-dashboard/roles/guardian',
+      name: 'Administration Dashboard',
+      component: AdministrationGuardian
+    },
+    {
+      path: '/administration-dashboard/roles/teacher',
+      name: 'Administration Dashboard',
+      component: AdministrationTeacher
+    },
+    {
+      path: '/administration-dashboard/roles/student',
+      name: 'Administration Dashboard',
+      component: AdministrationStudent
+    },
+    {
+      path: '/administration-dashboard/groups',
+      name: 'Administration Dashboard',
+      component: AdministrationGroups
+    },
+    {
+      path: '/administration-dashboard/subjects',
+      name: 'Administration Dashboard',
+      component: AdministrationSubjects
     },
     {
       path: '/forbidden',
@@ -238,8 +270,7 @@ export default new Router({
       name: 'JhiConfigurationComponent',
       component: JhiConfigurationComponent,
       meta: { authorities: [Authority.ADMIN] }
-    }
-,
+    },
     {
       path: '/admin/gateway',
       name: 'JhiGatewayComponent',

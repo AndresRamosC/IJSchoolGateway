@@ -28,7 +28,9 @@ import {
   BFormCheckboxGroup,
   BDropdownDivider,
   BFormFile,
-  BNav
+  BNav,
+  BTime,
+  BFormDatalist
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -63,4 +65,6 @@ export function initBootstrapVue(vue) {
   vue.component('b-dropdown-divider', BDropdownDivider);
   vue.component('b-form-file', BFormFile);
   vue.component('b-nav', BNav);
+  vue.component('b-time', BTime);
+  vue.component('b-form-datalist', BFormDatalist);
 }

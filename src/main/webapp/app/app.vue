@@ -36,6 +36,10 @@
     color: #1071A3;
   }
 
+  .light-blue {
+    color: #559FD5;
+  }
+
   .gray {
     color: rgba(0, 0, 0, 0.5);
   }

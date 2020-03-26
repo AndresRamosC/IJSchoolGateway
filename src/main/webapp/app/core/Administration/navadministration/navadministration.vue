@@ -2,15 +2,15 @@
 <div class="container-fluid p-0">
     <div class="row m-0" style="backgroundColor: #004674;">
         <b-nav>
-            <b-nav-item active>
+            <b-nav-item active @click="toRoles()">
                 <h1 class="font-weight-bold m-0 white">Role members</h1>
             </b-nav-item>
             <div style="width: 2px; height: 80%; backgroundColor: #559FD5" class="d-flex align-self-center"></div>
-            <b-nav-item>
+            <b-nav-item @click="toSubjects()">
                 <h1 class="font-weight-bold m-0 white">Subjects</h1>
             </b-nav-item>
             <div style="width: 2px; height: 80%; backgroundColor: #559FD5" class="d-flex align-self-center"></div>
-            <b-nav-item>
+            <b-nav-item @click="toGroups()">
                 <h1 class="font-weight-bold m-0 white">Groups</h1>
             </b-nav-item>
             <div style="width: 2px; height: 80%; backgroundColor: #559FD5" class="d-flex align-self-center"></div>
@@ -56,7 +56,18 @@
 
 <script>
 export default {
-    name: "navadministration"
+    name: "navadministration",
+    methods: {
+        toRoles: function () {
+            this.$router.push('/administration-dashboard/roles/guardian')
+        },
+        toGroups: function () {
+            this.$router.push('/administration-dashboard/groups')
+        },
+        toSubjects: function () {
+            this.$router.push('/administration-dashboard/subjects')
+        }
+    }
 }
 </script>
 
