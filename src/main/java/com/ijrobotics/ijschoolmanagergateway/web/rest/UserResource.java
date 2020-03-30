@@ -2,7 +2,6 @@ package com.ijrobotics.ijschoolmanagergateway.web.rest;
 
 import com.ijrobotics.ijschoolmanagergateway.domain.User;
 import com.ijrobotics.ijschoolmanagergateway.service.UserService;
-import com.ijrobotics.ijschoolmanagergateway.service.dto.UserCredDto;
 import com.ijrobotics.ijschoolmanagergateway.service.dto.UserDTO;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.OAuth2Constants;
@@ -81,7 +80,7 @@ public class UserResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the user, or with status {@code 404 (Not Found)}.
      */
     @PostMapping("/users")
-    public Optional<UserDTO> createUser(@RequestBody UserCredDto userCredDto) {
+    public Optional<UserDTO> createUser(@RequestBody UserDTO userDTO, String credentials) {
 
         Keycloak keycloak = KeycloakBuilder.builder()
             .serverUrl(serverUrl)
@@ -96,7 +95,7 @@ public class UserResource {
         CredentialRepresentation passwordCred = new CredentialRepresentation();
         passwordCred.setTemporary(false);
         passwordCred.setType(CredentialRepresentation.PASSWORD);
-        passwordCred.setValue(userCredDto.getPassword());
+        passwordCred.setValue(credentials);
 
 
         // Define user
@@ -104,10 +103,10 @@ public class UserResource {
         credentialRepresentationList.add(passwordCred);
         UserRepresentation user = new UserRepresentation();
         user.setEnabled(true);
-        user.setUsername(userCredDto.getUserDTO().getLogin());
-        user.setFirstName(userCredDto.getUserDTO().getFirstName());
-        user.setLastName(userCredDto.getUserDTO().getLastName());
-        user.setEmail(userCredDto.getUserDTO().getEmail());
+        user.setUsername(userDTO.getLogin());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
         user.setCredentials(credentialRepresentationList);
 
         // Get realm
@@ -120,7 +119,7 @@ public class UserResource {
 
         org.keycloak.admin.client.resource.UserResource userResource = usersRessource.get(userId);
         // Assign Group Guardian to user
-        switch (userCredDto.getUserDTO().getAuthorities().iterator().next()) {
+        switch (userDTO.getAuthorities().iterator().next()) {
             case "GUARDIAN":
                 userResource.joinGroup("7b465c6b-e263-4529-b59b-94b7f266c345");
                 break;
