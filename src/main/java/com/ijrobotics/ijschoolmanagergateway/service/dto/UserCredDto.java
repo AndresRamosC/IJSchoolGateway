@@ -6,6 +6,10 @@ public class UserCredDto implements Serializable {
     private UserDTO userDTO;
     private String password;
 
+    public UserCredDto() {
+        super();
+    }
+
     public UserCredDto(UserDTO userDTO, String password) {
         this.userDTO = userDTO;
         this.password = password;
