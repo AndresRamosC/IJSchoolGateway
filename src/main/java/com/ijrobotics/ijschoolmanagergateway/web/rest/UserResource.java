@@ -282,6 +282,66 @@ public class UserResource {
             }
         }
     }
+    /**
+     * {@code GET /user} : get a user.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body a user.
+     */
+    @GetMapping("/VerifyUser/{userName}")
+    public Boolean verifyIfExist(@PathVariable String userName) {
+        Optional<UserDTO> userDTO = userService.getAUserByUserName(userName);
+        if (userDTO.isPresent()) {
+            //exist on JPA,double check on keycloak
+            Keycloak keycloak = KeycloakBuilder.builder()
+                .serverUrl(serverUrl)
+                .realm(realm)
+                .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .build();
+            RealmResource realmResource = keycloak.realm(realm);
+            try {
+                Optional<UserRepresentation> userOnKeycloak = Optional.ofNullable(realmResource.users().get(userDTO.get().getId()).toRepresentation());
+                //"USER EXIST ON JPA AND ON KEYCLOAK"
+                return userOnKeycloak.isPresent();
+            } catch (NotFoundException e) {
+                //if on keycloak doesnt exit, delete it from JPA and return optional empty
+                userService.deleteUser(userName);
+                return false;
+            }
+        } else {
+            //doesnt exit on JPA, search in Keycloak
+            Keycloak keycloak = KeycloakBuilder.builder()
+                .serverUrl(serverUrl)
+                .realm(realm)
+                .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .build();
+            RealmResource realmResource = keycloak.realm(realm);
+            List<UserRepresentation> usersOnKeycloak = realmResource.users().search(userName);
+            List<UserRepresentation> userOnKeycloak = new ArrayList<>();
+            usersOnKeycloak.forEach(userRepresentation -> {
+                if (userRepresentation.getUsername().toLowerCase().equals(userName.toLowerCase())) userOnKeycloak.add(userRepresentation);
+            });
+            if (!userOnKeycloak.isEmpty()) {
+                //USER EXIST ON KEYCLOAK BUT NOT IN JPA CREATING...
+                //if on keycloak exist create it on JPA and return it
+                User user1 = new User();
+                user1.setId(userOnKeycloak.get(0).getId());
+                user1.setLogin(userOnKeycloak.get(0).getUsername());
+                user1.setEmail(userOnKeycloak.get(0).getEmail());
+                user1.setActivated(userOnKeycloak.get(0).isEnabled());
+                user1.setFirstName(userOnKeycloak.get(0).getFirstName());
+                user1.setLastName(userOnKeycloak.get(0).getLastName());
+                userService.save(user1);
+                return true;
+            } else {
+                //USER DOESNT EXIST ANYWHERE
+                return false;
+            }
+        }
+    }
 
     /**
      * {@code DEL /user} : delete a user.
