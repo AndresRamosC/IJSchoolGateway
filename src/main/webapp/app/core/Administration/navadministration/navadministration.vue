@@ -19,36 +19,27 @@
 
     <div class="d-flex row m-0 pt-2 pb-2" style="border-bottom: 1px solid #1071a3;">
         <div class="flex-grow-1 pl-2">
-            <h2 class="font-weight-bold m-0 blue">2 members</h2>
+            <h2 class="font-weight-bold m-0 blue"> {{qty}} {{type}}</h2>
         </div>
-        <div class="flex-grow-0 p-0 pr-2">
+        <div class="flex-grow-1 p-0 pr-2">
             <div class="row m-0">
-                <div class="pr-1">
-                    <h2 class="font-weight-bold m-0 blue">Sort by:</h2>
+                <div class="col pr-1">
+                    <h2 class="font-weight-bold m-0 text-right blue">Sort by:</h2>
                 </div>
-                <div class="col p-0 flex-grow-1">
-                    <b-dropdown toggle-class="text-decoration-none" no-caret>
-                        <template v-slot:button-content>
-                            <div class="row leave-box m-0">
-                                <div class="col-10">
-                                <p class="text-right blue m-0 p-2">Select</p>
-                                </div>
-                                <div class="col-2 pr-2 p-0 d-flex align-items-center">
-                                <font-awesome-icon
-                                class="blue"
-                                style="width: 20px; height: 20px;"
-                                icon="chevron-down"
-                                />
-                                </div>
-                            </div>
-                        </template>
-                        <b-dropdown-item>name</b-dropdown-item>
-                    </b-dropdown>
+                <div class="col-2 p-0 flex-grow-1">
+                    <b-form-select
+                        id="form-sort"
+                        class="combo-search p-0 w-100"
+                        v-model="sortParameter"
+                        :options="sortOptions"
+                    ></b-form-select>
                 </div>
             </div>
         </div>
         <div class="flex-grow-0 pl-0 pr-2">
-            <b-form-input id="search-input" type="search"></b-form-input>
+            <b-form-input v-model="searchParameter" id="search-input" type="search" list="group-list" placeholder="Search"></b-form-input>
+
+            <b-form-datalist id="group-list" :options="options"></b-form-datalist>
         </div>
     </div>
 </div>
@@ -57,6 +48,18 @@
 <script>
 export default {
     name: "navadministration",
+    props: {
+        qty: Number,
+        type: String,
+        sortOptions: Array,
+        options: Array
+    },
+    data() {
+        return {
+            sortParameter: '',
+            searchParameter: ''
+        }
+    },
     methods: {
         toRoles: function () {
             this.$router.push('/administration-dashboard/roles/guardian')
@@ -66,6 +69,14 @@ export default {
         },
         toSubjects: function () {
             this.$router.push('/administration-dashboard/subjects')
+        }
+    },
+    watch: {
+        sortParameter() {
+            this.$emit('sortList', this.sortParameter)
+        },
+        searchParameter() {
+            this.$emit('filterList', this.searchParameter)
         }
     }
 }

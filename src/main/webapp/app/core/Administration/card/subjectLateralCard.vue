@@ -1,5 +1,5 @@
 <template>
-    <div class="col-4 col-lg-12 px-0 py-3" style="height: fit-content;" @click="goTo()">
+    <div class="col-4 col-lg-12 px-0 py-3" style="height: fit-content;" @click="$emit('updateSubject', subjectId)">
         <div class="row">
             <div class="col pr-0">
                 <div class="circle"  :style="style"></div>
@@ -15,17 +15,12 @@ export default {
     props: {
         name: String,
         color: String,
-        route: String
+        subjectId: Number
     },
     computed: {
         style () {
         return 'border-color: ' +  this.color;
       }
-    },
-    methods: {
-        goTo: function () {
-            this.$router.push('/administration-dashboard/roles/' + this.route)
-        }
     }
 }
 </script>

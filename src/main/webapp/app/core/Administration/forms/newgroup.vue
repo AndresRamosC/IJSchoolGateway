@@ -7,6 +7,7 @@
     centered
     no-close-on-backdrop
   >
+    <b-form @submit="onSubmit">
     <div class="container p-0">
       <div class="row m-0">
         <div class="col-10 py-2 d-flex align-items-center blueBG">
@@ -25,7 +26,7 @@
                     <p class="font-weight-bold text-right pr-2 m-0 blue">Group code:</p>
                 </div>
                 <div class="col-6 p-0 m-0 pr-2">
-                    <b-form-input required class="forms-input" id="form-newguardian-firtsname"></b-form-input>
+                    <b-form-input required type="text" v-model="classGroupDTO.groupCode" class="forms-input" id="form-groupcode"></b-form-input>
                 </div>
             </div>
           </div>
@@ -36,7 +37,7 @@
                     <p class="font-weight-bold text-right pr-2 m-0 blue">Classroom:</p>
                     </div>
                     <div class="col-6 p-0 m-0 pr-2">
-                    <b-form-input required class="forms-input" id="form-newguardian-firtsname"></b-form-input>
+                    <b-form-input required type="text" v-model="classGroupDTO.classRoom" class="forms-input" id="form-classroom"></b-form-input>
                 </div>
               </div>
           </div>
@@ -54,7 +55,7 @@
         </div>
 
         <div class="col py-1">
-          <b-form-input type="time" required class="forms-input" id="form-newguardian-firtsname"></b-form-input>
+          <b-form-input type="time" v-model="scheduleOne.startHour" required class="forms-input" id="form-s1-starthour"></b-form-input>
         </div>
 
         <div class="col-1">
@@ -62,7 +63,7 @@
         </div>
 
         <div class="col py-1">
-          <b-form-input type="time" required class="forms-input" id="form-newguardian-firtsname"></b-form-input>
+          <b-form-input type="time" v-model="scheduleOne.endHour" required class="forms-input" id="form-s1-endhour"></b-form-input>
         </div>
 
         <div class="col-2 p-0">
@@ -112,7 +113,7 @@
         </div>
 
         <div class="col-2 py-1">
-          <b-form-input type="time" required class="forms-input" id="form-newguardian-firtsname"></b-form-input>
+          <b-form-input type="time" required v-model="scheduleTwo.startHour" class="forms-input" id="form-s2-startHour"></b-form-input>
         </div>
 
         <div class="col-1">
@@ -120,7 +121,7 @@
         </div>
 
         <div class="col-2 py-1">
-          <b-form-input type="time" required class="forms-input" id="form-newguardian-firtsname"></b-form-input>
+          <b-form-input type="time" required v-model="scheduleTwo.endHour" class="forms-input" id="form-s2-endHour"></b-form-input>
         </div>
         
       </div>
@@ -166,11 +167,16 @@
                     <p class="font-weight-bold text-right pr-2 m-0 blue">Teacher:</p>
                 </div>
                 <div class="col-10 p-0 m-0 pr-2">
-                  <b-form-input class="forms-input" list="teacher-list-id" placeholder="Select teacher"></b-form-input>
-
-                  <datalist id="teacher-list-id">
-                    <option v-for="(teacher, index) in teachers" :key="index">{{ teacher }}</option>
-                  </datalist>
+                  <b-form-select
+                  v-if="teacherListLoaded"
+                    id="form-teacher"
+                    class="forms-combo-input p-0 w-100"
+                    v-model="teacherId"
+                    :options="teachers"
+                    value-field="value"
+                    text-field="text"
+                    required
+                  ></b-form-select>
                 </div>
             </div>
           </div>
@@ -180,16 +186,31 @@
       <div class="row my-3 m-0">
 
           <div class="col-12">
-            <div class="row m-0 box">
-                <div class="col-12 p-0 m-0 pr-2">
-                  <b-form-input size="lg" class="forms-input" list="student-list" v-model="newStudent" placeholder="Select students"></b-form-input>
 
-                   <b-form-datalist id="student-list" :options="students"></b-form-datalist>
-                  <!-- <datalist id="student-list-id">
-                    <option v-for="(student, index) in students" :key="index">
-                      <p @click="console.log('test')"> {{student}} </p>
-                    </option>
-                  </datalist> -->
+            <div class="row m-0 box">
+
+                <div class="col-12 p-0">
+                  <b-tabs v-if="studentListLoaded" id="tabs-estudiantes" content-class="m-0">
+
+                  <b-tab title="Search by student" active>
+                    <div class="col-12 p-0 m-0">
+                      <b-form-input size="lg" type="search" class="forms-input" list="student-list" v-model="newStudent" placeholder="Select student"></b-form-input>
+
+                      <b-form-datalist id="student-list">
+                        <option v-for="(student, index) in students" :key="index">{{student.text}}</option>
+                      </b-form-datalist>
+                    </div>
+                  </b-tab>
+
+                  <b-tab title="Assign to group">
+                    <div class="col-12 p-0 m-0">
+                      <b-form-input size="lg" class="forms-input" list="group-list" placeholder="Select group"></b-form-input>
+
+                      <!-- <b-form-datalist id="student-group" :options="weekdays" value-field="value" text-field="text"></b-form-datalist> -->
+                    </div>
+                  </b-tab>
+
+                  </b-tabs>
                 </div>
 
             </div>
@@ -207,6 +228,7 @@
                 </div>
 
             </div>
+
           </div>
         
       </div>
@@ -214,58 +236,149 @@
       <!-- save button  -->
       <div class="row w-100 my-3 m-0">
         <div class="col-12 py-2 d-flex justify-content-end">
-          <div
-            style="background-color: #1071A3; border-radius: 5px;"
-            ref="endProcess"
-            @click="endProcess()"
-          >
-            <h3 class="font-weight-bold m-0 p-2 white">Save</h3>
-          </div>
+          <b-button id="save-newGroup" type="submit" variant="primary">Save</b-button>
         </div>
       </div>
     </div>
+    </b-form>
   </b-modal>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'newgroup',
+  props: {
+    subId: Number
+  },
   data() {
     return {
-        startHour: '',
-        endHour: '',
+        classGroupDTO: {
+          "classRoom": '',
+          "groupCode": '',
+        },
+        "scheduleOne": {
+            "endHour": '',
+            "startHour": ''
+        },
+        "scheduleTwo": {
+            "endHour": '',
+            "startHour": ''
+        },
+        "subjectId": this.subId,
+        "teacherId": null,
         checked: true,
-        weekdays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        weekdays: [
+          { text: 'Monday', value: 1 },
+          { text: 'Tuesday', value: 2 },
+          { text: 'Wednesday', value: 4 },
+          { text: 'Thursday', value: 8 },
+          { text: 'Friday', value: 16 },
+          { text: 'Saturday', value: 32 }
+        ],
         selected: [],
         selectedDifference: [],
         shifts: 0,
-        teachers: ['Teacher 1','Teacher 2','Teacher 3','Teacher 4','Teacher 5'],
-        students: ['Student 1','Student 2','Student 3','Student 4','Student 5'],
+        teachers: [],
+        students: [],
         studentsGroup: [],
+        studentsId: [],
         newStudent: ''
     };
   },
+  created() {
+        this.$store.dispatch('getAdministrationTeacherDashboard');
+        this.$store.dispatch('getAdministrationStudentDashboard');
+  },
+  computed: {
+    ...mapGetters([
+      'teacherList',
+      'teacherListLoaded',
+      'studentList',
+      'studentListLoaded'
+    ])
+  },
   methods: {
-    endProcess: function() {
+    onSubmit(evt) {
+      evt.preventDefault()
+
+      this.classGroupDTO.size = this.studentsId.length;
+      var classGroupData = JSON.stringify(this.classGroupDTO);
+
+      if (this.checked == true) {
+        this.scheduleOne.weekDays = 31
+      } else {
+        this.scheduleOne.weekDays = _.sum(this.selected);
+        this.scheduleTwo.weekDays = _.sum(this.selectedDifference);
+      }
+
+      var scheduleData;
+      if (this.shifts > 0) {
+        scheduleData = JSON.stringify(this.scheduleOne) + ',' + JSON.stringify(this.scheduleTwo); 
+      } else {
+        scheduleData = JSON.stringify(this.scheduleOne);
+      }
+
+      var newGroup = `{
+        "classGroupDTO" : ${classGroupData},
+        "classScheduleDTOS" : [ ${scheduleData} ],
+        "studentsIds" : [ ${this.studentsId} ],
+        "subjectId": ${this.subjectId},
+        "teacherId": ${this.teacherId}
+      }`;
+
+      console.log(newGroup);
+
+      this.$store.dispatch('createGroup', { "groupObject": newGroup, "subjectId": this.subjectId });
+      this.reset();
+
       this.$root.$emit('bv::hide::modal', 'new-group', '#showNewGroup');
+    },
+    reset: function() {
+        this.teacherId = null
+        this.selected = []
+        this.selectedDifference = []
+        this.shifts = 0
+        this.teachers = []
+        this.students = []
+        this.studentsGroup = []
+        this.studentsId = []
+        this.newStudent = ''
+        this.classGroupDTO.classRoom = ''
+        this.classGroupDTO.groupCode = ''
+        this.scheduleOne.endHour = ''
+        this.scheduleOne.startHour = ''
+        this.scheduleTwo.endHour = ''
+        this.scheduleTwo.startHour = ''
     },
     addShift: function() {
       this.shifts += 1;
     },
     addStudent: function(student) {
-      console.log('called')
       this.studentsGroup.push(student);
     }
   },
   watch: {
     selected() {
-      this.selectedDifference = _.difference(this.weekdays, this.selected);
+      this.selectedDifference = _.difference([1, 2, 4, 8, 16, 32], this.selected);
     },
     newStudent() {
-      if(this.newStudent != '' || this.newStudent != null) {
-        console.log('called')
-        this.studentsGroup.push(this.newStudent);
-        this.newStudent = null
+      const name = this.newStudent;
+      const toAdd = _.find(this.students, function(o) { return o.text == name; });
+      if(toAdd !== undefined) {
+        this.studentsGroup.push(toAdd.text);
+        this.studentsId.push(toAdd.value);
+      }
+    },
+    teacherList() {
+      for (let index = 0; index < this.teacherList.length; index++) {
+        this.teachers.push({ text: this.teacherList[index].personDTO.firstName + ' ' + this.teacherList[index].personDTO.lastName, value: this.teacherList[index].teacherDto.id })
+      }
+    },
+    studentList() {
+      for (let index = 0; index < this.studentList.length; index++) {
+        this.students.push({ text: this.studentList[index].personDTO.firstName + ' ' + this.studentList[index].personDTO.lastName, value: this.studentList[index].studentDTO.id })
       }
     }
   }

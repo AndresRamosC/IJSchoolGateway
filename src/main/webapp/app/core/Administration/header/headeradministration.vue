@@ -12,7 +12,7 @@
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-6">
-                        <p class="m-0 white">Username</p>
+                        <p class="m-0 white">{{username.login}}</p>
                     </div>
                     <div class="col-6">
                         <!-- <img class="p-0 img-fluid" style="width:40px; height: 40px; borderRadius: 50%;" :src="studentPhoto(student)"/> -->
@@ -22,7 +22,7 @@
             </div>
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item href="" @click="logout()">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
 
       </b-navbar-nav>
@@ -31,8 +31,5 @@
 </div>    
 </template>
 
-<script>
-export default {
-    name: "headeradministration"
-}
+<script lang="ts" src="./headeradministration.component.ts">
 </script>

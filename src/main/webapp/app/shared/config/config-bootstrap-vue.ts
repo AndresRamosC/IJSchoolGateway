@@ -30,7 +30,12 @@ import {
   BFormFile,
   BNav,
   BTime,
-  BFormDatalist
+  BFormDatalist,
+  BTabs,
+  BTab,
+  BFormSelect,
+  BFormInvalidFeedback,
+  BOverlay
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -67,4 +72,9 @@ export function initBootstrapVue(vue) {
   vue.component('b-nav', BNav);
   vue.component('b-time', BTime);
   vue.component('b-form-datalist', BFormDatalist);
+  vue.component('b-tabs', BTabs);
+  vue.component('b-tab', BTab);
+  vue.component('b-form-select', BFormSelect);
+  vue.component('b-form-invalid-feedback', BFormInvalidFeedback);
+  vue.component('b-overlay', BOverlay);
 }

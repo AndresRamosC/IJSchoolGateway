@@ -28,7 +28,15 @@
         </lateral-nav>
 
         <div class="col-12 col-lg-11  p-0" style="position: relative">
-            <nav-administration/>
+            <nav-administration
+                v-if="subjectsListLoaded"
+                :qty="subjectsList.length"
+                :type="subjectsList.length > 1 ? 'subjects' : 'subject'"
+                :sortOptions="sort"
+                :options="listToFilter"
+                @sortList="sortByParameter"
+                @filterList="searchByParameter"
+            />
 
             <cards-container>
                 <template v-slot:headers>
@@ -60,21 +68,25 @@
 
                 <template  v-slot:cards>
 
-                    <subject-card
-                        icon="square-root-alt"
-                        color="#36B40A"
-                        name="Mathematics"
-                        code="MA"
-                        department="Basic"
-                        groupsQty="2"
-                    />
+                    <div v-if="subjectsListLoaded">
+                        <div v-for="(subject, index) in subjectsList" :key="index">
+                            <subject-card
+                                :icon="subject.subjectDTO.iconCode"
+                                :color="subject.subjectDTO.colorCode"
+                                :name="subject.subjectDTO.courseName"
+                                :code="subject.subjectDTO.courseCode"
+                                :department="subject.subjectDTO.department"
+                                :groupsQty="subject.amount"
+                            />
+                        </div>
+                    </div>
 
                 </template>
             </cards-container>
 
             <div class="addButton" @click="openNewSubject()" ref="showNewSubject">
                 <font-awesome-icon
-                    style="width: 46px; height: 46px; color: green; position: absolute; left: 20.83%; right: 20.83%; top: 20.83%; bottom: 20.83%;"
+                    style="width: 46px; height: 46px; color: white; position: absolute; left: 20.83%; right: 20.83%; top: 20.83%; bottom: 20.83%;"
                     icon="plus"
                 />
             </div>
@@ -94,6 +106,8 @@ import NavAdministration from '../navadministration/navadministration.vue';
 import CardsContainer from '../guardiancomponents/cardscontainer.vue';
 import SubjectCard from '../card/subjectcard.vue';
 import NewSubject from '../forms/newsubject.vue';
+import { mapGetters } from 'vuex';
+import _ from 'lodash';
 
 export default {
     name: "administrationTeacher",
@@ -106,9 +120,57 @@ export default {
         NewSubject,
         SubjectCard
     },
+    data() {
+        return {
+            sort: [
+                { text: 'Name', value: 'courseName' },
+                { text: 'Code', value: 'courseCode' },
+                { text: 'Groups', value: 'amount' }
+            ],
+            originalList: null,
+            sortParameter: '',
+            listToFilter: null
+        }
+    },
+    created() {
+        this.$store.dispatch('getAdministrationSubjectsDashboard');
+    },
+    computed: {
+        ...mapGetters([
+            'subjectsList',
+            'subjectsListLoaded'
+        ])
+    },
     methods: {
         openNewSubject: function () {
             this.$root.$emit('bv::show::modal', 'new-subject', '#showNewSubject')
+        },
+        sortByParameter: function (sortParameter) {
+            if (sortParameter == 'amount') {
+                this.$store.commit('subjectsListList', _.sortBy(this.subjectsList, [function(o) { return o.amount; }]) );
+            } else {
+                this.$store.commit('subjectsListList', _.sortBy(this.subjectsList, [function(o) { return o.subjectDTO.courseName; }]) );
+            }
+        },
+        searchByParameter: function (searchParameter) {
+            var list = [];
+            var listCopy;
+            _.forEach(this.originalList, function(value, key) {
+                if (_.startsWith(value.subjectDTO.courseName.toLowerCase(), searchParameter.toLowerCase())) {
+                    list.push(value);   
+                }
+            })
+            this.$store.commit('subjectsListList', list );
+        }
+    },
+    watch: {
+        subjectsListLoaded() {
+            this.originalList = this.subjectsList;
+            var list = [];
+            _.forEach(this.subjectsList, function(value, key) {
+                list.push(value.subjectDTO.courseName);
+            });
+            this.listToFilter = list;
         }
     }
 }
@@ -116,12 +178,13 @@ export default {
 
 <style scoped>
 .addButton {
-    border: 1px solid green;
+    background-color: green;
     border-radius: 50%;
     width: 80px;
     height: 80px;
     bottom: 2%;
     right: 1%;
     position: absolute;
+    box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.25);
 }
 </style>

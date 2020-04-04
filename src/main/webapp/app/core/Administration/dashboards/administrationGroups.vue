@@ -8,27 +8,27 @@
             title="Roles"
         >
             <template v-slot:content>
-                <lateral-card
-                    name="Math"
-                    color="green"
-                />
-                <lateral-card
-                    name="Geography"
-                    color="cyan"
-                />
-                <lateral-card
-                    name="Spanish"
-                    color="purple"
-                />
-                <lateral-card
-                    name="History"
-                    color="red"
-                />
+                <div class="w-100" v-for="(subject, index) in subjectsList" :key="index">
+                    <lateral-card
+                        @updateSubject="updateSubject"
+                        :name="subject.subjectDTO.courseName"
+                        :color="subject.subjectDTO.colorCode"
+                        :subjectId="subject.subjectDTO.id"
+                    />
+                </div>
             </template>
         </lateral-nav>
 
         <div class="col-12 col-lg-11  p-0" style="position: relative">
-            <nav-administration/>
+            <nav-administration
+                v-if="groupsListLoaded"
+                :qty="groupsList.length"
+                :type="groupsList.length > 1 ? 'groups' : 'group'"
+                :sortOptions="sort"
+                :options="listToFilter"
+                @sortList="sortByParameter"
+                @filterList="searchByParameter"
+            />
 
             <cards-container>
                 <template v-slot:headers>
@@ -63,25 +63,37 @@
 
                 <template  v-slot:cards>
 
-                    <group-card
-                        startHour="08:00"
-                        endHour="09:00"
-                        groupCode="MA-101"
-                        classroom="R03"
-                        students="25"
-                        weekdays="L-V"
-                    />
+                    <div v-if="selectedSubject == null">
+                        <div class="row m-0">
+                            <div class="col-12 p-0">
+                                <h2 class="font-weight-bold text-center blue">Select a subject of the left first</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else v-for="(group, index) in groupsList" :key="index">
+                        <group-card
+                            :startHour="group.classGroupAndSubjectDto.classScheduleDTOS"
+                            :endHour="group.classGroupAndSubjectDto.classScheduleDTOS"
+                            :groupCode="group.classGroupAndSubjectDto.groupCode"
+                            :classroom="group.classGroupAndSubjectDto.classRoom"
+                            :students="group.classGroupAndSubjectDto.classGroupSize"
+                            :weekdays="group.classGroupAndSubjectDto.classScheduleDTOS"
+                        />
+                    </div>
 
                 </template>
             </cards-container>
 
-            <div class="addButton" @click="openNewGroup()" ref="showNewGroup">
+            <div v-if="selectedSubject != null" class="addButton" @click="openNewGroup()" ref="showNewGroup">
                 <font-awesome-icon
-                    style="width: 46px; height: 46px; color: green; position: absolute; left: 20.83%; right: 20.83%; top: 20.83%; bottom: 20.83%;"
+                    style="width: 46px; height: 46px; color: white; position: absolute; left: 20.83%; right: 20.83%; top: 20.83%; bottom: 20.83%;"
                     icon="plus"
                 />
             </div>
-            <new-group/>
+            <new-group
+                v-if="selectedSubject != null"
+                :subId="selectedSubject"
+            />
 
         </div>
 
@@ -92,11 +104,12 @@
 <script>
 import HeaderAdministration from '../header/headeradministration.vue';
 import LateralNav from '../lateralnav/lateralnav.vue';
-import LateralCard from '../card/lateralcard.vue';
+import LateralCard from '../card/subjectLateralCard.vue';
 import NavAdministration from '../navadministration/navadministration.vue';
 import CardsContainer from '../guardiancomponents/cardscontainer.vue';
 import GroupCard from '../card/groupcard.vue';
 import NewGroup from '../forms/newgroup.vue';
+import { mapGetters } from 'vuex';
 
 export default {
     name: "administrationTeacher",
@@ -109,9 +122,74 @@ export default {
         NewGroup,
         GroupCard
     },
+    data() {
+        return {
+            selectedSubject: null,
+            sort: [
+                { text: 'Start hour', value: 'classGroupAndSubjectDto.classScheduleDTOS[0].startHour' },
+                { text: 'End hour', value: 'classGroupAndSubjectDto.classScheduleDTOS[0].endHour' },
+                { text: 'Classroom', value: 'classGroupAndSubjectDto.classRoom' },
+                { text: 'Students', value: 'classGroupAndSubjectDto.classGroupSize' }
+            ],
+            originalList: null,
+            sortParameter: '',
+            listToFilter: null
+        }
+    },
+    created() {
+        this.$store.dispatch('getAdministrationSubjectsDashboard');
+    },
     methods: {
         openNewGroup: function () {
             this.$root.$emit('bv::show::modal', 'new-group', '#showNewGroup')
+        },
+        updateSubject: function (subjectId) {
+            this.selectedSubject = subjectId;
+        },
+        sortByParameter: function (sortParameter) {
+            if (sortParameter == 'classGroupAndSubjectDto.classScheduleDTOS[0].startHour') {
+                this.$store.commit('updateGroupsList', _.sortBy(this.groupsList, [function(o) { return o.classGroupAndSubjectDto.classScheduleDTOS[0].startHour; }]) );
+            } 
+            if (sortParameter == 'classGroupAndSubjectDto.classScheduleDTOS[0].endHour') {
+                this.$store.commit('updateGroupsList', _.sortBy(this.groupsList, [function(o) { return o.classGroupAndSubjectDto.classScheduleDTOS[0].endHour; }]) );
+            }
+            if (sortParameter == 'classGroupAndSubjectDto.classRoom') {
+                this.$store.commit('updateGroupsList', _.sortBy(this.groupsList, [function(o) { return o.classGroupAndSubjectDto.classRoom; }]) );
+            }
+            if (sortParameter == 'classGroupAndSubjectDto.classGroupSize') {
+                this.$store.commit('updateGroupsList', _.sortBy(this.groupsList, [function(o) { return o.classGroupAndSubjectDto.classGroupSize; }]) );
+            }
+        },
+        searchByParameter: function (searchParameter) {
+            var list = [];
+            var listCopy;
+            _.forEach(this.originalList, function(value, key) {
+                if (_.startsWith(value.classGroupAndSubjectDto.groupCode.toLowerCase(), searchParameter.toLowerCase())) {
+                    list.push(value);   
+                }
+            })
+            this.$store.commit('updateGroupsList', list );
+        }
+    },
+    computed: {
+        ...mapGetters([
+            'subjectsList',
+            'subjectsListLoaded',
+            'groupsListLoaded',
+            'groupsList'
+        ])
+    },
+    watch: {
+        selectedSubject() {
+            this.$store.dispatch('getGroupsBySubjectId', this.selectedSubject);
+        },
+        groupsListLoaded() {
+            this.originalList = this.groupsList;
+            var list = [];
+            _.forEach(this.groupsList, function(value, key) {
+                list.push(value.classGroupAndSubjectDto.groupCode);
+            });
+            this.listToFilter = list;
         }
     }
 }
@@ -119,12 +197,13 @@ export default {
 
 <style scoped>
 .addButton {
-    border: 1px solid green;
+    background-color: green;
     border-radius: 50%;
     width: 80px;
     height: 80px;
     bottom: 2%;
     right: 1%;
     position: absolute;
+    box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.25);
 }
 </style>

@@ -200,27 +200,27 @@ export default new Router({
     },
     {
       path: '/administration-dashboard/roles/guardian',
-      name: 'Administration Dashboard',
+      name: 'Administration Dashboard Guardian',
       component: AdministrationGuardian
     },
     {
       path: '/administration-dashboard/roles/teacher',
-      name: 'Administration Dashboard',
+      name: 'Administration Dashboard Teacher',
       component: AdministrationTeacher
     },
     {
       path: '/administration-dashboard/roles/student',
-      name: 'Administration Dashboard',
+      name: 'Administration Dashboard Student',
       component: AdministrationStudent
     },
     {
       path: '/administration-dashboard/groups',
-      name: 'Administration Dashboard',
+      name: 'Administration Dashboard Groups',
       component: AdministrationGroups
     },
     {
       path: '/administration-dashboard/subjects',
-      name: 'Administration Dashboard',
+      name: 'Administration Dashboard Subjects',
       component: AdministrationSubjects
     },
     {

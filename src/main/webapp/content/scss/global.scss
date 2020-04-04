@@ -451,50 +451,65 @@ ui bootstrap tweaks
   padding: 0em !important;
 }
 
+[id='tabs-estudiantes__BV_tab_controls_'] > li {
+  width: 50%;
+  text-align: center;
+}
+
 .forms-input {
+  padding: 0em !important;
+  color: gray !important;
+  box-shadow: inset 0 -1px 0 #1071a3 !important;
+  height: 100% !important;
+}
+
+.forms-combo-input {
   padding: 0em !important;
   color: gray !important;
   box-shadow: inset 0 -1px 0 #1071a3 !important;
   height: 100%;
 }
 
-.forms-combo-input > button {
-  box-shadow: none !important;
+.combo-search {
+  padding: 0em !important;
+  color: gray !important;
+  box-shadow: inset 0 -1px 0 #1071a3 !important;
+  height: 100%;
+  border: 1px solid #1071a3;
+  border-radius: 5px;
 }
 
-// input[type="file"] {
-//   border: 0;
-//   clip: rect(0, 0, 0, 0);
-//   height: 1px;
-//   overflow: hidden;
-//   padding: 0;
-//   position: absolute !important;
-//   white-space: nowrap;
-//   width: 1px;
-// }
+[id='save-newTeacher'] {
+  background: #1071a3 !important;
+  background-color: #1071a3 !important;
+}
 
-// [type="file"] + label {
-//   background-color: #000;
-//   border-radius: 4rem;
-//   color: #fff;
-//   cursor: pointer;
-//   display: inline-block;
-//   font-family: 'Poppins', sans-serif;
-//   font-size: 1rem;
-//   font-weight: 700;
-//   height: 4rem;
-//   line-height: 4rem;
-//   padding-left: 2rem;
-//   padding-right: 2rem;
-//   transition: background-color 0.3s;
-// }
+[id='save-newTeacher']:hover {
+  background: #1071a3 !important;
+}
 
-// [type="file"]:focus + label,
-// [type="file"] + label:hover {
-//     background-color: #f15d22;
-// }
+[id='save-newGroup'] {
+  background: #1071a3 !important;
+  background-color: #1071a3 !important;
+}
 
-// [type="file"]:focus + label {
-//   outline: 1px dotted #000;
-//   outline: -webkit-focus-ring-color auto 5px;
-// }
+[id='save-newGroup']:hover {
+  background: #1071a3 !important;
+}
+
+[id='save-newSubject'] {
+  background: #1071a3 !important;
+  background-color: #1071a3 !important;
+}
+
+[id='save-newSubject']:hover {
+  background: #1071a3 !important;
+}
+
+.was-validated .form-control:valid,
+.form-control.is-valid {
+  border-color: none !important;
+  padding-right: none !important;
+  background-image: none !important;
+  background-repeat: no-repeat;
+}

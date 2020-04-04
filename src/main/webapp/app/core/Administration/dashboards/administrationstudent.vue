@@ -32,7 +32,15 @@
         </lateral-nav>
 
         <div class="col-12 col-lg-11  p-0" style="position: relative">
-            <nav-administration/>
+            <nav-administration
+                v-if="studentListLoaded"
+                :qty="studentList.length"
+                :type="studentList.length > 1 ? 'students' : 'student'"
+                :sortOptions="sort"
+                :options="listToFilter"
+                @sortList="sortByParameter"
+                @filterList="searchByParameter"
+            />
 
             <cards-container>
                 <template v-slot:headers>
@@ -57,12 +65,18 @@
                 </template>
 
                 <template  v-slot:cards>
-
-                    <student-card
-                        name="Kyle Brian Craven"
-                        controlNumber="15050993"
-                        grade="8th"
-                    />
+                    
+                    <div v-if="studentListLoaded">
+                        <div v-for="(student, index) in studentList" :key="index">
+                            <student-card
+                                :studentPhoto="'data:' + student.personDTO.photographContentType + ';base64, ' + student.personDTO.photograph"
+                                :name="student.personDTO.firstName + ' ' + student.personDTO.lastName"
+                                :controlNumber="student.studentDTO.controlNumber"
+                                :grade="student.studentDTO.academicYear"
+                                :guardiansPhotos="student.guardianPhotoAndNameList"
+                            />
+                        </div>
+                    </div>
 
                 </template>
             </cards-container>
@@ -80,6 +94,8 @@ import LateralCard from '../card/lateralcard.vue';
 import NavAdministration from '../navadministration/navadministration.vue';
 import CardsContainer from '../guardiancomponents/cardscontainer.vue';
 import StudentCard from '../card/studentcard.vue';
+import { mapGetters } from 'vuex';
+import _ from 'lodash';
 
 export default {
     name: "administrationTeacher",
@@ -91,8 +107,59 @@ export default {
         CardsContainer,
         StudentCard
     },
+    data() {
+        return {
+            sort: [
+                { text: 'Name', value: 'personDTO.firstName' },
+                { text: 'Control number', value: 'studentDTO.controlNumber' },
+                { text: 'Grade', value: 'studentDTO.academicYear' }
+            ],
+            originalList: null,
+            sortParameter: '',
+            listToFilter: null
+        }
+    },
+    created() {
+        this.$store.dispatch('getAdministrationStudentDashboard');
+    },
+    computed: {
+        ...mapGetters([
+            'studentList',
+            'studentListLoaded'
+        ])
+    },
     methods: {
-
+        sortByParameter: function (sortParameter) {
+            if (sortParameter == 'personDTO.firstName') {
+                this.$store.commit('updateStudentList', _.sortBy(this.studentList, [function(o) { return o.personDTO.firstName; }]) );
+            } 
+            if (sortParameter == 'studentDTO.controlNumber') {
+                this.$store.commit('updateStudentList', _.sortBy(this.studentList, [function(o) { return o.studentDTO.controlNumber; }]) );
+            }
+            if (sortParameter == 'studentDTO.academicYear') {
+                this.$store.commit('updateStudentList', _.sortBy(this.studentList, [function(o) { return o.studentDTO.academicYear; }]) );
+            }
+        },
+        searchByParameter: function (searchParameter) {
+            var list = [];
+            var listCopy;
+            _.forEach(this.originalList, function(value, key) {
+                if (_.startsWith(value.personDTO.firstName.toLowerCase(), searchParameter.toLowerCase())) {
+                    list.push(value);   
+                }
+            })
+            this.$store.commit('updateStudentList', list );
+        }
+    },
+    watch: {
+        studentListLoaded() {
+            this.originalList = this.studentList;
+            var list = [];
+            _.forEach(this.studentList, function(value, key) {
+                list.push(value.personDTO.firstName);
+            });
+            this.listToFilter = list;
+        }
     }
 }
 </script>
